@@ -1,17 +1,17 @@
 # vite-wallet-client
 
-## install
+## Install
 
-1. Under the 'wallet' folder, allow the command `npm install`.
+1. In 'wallet' folder, run the command `npm install`.
 2. `cd wallet` and `npm install`.
 
-## start
+## Get Started
 
 1. Install.
-2. Configure eslint in your editor, rules like '.eslintrc'.
-3. Under the 'wallet' folder, allow the command `npm run dev`.
+2. Configure `eslint` in your editor, rules like '.eslintrc'.
+3. In 'wallet' folder, run command `npm run dev`.
 
-### branches
+### Branches
 
 * Develop on branch 'dev/{version}/{function name}'
 * Test on branch 'test'
@@ -19,6 +19,6 @@
 
 `Notice: development branch split from 'dev/{last_version}'. If 'dev/{last_version}' is not exist, split from 'master'`
 
-#### example
+#### Examples
 
 ` 'dev/2.0.0/utf8' from 'dev/1.0.0' || 'master' `
