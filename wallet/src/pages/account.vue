@@ -8,8 +8,8 @@
 <script>
 export default {
     mounted() {
-        this.$i18n.locale = 'en';
-        console.log(this.$t('hello'));
+        // this.$i18n.locale = 'zh';
+        console.log(this.$t('hello'), this.$i18n.locale);
     }
 }
 </script>

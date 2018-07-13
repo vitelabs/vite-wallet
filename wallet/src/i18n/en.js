@@ -1,3 +1,5 @@
 module.exports = {
-    hello: 'hello world'
+    hello: 'hello world',
+
+    lang: 'English',
 };
