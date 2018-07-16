@@ -22,10 +22,15 @@ module.exports = {
     create: {
         input: '请输入密码',
         again: '请再次输入密码',
+        hint: {
+            long: '密码需在8到32个字符之间',
+            consistency: '请输入相同的密码',
+            save: '您的私钥文件保存在 {0} 中，请谨慎保存，当前版本丢失密码账户不可找回'
+        }
     },
     dragDrop: {
         text: '拖拽账户文件进入文本区域',
-        errMsg: '文件不合法，上传失败',
+        errMsg: '文件无法识别，上传失败',
     },
 
     // account detail
@@ -37,7 +42,37 @@ module.exports = {
         name: '账户名称',
         address: '账户地址',
         balance: '账户余额',
-        tripFund: '账户详情',
+        fundFloat: '在途资金',
+        copy: '复制账户地址',
+        outAddress: '转出账户地址',
+        inAddress: '接收账户地址',
+        sum: '金额',
+        password: '密码',
+        hint: {
+            token: '您获得了100测试代币',
+            low: '账户余额不足',
+            wrong: '密码错误',
+            amount: '金额必须大于0',
+            punctuation: '不可以出现标点符号',
+        }
+    },
+
+    // Transaction List
+    transList: {
+      tType: {
+          title: '交易类型',
+          send: '发送',
+          receive: '接收',
+      },
+      status: {
+          title: '状态',
+          unconfirmed: '待确认',
+          confirmed: '已确认',
+      },
+      timestamp: '时间戳',
+      tAddress: '交易方地址',
+      sum: '金额',
+      tDetail: '交易详情',
     },
 
     //common
