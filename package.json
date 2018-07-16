@@ -6,7 +6,7 @@
     "scripts": {
         "start": "electron .",
         "build:map:wallet": "cd wallet && npm run build:map",
-        "dev": "npm run build:map:wallet && npm run start",
+        "dev": "npm run build:map:wallet && NODE_ENV=dev npm run start",
         "lint": "eslint ./ --cache"
     },
     "pre-commit": [
@@ -25,6 +25,8 @@
     "devDependencies": {
         "babel-preset-es2015": "^6.24.1",
         "electron": "^2.0.4",
+        "eslint": "^5.1.0",
+        "eslint-plugin-vue": "^4.7.0",
         "pre-commit": "^1.2.2"
     }
 }
