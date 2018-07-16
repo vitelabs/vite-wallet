@@ -59,20 +59,20 @@ module.exports = {
 
     // Transaction List
     transList: {
-      tType: {
-          title: '交易类型',
-          send: '发送',
-          receive: '接收',
-      },
-      status: {
-          title: '状态',
-          unconfirmed: '待确认',
-          confirmed: '已确认',
-      },
-      timestamp: '时间戳',
-      tAddress: '交易方地址',
-      sum: '金额',
-      tDetail: '交易详情',
+        tType: {
+            title: '交易类型',
+            send: '发送',
+            receive: '接收',
+        },
+        status: {
+            title: '状态',
+            unconfirmed: '待确认',
+            confirmed: '已确认',
+        },
+        timestamp: '时间戳',
+        tAddress: '交易方地址',
+        sum: '金额',
+        tDetail: '交易详情',
     },
 
     //common
