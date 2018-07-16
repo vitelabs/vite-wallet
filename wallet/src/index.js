@@ -6,15 +6,16 @@ import App from './pages/index.vue';
 import routes from './routes/index';
 import i18nConfig from './i18n';
 
+// [TODO] import when building
+import './utils/appApi/index';
+
 Vue.use(VueRouter);
 Vue.use(VueI18n);
 
 const i18n = new VueI18n(i18nConfig);
-const router = new VueRouter({
-    routes
-});
+const router = new VueRouter({ routes });
 
-let vueInstance = new Vue({
+const vueInstance = new Vue({
     el: '#app',
     components: { App },
     template: '<App/>',

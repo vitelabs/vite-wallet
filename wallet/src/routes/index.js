@@ -1,11 +1,23 @@
 // [TODO] Dynamically generate routes by directory structure
 
-import accountComponent from '../pages/account.vue';
+import account from '../pages/account.vue';
+import accountList from '../pages/accountList.vue';
+import transaction from '../pages/transaction.vue';
 
 export default [
     {
+        name: 'accountList',
+        path: '/',
+        component: accountList
+    },
+    {
         name: 'account',
-        path: '/account',
-        component: accountComponent
+        path: '/account/:id',
+        component: account
+    },
+    {
+        name: 'transaction',
+        path: '/transaction',
+        component: transaction
     }
 ];

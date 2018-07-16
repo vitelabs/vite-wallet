@@ -1,6 +1,17 @@
 <template>
     <div>
-        <router-link :to="{ name: 'account'}">{{ $t("hello") }}</router-link>
-        <router-view></router-view>
+        <wallet-head/>
+        <router-view/>
     </div>
-</template>;
+</template>
+
+<script>
+import walletHead from '../components/head';
+
+export default {
+    components: {
+        walletHead
+    }
+};
+</script>
+

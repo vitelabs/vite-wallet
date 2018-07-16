@@ -1,7 +1,7 @@
 <template>
     <div class="x">
         <div class="y">account</div>
-        <img src="../assets/vite-test.png" />
+        <img src="../assets/vite-test.png" >
     </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
         // this.$i18n.locale = 'zh';
         console.log(this.$t('hello'), this.$i18n.locale);
     }
-}
+};
 </script>
 
 <style lang="scss" rel="stylesheet/scss">

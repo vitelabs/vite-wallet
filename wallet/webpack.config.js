@@ -13,10 +13,12 @@ let webpackConfig = {
         vendor: ['vue', 'vue-router']
     },
     output: {
-        path: path.join(__dirname, 'dist')
+        path: path.join(__dirname, 'dist'),
+        filename: '[name].[hash].js'
     },
     plugins: [
         new HtmlWebpackPlugin({
+            title: 'Vite-Wallet',
             template: path.join(__dirname, 'index.html')
         }),
         new VueLoaderPlugin()
