@@ -12,12 +12,12 @@ export default [
     },
     {
         name: 'account',
-        path: '/account/:id',
+        path: '/account/:address',
         component: account
     },
     {
         name: 'transaction',
-        path: '/transaction',
+        path: '/transaction/:address',
         component: transaction
     }
 ];

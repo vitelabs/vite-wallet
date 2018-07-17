@@ -11,6 +11,9 @@ import walletHead from 'components/head';
 export default {
     components: {
         walletHead
+    },
+    mounted() {
+        // this.$i18n.locale = 'zh';
     }
 };
 </script>

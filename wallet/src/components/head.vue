@@ -1,6 +1,6 @@
 <template>
     <header>
-        <span>Vite Logo</span>
+        <img src="../assets/vite-test.png" >
 
         <ul class="nav-list">
             <li class="nav-item">{{ $t("nav.home") }}</li>
@@ -25,6 +25,11 @@
             <span @click="createAccount">{{ $t('btn.create') }}</span>
             <span @click="toggelPassConfirm">{{ $t('btn.cancel') }}</span>
         </div>
+
+        <div class="languages">
+            <div v-for="(key, index) in messages" :key="index" 
+                 @click="changeLocale(index)">{{key.lang}}</div>
+        </div>
     </header>
 </template>
 
@@ -36,7 +41,8 @@ export default {
             showPassConfirm: false,
             pass1: '',
             pass2: '',
-            blockPercent: '0%'
+            blockPercent: '0%',
+            messages: this.$i18n.messages
         };
     },
     methods: {
@@ -50,6 +56,9 @@ export default {
             }
             this.pass1 = '';
             this.pass2 = '';
+        },
+        changeLocale(locale) {
+            this.$i18n.locale = locale;
         },
 
         openAccountFile() {

@@ -80,7 +80,7 @@ function event (funcName, ...args) {
     });
 }
 
-let apis = ['createAccount', 'getAccountList'];
+let apis = ['createAccount', 'getAccountList', 'getAccount'];
 let localAPI = {};
 apis.forEach((funcName) => {
     localAPI[funcName] = event.bind(null, funcName);
