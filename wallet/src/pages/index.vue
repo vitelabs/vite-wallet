@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import walletHead from '../components/head';
+import walletHead from 'components/head';
 
 export default {
     components: {
@@ -15,3 +15,5 @@ export default {
 };
 </script>
 
+<style lang="sass" scoped>
+</style>

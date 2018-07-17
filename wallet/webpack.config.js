@@ -6,6 +6,8 @@ const merge = require('webpack-merge');
 const devConfig = require('./config/dev.config.js');
 const mapConfig = require('./config/map.config.js');
 
+const SRC_PATH = path.join(__dirname, 'src');
+
 let webpackConfig = {
     mode: process.env.NODE_ENV || 'development',
     entry: {
@@ -55,7 +57,14 @@ let webpackConfig = {
     },
     resolve: {
         alias: {
-            vue: 'vue/dist/vue.js'
+            vue: 'vue/dist/vue.js',
+            src: SRC_PATH,
+            utils: path.join(SRC_PATH, '/utils'),
+            components: path.join(SRC_PATH, '/components'),
+            pages: path.join(SRC_PATH, '/pages'),
+            assets: path.join(SRC_PATH, '/assets'),
+            routes: path.join(SRC_PATH, '/routes'),
+            i18n: path.join(SRC_PATH, '/i18n'),
         },
         extensions: ['.js','.scss','.vue','.json']
     }

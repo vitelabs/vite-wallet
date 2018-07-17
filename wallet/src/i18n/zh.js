@@ -18,7 +18,7 @@ module.exports = {
         balance: '余额',
     },
 
-    //create account
+    // create account
     create: {
         input: '请输入密码',
         again: '请再次输入密码',

@@ -71,6 +71,13 @@ function connect(){
     };
 
     if (process.platform ==='win32' && !client.path.startsWith('\\\\.\\pipe\\')){
+        // endpoint := "vite.ipc"
+        // if runtime.GOOS == "windows" {
+        //     endpoint = `\\.\pipe\vite.ipc`
+        // }
+        // return endpoint
+
+
         options.path = options.path.replace(/^\//, '');
         options.path = options.path.replace(/\//g, '-');
         options.path= `\\\\.\\pipe\\${options.path}`;

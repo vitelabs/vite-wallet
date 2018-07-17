@@ -16,7 +16,6 @@ let eventInx = 0;
     if (window.walletConfig) {
         window.clearTimeout(timeout);
         timeout = null;
-
         ipcRenderer = window.walletConfig.electron.ipcRenderer;
         window.$i18n.locale = window.walletConfig.locale;
 
@@ -81,7 +80,7 @@ function event (funcName, ...args) {
     });
 }
 
-let apis = ['createAccount', 'getAccountList', 'syncNodes'];
+let apis = ['createAccount', 'getAccountList'];
 let localAPI = {};
 apis.forEach((funcName) => {
     localAPI[funcName] = event.bind(null, funcName);

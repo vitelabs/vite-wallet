@@ -13,16 +13,19 @@ module.exports = {
     },
     "globals": {
         "window": true,
-        "describe": true,
-        "it": true
+        "localAPI": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        'plugin:vue/essential'
+    ],
     "rules": {
         "indent": ["error", 4],
         "linebreak-style": ["error", "unix"],
         "quotes": ["error", "single"],
         "semi": ["error", "always"],
         "no-console": "off",
-        "no-useless-escape": "off"
+        "no-useless-escape": "off",
+        "vue/html-indent": ["error", 4]
     }
 };

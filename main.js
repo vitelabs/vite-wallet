@@ -4,7 +4,8 @@ const ENV = process.env.NODE_ENV;
 const APP_PATH = ENV === 'dev' ? __dirname : `file://${__dirname}`;
 
 // APIs
-require('./walletSrc/apis.js');
+// require('./walletSrc/modules/viteNode.js');
+require('./walletSrc/modules/apis/index.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

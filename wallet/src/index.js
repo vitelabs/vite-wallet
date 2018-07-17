@@ -2,12 +2,13 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueI18n from 'vue-i18n';
 
-import App from './pages/index.vue';
-import routes from './routes/index';
-import i18nConfig from './i18n';
+import App from 'pages/index.vue';
+import routes from 'routes/index';
+import i18nConfig from 'i18n';
 
 // [TODO] import when building
-import './utils/appApi/index';
+import 'utils/appApi/index';
+import './/mixins.scss';
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
