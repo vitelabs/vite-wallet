@@ -4,3 +4,5 @@ package-lock.json
 dist
 .eslintcache
 .idea
+serverScript
+viteWebConfig.json

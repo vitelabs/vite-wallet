@@ -16,8 +16,13 @@ class Parser{
     }
 
     parse(data){
-        data = JSON.parse(data);
-        return data;
+        data = data.split('\n');
+        let result = [];
+        data.forEach(ele => {
+            ele && result.push(JSON.parse(ele));
+        });
+        data = null;
+        return result;
     }
 }
 

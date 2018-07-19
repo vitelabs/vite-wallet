@@ -1,21 +1,19 @@
+// [TODO] app-log test
 const {app, BrowserWindow, shell} = require('electron');
+const path = require('path');
 
-const ENV = process.env.NODE_ENV;
-const APP_PATH = ENV === 'dev' ? __dirname : `file://${__dirname}`;
+const APP_PATH = app.getAppPath();
 
 // APIs
-// require('./walletSrc/modules/viteNode.js');
-require('./walletSrc/modules/apis/index.js');
+const ipcGo = require( path.join(APP_PATH, './walletSrc/modules/ipcGo.js') );
+global.goViteIPC = new ipcGo();
+require( path.join(APP_PATH, './walletSrc/middle/index.js') );
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let win;
-
 function createWindow () {
     // Generate configuration file
-    const initConfig = require('./walletSrc/scripts/initConfig');
-    initConfig(APP_PATH);
-
+    require( path.join(APP_PATH, './walletSrc/initConfig.js') );
+    
     win = new BrowserWindow({
         width: 800,
         height: 600,
@@ -29,19 +27,20 @@ function createWindow () {
     );
 
     // Load file
-    win.loadFile(`${APP_PATH}/wallet/dist/index.html`);
+    win.loadFile( path.join(APP_PATH, '/wallet/dist/index.html') );
     win.webContents.once('did-get-response-details', () => {
         win.webContents.executeJavaScript(`
-            const electron = require("electron");
             let basePath = process.cwd();
-            let config = require(basePath + '/walletSrc/config.json');
-            config.electron = electron;
+            require(basePath + '/walletSrc/modules/webAPIs.js');
+            let config = require(basePath + '/walletSrc/viteWebConfig.json');
             window.walletConfig = config;
+            window.$i18n.locale = window.walletConfig.locale;
         `);
     });
 
     // Redefine file
     win.webContents.on('new-window', (event, url) => {
+        // [TODO] only vite.net
         const protocol = require('url').parse(url).protocol;
         if (protocol === 'http:' || protocol === 'https:') {
             event.preventDefault();
@@ -57,13 +56,9 @@ function createWindow () {
 app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
+    process.platform !== 'darwin' && app.quit();
 });
 
 app.on('activate', () => {
-    if (win === null) {
-        createWindow();
-    }
+    win === null && (win = createWindow());
 });

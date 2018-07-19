@@ -2,13 +2,12 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueI18n from 'vue-i18n';
 
+import './mixins.scss';
+
 import App from 'pages/index.vue';
 import routes from 'routes/index';
 import i18nConfig from 'i18n';
-
-// [TODO] import when building
-import 'utils/appApi/index';
-import './/mixins.scss';
+import apis from './utils/apis';
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
@@ -25,3 +24,10 @@ const vueInstance = new Vue({
 });
 
 window.$i18n = vueInstance.$i18n;
+
+const updateOnlineStatus = () => {
+    apis('Net.updateFromWeb', navigator.onLine);
+};
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline',  updateOnlineStatus);
+updateOnlineStatus();

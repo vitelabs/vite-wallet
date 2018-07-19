@@ -2,14 +2,9 @@
 
 const net = require('net'),
     EventParser = require('../entities/EventParser.js'),
-    // Message = require('js-message'),    // 数据传输协议（使用jsonrpc替换）
     Queue = require('js-queue');
 
-let Events = require('event-pubsub/es5');
-if(process.version[1]>4){
-    Events = require('event-pubsub');
-}
-
+let Events = require('event-pubsub');
 let eventParser = new EventParser();
 
 class Client extends Events{
@@ -67,20 +62,14 @@ function connect(){
     client.log('Connecting client on Unix Socket :', client.path);
 
     const options = {
-        path: client.path
+        path: client.path,
+        id: client.id
     };
 
-    if (process.platform ==='win32' && !client.path.startsWith('\\\\.\\pipe\\')){
-        // endpoint := "vite.ipc"
-        // if runtime.GOOS == "windows" {
-        //     endpoint = `\\.\pipe\vite.ipc`
-        // }
-        // return endpoint
-
-
+    if (process.platform ==='win32' && !options.id.startsWith('\\\\.\\pipe\\')){
         options.path = options.path.replace(/^\//, '');
         options.path = options.path.replace(/\//g, '-');
-        options.path= `\\\\.\\pipe\\${options.path}`;
+        options.path= `\\\\.\\pipe\\${options.id}`;
     }
 
     client.socket = net.connect(options);
@@ -156,8 +145,11 @@ function connect(){
             this.ipcBuffer='';
 
             data = eventParser.parse(data);
-            client.log('detected event', data.id, data);
-            client.publish(data.id, data);
+
+            data.forEach((ele) => {
+                client.log('detected event', ele.id, ele);
+                client.publish(ele.id, ele);
+            });
 
             if(!client.config.sync){
                 return;

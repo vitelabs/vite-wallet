@@ -26,9 +26,11 @@
 </template>
 
 <script>
+import apis from 'utils/apis.js';
+
 export default {
     mounted() {
-        this.fetchAccountList();
+        this.getAccountList();
     },
     data() {
         return {
@@ -45,13 +47,13 @@ export default {
                 params: { address }
             });
         },
-        fetchAccountList() {
-            localAPI.getAccountList().then((data)=>{
-                console.log(data);
-                this.accountList = data;
-            }).catch((err)=>{
-                console.log(err);
-            });
+        getAccountList() {
+            // apis.getAccountList().then((data)=>{
+            //     console.log(data);
+            //     this.accountList = data;
+            // }).catch((err)=>{
+            //     console.log(err);
+            // });
         }
     }
 };

@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import apis from 'utils/apis.js';
+
 export default {
     data() {
         return {
@@ -62,7 +64,7 @@ export default {
         },
 
         openAccountFile() {
-            // localAPI.openAccountFile().then((msg)=>{
+            // apis.openAccountFile().then((msg)=>{
             //     console.log(msg);
             // }).catch((err)=>{
             //     console.log(err);
@@ -85,14 +87,14 @@ export default {
             this.fetchCreateAccount();
         },
         fetchCreateAccount() {
-            localAPI.createAccount(this.pass1).then((msg)=>{
+            apis('Account.create', this.pass1).then((msg)=>{
                 console.log(msg);
             }).catch((err)=>{
                 console.log(err);
             });
         },
         fetchSyncBlock() {
-            // localAPI.syncBlock().then((msg)=>{
+            // apis.syncBlock().then((msg)=>{
             //     console.log(msg);
             // }).catch((err)=>{
             //     console.log(err);

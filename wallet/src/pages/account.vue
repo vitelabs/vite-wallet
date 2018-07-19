@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import apis from 'utils/apis.js';
+
 export default {
     mounted() {
         this.fetchAccount();
@@ -64,7 +66,7 @@ export default {
     },
     methods: {
         fetchAccount() {
-            localAPI.getAccount({
+            apis.getAccount({
                 address: this.address
             }).then((data) => {
                 console.log(data);

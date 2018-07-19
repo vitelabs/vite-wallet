@@ -1,0 +1,35 @@
+class Net {
+    constructor() {
+        this.netStatus = false;
+        this.__startLoopNet();
+    }
+
+    __startLoopNet() {
+        global.goViteIPC['p2p.NetworkAvailable']().then(({ data })=>{
+            this.netStatus = data;
+        }).catch(()=>{ });
+
+        let loopTimeout = setTimeout(()=>{
+            clearTimeout(loopTimeout);
+            loopTimeout = null;
+            this.__startLoopNet();
+        }, 2000);
+    }
+
+    updateFromWeb(status) {
+        !status && (this.netStatus = false);
+        return Promise.resolve({
+            code: 0,
+            data: 'ok'
+        });
+    }
+
+    getStatus() {
+        return this.netStatus;
+    }
+}
+
+module.exports = {
+    Net,
+    APIs: ['updateFromWeb', 'getStatus']
+};

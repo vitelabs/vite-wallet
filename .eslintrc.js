@@ -13,7 +13,8 @@ module.exports = {
     },
     "globals": {
         "window": true,
-        "localAPI": true
+        "describe": true,
+        "it": true
     },
     "extends": [
         "eslint:recommended",

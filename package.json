@@ -7,6 +7,7 @@
         "start": "electron .",
         "build:map:wallet": "cd wallet && npm run build:map",
         "dev": "npm run build:map:wallet && NODE_ENV=dev npm run start",
+        "test": "mocha",
         "lint": "eslint ./ --cache"
     },
     "pre-commit": [
@@ -27,6 +28,10 @@
         "electron": "^2.0.4",
         "eslint": "^5.1.0",
         "eslint-plugin-vue": "^4.7.0",
+        "mocha": "^5.2.0",
         "pre-commit": "^1.2.2"
+    },
+    "dependencies": {
+        "jsonrpc-lite": "^2.0.0"
     }
 }
