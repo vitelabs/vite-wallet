@@ -45,10 +45,10 @@ class Block {
     }
 
     createTX({
-        fromAddr, toAddr, pass, tokenId, amount
+        selfAddr, toAddr, pass, tokenId, amount
     }) {
         return global.goViteIPC['ledger.CreateTxWithPassphrase']({
-            FromAddr: fromAddr,
+            SelfAddr: selfAddr,
             ToAddr: toAddr,
             Passphrase: pass,
             TokenTypeId: tokenId,
@@ -73,7 +73,4 @@ class Block {
     }
 }
 
-module.exports = {
-    Block,
-    APIs: ['getSyncInfo', 'createTX', 'getTXList', 'getUnconfirmedTX', 'getBalance']
-};
+module.exports = Block;

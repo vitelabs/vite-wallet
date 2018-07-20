@@ -18,10 +18,6 @@ class Net {
 
     updateFromWeb(status) {
         !status && (this.netStatus = false);
-        return Promise.resolve({
-            code: 0,
-            data: 'ok'
-        });
     }
 
     getStatus() {
@@ -29,7 +25,4 @@ class Net {
     }
 }
 
-module.exports = {
-    Net,
-    APIs: ['updateFromWeb', 'getStatus']
-};
+module.exports = Net;

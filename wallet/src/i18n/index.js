@@ -6,7 +6,6 @@ export default {
     fallbackLocale: 'en',
     messages: {
         en, 
-        zh,
-        'zh-CN': zh
+        zh
     }
 };

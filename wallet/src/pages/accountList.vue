@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- [TODO] i18n -->
         <div>account balance: {{accountBalance}}</div>
         <div class="account-list">
             <div v-for="(item, index) in accountList" :key="index" @click="goAccount(item.address)">
@@ -20,14 +19,10 @@
                 <span>{{ $t('paging.last') }}</span>
             </div>
         </div>
-
-        <!-- <router-link :to="{ name: 'account', params: { id: 123 } }">{{ $t("hello") }}</router-link> -->
     </div>
 </template>
 
 <script>
-import apis from 'utils/apis.js';
-
 export default {
     mounted() {
         this.getAccountList();
@@ -48,12 +43,7 @@ export default {
             });
         },
         getAccountList() {
-            // apis.getAccountList().then((data)=>{
-            //     console.log(data);
-            //     this.accountList = data;
-            // }).catch((err)=>{
-            //     console.log(err);
-            // });
+            viteWallet.Account.getList();
         }
     }
 };

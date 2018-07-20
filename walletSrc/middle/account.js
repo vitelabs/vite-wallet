@@ -71,30 +71,42 @@ class Account {
         return global.goViteIPC['wallet.NewAddress'](pass);
     }
 
+    get(address) {
+        if (!this.__AccountList(address)) {
+            return Promise.reject({
+                code: -3000,
+                msg: 'no account'
+            });
+        }
+
+        // let account = {
+        //     address,
+        //     name: this.__AccountList[address]
+        // };
+        // return new Promise((res, rej)=>{
+        //     Promise.all([
+        //         global.goViteIPC('ledger.GetAccountByAccAddr', address),
+        //         global.goViteIPC('ledger.GetUnconfirmedInfo', address)
+        //     ]).then((data)=>{
+                
+        //     }).catch((err)=>{
+        //         // res(account)
+        //     });
+        // });
+    }
+
     rename(address, name) {
         if (!this.__AccountList[address]) {
-            return Promise.reject({
-                code: -5000,
-                message: 'no address'
-            });
+            return false;
         }
 
         this.__AccountList[address].name = name;
         this.__writeFile();
-        return Promise.resolve({
-            code: 0,
-            data: {
-                address,
-                ...this.__AccountList[address]
-            }
-        });
+        return true;
     }
 
     getList() {
-        return Promise.resolve({
-            code: 0,
-            data: this.__AccountList
-        });
+        return this.__AccountList;
     }
 
     unLock(address, pass) {
@@ -118,7 +130,4 @@ class Account {
     }
 }
 
-module.exports = {
-    Account,
-    APIs: ['create', 'getList', 'status', 'unLock', 'lock', 'reloadFile', 'isValidFile']
-};
+module.exports = Account;

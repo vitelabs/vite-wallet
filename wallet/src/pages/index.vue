@@ -1,22 +1,31 @@
 <template>
-    <div>
+    <div class="app-wrapper">
         <wallet-head/>
-        <router-view/>
+        <div class="content-wrapper">
+            <router-view/>
+        </div>
     </div>
 </template>
 
 <script>
-import walletHead from 'components/head';
+import walletHead from 'components/head/index';
 
 export default {
     components: {
         walletHead
     },
     mounted() {
-        // this.$i18n.locale = 'zh';
+
     }
 };
 </script>
 
 <style lang="sass" scoped>
+.app-wrapper {
+    padding: 20px;
+}
+.content-wrapper {
+    margin-top: 20px;
+    background: #dfdfdf;
+}
 </style>

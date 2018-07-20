@@ -1,19 +1,18 @@
-// [TODO] app-log test
+// [TODO] app-log test mock-server
 const {app, BrowserWindow, shell} = require('electron');
 const path = require('path');
+const os = require('os');
 
 const APP_PATH = app.getAppPath();
 
-// APIs
 const ipcGo = require( path.join(APP_PATH, './walletSrc/modules/ipcGo.js') );
 global.goViteIPC = new ipcGo();
+global.goFile = path.join(os.homedir(), '/viteisbest/');
+
 require( path.join(APP_PATH, './walletSrc/middle/index.js') );
 
 let win;
 function createWindow () {
-    // Generate configuration file
-    require( path.join(APP_PATH, './walletSrc/initConfig.js') );
-    
     win = new BrowserWindow({
         width: 800,
         height: 600,
@@ -28,13 +27,9 @@ function createWindow () {
 
     // Load file
     win.loadFile( path.join(APP_PATH, '/wallet/dist/index.html') );
-    win.webContents.once('did-get-response-details', () => {
+    win.webContents.once('dom-ready', () => {
         win.webContents.executeJavaScript(`
-            let basePath = process.cwd();
-            require(basePath + '/walletSrc/modules/webAPIs.js');
-            let config = require(basePath + '/walletSrc/viteWebConfig.json');
-            window.walletConfig = config;
-            window.$i18n.locale = window.walletConfig.locale;
+            require(process.cwd() + '/walletSrc/modules/webStart.js');
         `);
     });
 

@@ -14,7 +14,8 @@ module.exports = {
     "globals": {
         "window": true,
         "describe": true,
-        "it": true
+        "it": true,
+        "viteWallet": true
     },
     "extends": [
         "eslint:recommended",

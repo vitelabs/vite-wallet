@@ -1,9 +1,7 @@
 const ipcBase = require('../../utils/ipc/index.js');
-const os = require('os');
-const path = require('path');
 
 const VITE_WALLET_IPC = 'vite.ipc';
-const FILE_PATH = path.join(os.homedir(), '/viteisbest/');
+const FILE_PATH = global.goFile;
 
 ipcBase.config.appspace = '';
 ipcBase.config.socketRoot = FILE_PATH;

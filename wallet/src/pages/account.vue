@@ -43,8 +43,6 @@
 </template>
 
 <script>
-import apis from 'utils/apis.js';
-
 export default {
     mounted() {
         this.fetchAccount();
@@ -66,16 +64,22 @@ export default {
     },
     methods: {
         fetchAccount() {
-            apis.getAccount({
-                address: this.address
-            }).then((data) => {
+            viteWallet.Account.get(this.address).then((data) => {
                 console.log(data);
             }).catch((err) => {
                 console.log(err);
             });
         },
         fetchTransList() {
+            viteWallet.Block.getTXList({
+                address: this.address,
+                pageIndex: this.currentPage,
+                pageNum: 10
+            }).then(()=>{
 
+            }).catch(()=>{
+
+            });
         },
 
         copy() {

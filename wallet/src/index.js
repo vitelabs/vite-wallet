@@ -7,7 +7,6 @@ import './mixins.scss';
 import App from 'pages/index.vue';
 import routes from 'routes/index';
 import i18nConfig from 'i18n';
-import apis from './utils/apis';
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
@@ -15,19 +14,35 @@ Vue.use(VueI18n);
 const i18n = new VueI18n(i18nConfig);
 const router = new VueRouter({ routes });
 
-const vueInstance = new Vue({
-    el: '#app',
-    components: { App },
-    template: '<App/>',
-    router,
-    i18n
-});
-
-window.$i18n = vueInstance.$i18n;
-
-const updateOnlineStatus = () => {
-    apis('Net.updateFromWeb', navigator.onLine);
+const appReady = function(cb) {
+    let loopTimeout = window.setInterval(()=>{
+        if (!window.viteWallet) {
+            return;
+        }
+        window.clearInterval(loopTimeout);
+        loopTimeout = null;
+        cb && cb();
+    }, 30);
 };
-window.addEventListener('online',  updateOnlineStatus);
-window.addEventListener('offline',  updateOnlineStatus);
-updateOnlineStatus();
+
+appReady(function () {
+    const { System, Net } = viteWallet;
+
+    let locale = System.getLocale();
+    i18n.locale = locale === 'zh-CN' ? 'zh' : locale;
+
+    const updateOnlineStatus = () => {
+        Net.updateFromWeb(navigator.onLine);
+    };
+    window.addEventListener('online',  updateOnlineStatus);
+    window.addEventListener('offline',  updateOnlineStatus);
+    updateOnlineStatus();
+
+    new Vue({
+        el: '#app',
+        components: { App },
+        template: '<App/>',
+        router,
+        i18n
+    });
+});

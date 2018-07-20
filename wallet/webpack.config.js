@@ -59,7 +59,7 @@ let webpackConfig = {
         alias: {
             vue: 'vue/dist/vue.js',
             src: SRC_PATH,
-            utils: path.join(SRC_PATH, '/utils'),
+            services: path.join(SRC_PATH, '/services'),
             components: path.join(SRC_PATH, '/components'),
             pages: path.join(SRC_PATH, '/pages'),
             assets: path.join(SRC_PATH, '/assets'),
