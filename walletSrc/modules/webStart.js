@@ -1,15 +1,11 @@
-const path = require('path');
-const { shell, remote } = require('electron');
-const { Account, Net, Block } = remote.require('./walletSrc/middle/index.js');
+const { remote } = require('electron');
+const { Account, Net, Block, Keystore } = remote.require('./walletSrc/middle/index.js');
 
 // System APIs
 const System = {
-    openKeystore: function() {
-        shell.showItemInFolder(path.join(remote.getGlobal('goFile'), '/wallet/'));
-    },
     getLocale: remote.app.getLocale
 };
 
 window.viteWallet = {
-    Account, Net, Block, System
+    Account, Net, Block, System, Keystore
 };

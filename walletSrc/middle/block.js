@@ -41,7 +41,6 @@ class Block {
                 currentHeight: this.currentHeight 
             };
         });
-
     }
 
     createTX({

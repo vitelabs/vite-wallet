@@ -5,9 +5,10 @@ const os = require('os');
 
 const APP_PATH = app.getAppPath();
 
+global.goFile = path.join(os.homedir(), '/viteisbest/');
+// ipcGo need goFile
 const ipcGo = require( path.join(APP_PATH, './walletSrc/modules/ipcGo.js') );
 global.goViteIPC = new ipcGo();
-global.goFile = path.join(os.homedir(), '/viteisbest/');
 
 require( path.join(APP_PATH, './walletSrc/middle/index.js') );
 

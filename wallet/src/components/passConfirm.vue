@@ -1,7 +1,7 @@
 <template>
     <div v-show="showPassConfirm">
-        <input :placeholder="$t('create.input')" v-model="pass1" type="text" />
-        <input :placeholder="$t('create.again')" v-model="pass2" type="text" />
+        <input :placeholder="$t('create.input')" v-model="pass1" type="password" />
+        <input :placeholder="$t('create.again')" v-model="pass2" type="password" />
         <span @click="createAccount">{{ $t('btn.create') }}</span>
         <span @click="toggelPassConfirm">{{ $t('btn.cancel') }}</span>
     </div>
@@ -52,8 +52,10 @@ export default {
             this.fetchCreateAccount();
         },
         fetchCreateAccount() {
-            viteWallet.Account.create(this.pass1).then((msg)=>{
-                console.log(msg);
+            viteWallet.Account.create(this.pass1).then(()=>{
+                window.alert(this.$t('create.hint.save', {
+                    '0': viteWallet.Keystore.folder
+                }));
             }).catch((err)=>{
                 console.log(err);
             });
@@ -61,4 +63,3 @@ export default {
     }
 };
 </script>
-

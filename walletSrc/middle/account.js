@@ -1,132 +1,251 @@
-const { app } = require('electron');
-const fs = require('fs');
-const path = require('path');
-const accountNameFile = path.join(app.getPath('appData'), 'viteWallet_AccountName');
+const { readAccountNamesSync, writeAccountNames } = require('../utils/accountNames.js');
+const ERRORS = require('../utils/errors.js');
+
+const accNamePre = 'account';
+const loopAddrListTime = 5000;
+const loopBalanceListTime = 5000;
 
 class Account {
     constructor() {
-        this.__AccountList = {};
-        this.__AccountNum = 0;
+        // name / balance
+        this.__accountsMap = {};
+        this.__nameCount = 0;
+        this.__totalBalance = 0;
 
-        fs.exists(accountNameFile, (result)=>{
-            if (!result) {
-                return;
-            } else {
-                let result = fs.readFileSync(accountNameFile, {
-                    encoding: 'utf8'
-                });
-                let obj;
-                try {
-                    obj = JSON.parse(result);
-                } catch (error) {
-                    obj = {
-                        accountNameList: [],
-                        accountNum: 0
-                    };
-                }
-
-                this.__AccountList = obj.accountNameList;
-                this.__AccountNum = obj.accountNum;
+        // init account names
+        let names = readAccountNamesSync();
+        if (names.namesMap) {
+            let namesMap = names.namesMap;
+            for (let address in namesMap) {
+                this.__accountsMap[address] = {
+                    name: namesMap[address]
+                };
             }
-        });
+        }
+        this.__nameCount = names.nameCount || 0;
 
-        this.__startLoopAccounts();
+        // start loop address list => check user names
+        this.__loopAddressList();
+        
+        // start loop balance list => computed tatal balance
+        this.__loopBalanceList();
+
+        // start loop account-status
+        this.__loopStatusList();
     }
 
-    __startLoopAccounts() {
+    __loopAddressList() {
+        let timeoutLoop = ()=>{
+            let loopTimeout = setTimeout(()=>{
+                clearTimeout(loopTimeout);
+                loopTimeout = null;
+                this.__loopAddressList();
+            }, loopAddrListTime);
+        };
+
         global.goViteIPC['wallet.ListAddress']().then(({ data })=>{
             let isChange = false;
-            data.forEach(ele => {
+
+            data.forEach(address => {
                 // already have name
-                if (this.__AccountList[ele] && this.__AccountList[ele].name) {
+                if (this.__accountsMap[address] && this.__accountsMap[address].name) {
                     return;
                 }
+    
                 isChange = true;
-                this.__AccountList[ele] = this.__AccountList[ele] || {};
-                this.__AccountList[ele].name = `account${++this.__AccountNum}`;
+                this.__accountsMap[address] = this.__accountsMap[address] || {};
+                this.__accountsMap[address].name = `${accNamePre}${++this.__nameCount}`;
             });
 
-            isChange && this.__writeFile();
-        }).catch(()=>{});
+            // Write name-file only when data changes
+            isChange && writeAccountNames(this.__accountsMap);
 
-        let loopTimeout = setTimeout(()=>{
-            clearTimeout(loopTimeout);
-            loopTimeout = null;
-            this.__startLoopAccounts();
-        }, 3000);
+            timeoutLoop();
+        }).catch(()=>{
+            timeoutLoop();
+        });
     }
 
-    __writeFile() {
-        let nameList = {};
-        for(let address in this.__AccountList) {
-            nameList[address] = this.__AccountList[address].name;
+    __loopBalanceList() {
+        let timeoutLoop = ()=>{
+            let loopTimeout = setTimeout(()=>{
+                clearTimeout(loopTimeout);
+                loopTimeout = null;
+                this.__loopBalanceList();
+            }, loopBalanceListTime);
+        };
+
+        let proList = [];
+        for (let address in this.__accountsMap) {
+            proList.push(global.goViteIPC['ledger.GetAccountByAccAddr'](address));
         }
-        fs.writeFile(accountNameFile, JSON.stringify({
-            accountNameList: nameList,
-            accountNum: this.__AccountNum
-        }), 'utf8');
+
+        if (!proList.length) {
+            timeoutLoop();
+            return;
+        }
+
+        Promise.all(proList).then(({ data })=>{
+            let totalBalance = {};
+
+            data.forEach((account) => {
+                if (!this.__accountsMap[account.address]) {
+                    return;
+                }
+
+                let balanceInfos = account.BalanceInfos ? account.BalanceInfos || [] : [];
+                this.__accountsMap[account.address].balanceInfos = balanceInfos;
+                this.__accountsMap[account.address].BlockHeight = account.BlockHeight || '';
+
+                balanceInfos.forEach((balanceInfo) => {
+                    let id = balanceInfo.TokenTypeId;
+
+                    if (totalBalance[id]) {
+                        // [TODO] bignumber
+                        totalBalance[id].balance += balanceInfo.Balance;
+                        return;
+                    }
+
+                    totalBalance[balanceInfo.id] = {
+                        tokenSymbol: balanceInfo.TokenSymbol,
+                        tokenName: balanceInfo.TokenName,
+                        balance: balanceInfo.Balance
+                    };
+                });
+            });
+            
+            this.__totalBalance = totalBalance;
+
+            timeoutLoop();
+        }).catch(()=>{
+            timeoutLoop();
+        });
+    }
+
+    __loopStatusList() {
+        let timeoutLoop = ()=>{
+            let loopTimeout = setTimeout(()=>{
+                clearTimeout(loopTimeout);
+                loopTimeout = null;
+                this.__loopStatusList();
+            }, loopAddrListTime);
+        };
+
+        global.goViteIPC['wallet.Status']().then(({ data })=>{
+            for (let address in data) {
+                if(!this.__accountsMap[address]) {
+                    return;
+                }
+                this.__accountsMap[address].status = data[address];
+            }
+            timeoutLoop();
+        }).catch(()=>{
+            timeoutLoop();
+        });
     }
 
     create(pass) {
+        console.log(pass);
         return global.goViteIPC['wallet.NewAddress'](pass);
     }
 
     get(address) {
-        if (!this.__AccountList(address)) {
-            return Promise.reject({
-                code: -3000,
-                msg: 'no account'
-            });
+        if (!this.__accountsMap[address]) {
+            return Promise.reject( ERRORS.NO_DATA('account') );
         }
 
-        // let account = {
-        //     address,
-        //     name: this.__AccountList[address]
-        // };
-        // return new Promise((res, rej)=>{
-        //     Promise.all([
-        //         global.goViteIPC('ledger.GetAccountByAccAddr', address),
-        //         global.goViteIPC('ledger.GetUnconfirmedInfo', address)
-        //     ]).then((data)=>{
-                
-        //     }).catch((err)=>{
-        //         // res(account)
-        //     });
-        // });
+        return new Promise((res, rej)=>{
+            global.goViteIPC('ledger.GetUnconfirmedInfo', address).then(({
+                data
+            }) => {
+                res({
+                    name: this.__accountsMap[address].name || '',
+                    balanceInfos: this.__accountsMap[address].balanceInfos || [],
+                    fundFloat: data
+                });
+            }).catch((err)=>{
+                rej(err);
+            });
+        });
     }
 
     rename(address, name) {
-        if (!this.__AccountList[address]) {
+        if (!this.__accountsMap[address]) {
             return false;
         }
 
-        this.__AccountList[address].name = name;
-        this.__writeFile();
+        this.__accountsMap[address].name = name;
+        writeAccountNames(this.__accountsMap);
         return true;
     }
 
-    getList() {
-        return this.__AccountList;
+    getList({ pageIndex, pageNum }) {
+        let startInx = pageIndex * pageNum;
+        let endInx = (pageIndex + 1) * pageNum;
+        let count = 0;
+
+        let proList = [];
+
+        for(let address in this.__accountsMap) {
+            if (count >= endInx) {
+                break;
+            }
+            if (count < startInx) {
+                continue;
+            }
+
+            count++;
+            proList.push( global.goViteIPC['ledger.GetUnconfirmedInfo'](address) );
+        }
+
+        if (!proList.length) {
+            return Promise.resolve({
+                code: 0,
+                data: []
+            });
+        }
+
+        return Promise.all(proList).then((data) => {
+            let accountList = [];
+
+            data.forEach((unconfBlock)=>{
+                let address = unconfBlock.Addr;
+
+                // This account already disappear.
+                if (!this.__accountsMap[address]) {
+                    return;
+                }
+
+                accountList.push({
+                    address,
+                    unconfBlock,
+                    name: this.__accountsMap[address].name,
+                    balanceInfos: this.__accountsMap[address].balanceInfos,
+                    status: this.__accountsMap[address].status
+                });
+            });
+
+            return accountList;
+        });
     }
 
     unLock(address, pass) {
         return global.goViteIPC['wallet.UnLock']([address, pass]);
     }
 
-    status() {
-        return global.goViteIPC['wallet.Status']();
-    }
-
     lock(address) {
         return global.goViteIPC['wallet.Lock'](address);
     }
 
-    reloadFile() {
-        return global.goViteIPC['wallet.ReloadAndFixAddressFile']();
+    status(address) {
+        if (!this.__accountsMap[address]) {
+            return '';
+        }
+        return this.__accountsMap[address].status;
     }
 
-    isValidFile(path) {
-        return global.goViteIPC['wallet.IsMayValidKeystoreFile'](path);
+    getTotalBalance() {
+        return this.__totalBalance;
     }
 }
 

@@ -15,17 +15,45 @@ const i18n = new VueI18n(i18nConfig);
 const router = new VueRouter({ routes });
 
 const appReady = function(cb) {
+    let allStop = function () {
+        window.clearInterval(loopTimeout);
+        loopTimeout = null;
+        window.clearTimeout(stopTimeout);
+        stopTimeout = null;
+    };
+
     let loopTimeout = window.setInterval(()=>{
         if (!window.viteWallet) {
             return;
         }
-        window.clearInterval(loopTimeout);
-        loopTimeout = null;
+        allStop();
         cb && cb();
     }, 30);
+
+    let stopTimeout = window.setTimeout(()=>{
+        allStop();
+        cb && cb();
+    }, 1000);
 };
 
 appReady(function () {
+    if (!window.viteWallet) {
+        window.viteWallet = {
+            System: {},
+            Net: {},
+            Account: {},
+            Block: {}
+        };
+        new Vue({
+            el: '#app',
+            components: { App },
+            template: '<App/>',
+            router,
+            i18n
+        });
+        return;
+    }
+
     const { System, Net } = viteWallet;
 
     let locale = System.getLocale();

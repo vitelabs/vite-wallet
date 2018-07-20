@@ -1,49 +1,57 @@
 <template>
-    <div>
-        <div>account balance: {{accountBalance}}</div>
-        <div class="account-list">
-            <div v-for="(item, index) in accountList" :key="index" @click="goAccount(item.address)">
-                <div>{{item.name}}</div>
-                <div>{{$t('accDetail.balance') + ': ' + item.balance}}</div>
-                <div>{{item.address}}</div>
+    <div class="account-list-wrapper">
+        <div class="content-wrapper">
+            <div>account balance: 
+                <span v-for="(balanceInfo, id) in accountBalance" :key="id">
+                    {{ balanceInfo.balance + ' ' + balanceInfo.tokenSymbol }}
+                </span>
             </div>
-
-            <div @click="goAccount('jsiodsdfsdfs')">sdsjdlsjd
-            </div>
-
-            <div class="btn-list">
-                <span>{{ $t('paging.first') }}</span>
-                <span>{{ $t('paging.pre') }}</span>
-                <span>{{ currentPage + '/' + totalPage }}</span>
-                <span>{{ $t('paging.next') }}</span>
-                <span>{{ $t('paging.last') }}</span>
-            </div>
+            <account-list :clickAccount="toShowLogin"></account-list>
         </div>
+
+        <login :showLogin="showLogin"
+               :hideLogin="toHideLogin"
+               :loginSuccess="goAccount"></login>
     </div>
 </template>
 
 <script>
+import login from 'components/login';
+import accountList from 'components/accountList';
+
 export default {
+    components: {
+        login, accountList
+    },
     mounted() {
-        this.getAccountList();
+        this.getTotalBalance();
     },
     data() {
         return {
             accountBalance: 0,
-            accountList: [],
-            currentPage: 0,
-            totalPage: 0
+            activeAddress: '',
+            showLogin: false
         };
     },
     methods: {
-        goAccount(address) {
+        toShowLogin(address) {
+            this.activeAddress = address;
+            this.showLogin = true;
+        },
+        toHideLogin() {
+            this.activeAddress = '';
+            this.showLogin = false;
+        },
+        getTotalBalance() {
+            this.accountBalance = viteWallet.Account.getTotalBalance();
+        },
+        goAccount() {
             this.$router.push({
                 name: 'account',
-                params: { address }
+                params: { 
+                    address: this.activeAddress
+                }
             });
-        },
-        getAccountList() {
-            viteWallet.Account.getList();
         }
     }
 };

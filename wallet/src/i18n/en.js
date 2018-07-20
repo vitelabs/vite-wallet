@@ -80,6 +80,7 @@ module.exports = {
     btn: {
         create: 'Create',
         cancel: 'Cancel',
+        login: '登录'
     },
     paging: {
         pre: 'Prev',
