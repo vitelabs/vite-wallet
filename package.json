@@ -32,6 +32,8 @@
         "pre-commit": "^1.2.2"
     },
     "dependencies": {
+        "event-pubsub": "^4.3.0",
+        "js-queue": "^2.0.0",
         "jsonrpc-lite": "^2.0.0"
     }
 }

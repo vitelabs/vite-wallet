@@ -50,7 +50,7 @@ function syncEmit(message){
 }
 
 function connect(){
-    //init client object for scope persistance especially inside of socket events.
+    //init client object for scope persistence especially inside of socket events.
     let client=this;
 
     client.log('requested connection to ', client.id, client.path);
@@ -108,7 +108,7 @@ function connect(){
                 client.publish('disconnect');
                 client.log(
                     (client.config.id),
-                    'exceeded connection rety amount of',
+                    'exceeded connection retry amount of',
                     ' or stopRetrying flag set.'
                 );
 
