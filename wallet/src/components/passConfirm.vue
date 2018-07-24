@@ -56,8 +56,10 @@ export default {
                 window.alert(this.$t('create.hint.save', {
                     '0': viteWallet.Keystore.folder
                 }));
+                this.toggelPassConfirm();
             }).catch((err)=>{
                 console.log(err);
+                window.alert('创建失败');
             });
         }
     }
