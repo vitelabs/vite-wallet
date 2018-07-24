@@ -1,9 +1,12 @@
+const loopBlockTime = 2000;
+
 class Block {
     constructor() {
         this.startHeight = '';
         this.targetHeight = '';
         this.currentHeight = '';
 
+        this.__loopBlockTimeout = null;
         this.__startSyncBlock();
     }
 
@@ -17,29 +20,47 @@ class Block {
     }
 
     __startSyncBlock() {
-        this.__syncBlock().catch(()=>{});
+        let loop = ()=>{
+            this.__loopBlockTimeout = setTimeout(()=>{
+                this.__stopSyncBlock();
+                this.__startSyncBlock();
+            }, loopBlockTime);
+        };
 
-        let loopTimeout = setTimeout(()=>{
-            clearTimeout(loopTimeout);
-            loopTimeout = null;
-            this.__startSyncBlock();
-        }, 2000);
+        this.__syncBlock().then(()=>{
+            loop();
+        }).catch(()=>{
+            loop();
+        });
+    }
+
+    __stopSyncBlock() {
+        clearTimeout(this.__loopBlockTimeout);
+        this.__loopBlockTimeout = null;
     }
       
     getSyncInfo(passive = true) {
         if (passive) {
-            return Promise.then({
-                startHeight: this.startHeight,
-                targetHeight: this.targetHeight,
-                currentHeight: this.currentHeight 
-            });
-        }
-        return this.__syncBlock().then(()=>{
             return {
                 startHeight: this.startHeight,
                 targetHeight: this.targetHeight,
                 currentHeight: this.currentHeight 
             };
+        }
+
+        this.__stopSyncBlock();
+        return new Promise((res, rej)=>{
+            this.__syncBlock().then(()=>{
+                this.__startSyncBlock();
+                res({
+                    startHeight: this.startHeight,
+                    targetHeight: this.targetHeight,
+                    currentHeight: this.currentHeight 
+                });
+            }).catch((err)=>{
+                rej(err);
+                this.__startSyncBlock();
+            });
         });
     }
 
@@ -65,10 +86,6 @@ class Block {
 
     getUnconfirmedTX(address) {
         return global.goViteIPC['ledger.GetUnconfirmedInfo'](address);
-    }
-
-    getBalance(address) {
-        return global.goViteIPC['ledger.GetAccountByAccAddr'](address);
     }
 }
 

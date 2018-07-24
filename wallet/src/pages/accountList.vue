@@ -2,7 +2,8 @@
     <div class="account-list-wrapper">
         <div class="content-wrapper">
             <div>account balance: 
-                <span v-for="(balanceInfo, id) in accountBalance" :key="id">
+                <span v-show="!accountBalance.length">0</span>
+                <span v-show="accountBalance.length" v-for="(balanceInfo, id) in accountBalance" :key="id">
                     {{ balanceInfo.balance + ' ' + balanceInfo.tokenSymbol }}
                 </span>
             </div>

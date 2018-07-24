@@ -10,7 +10,7 @@ class Account {
         // name / balance
         this.__accountsMap = {};
         this.__nameCount = 0;
-        this.__totalBalance = 0;
+        this.__totalBalance = [];
 
         // init account names
         let names = readAccountNamesSync();
@@ -145,7 +145,6 @@ class Account {
     }
 
     create(pass) {
-        console.log(pass);
         return global.goViteIPC['wallet.NewAddress'](pass);
     }
 
@@ -187,29 +186,29 @@ class Account {
         let proList = [];
 
         for(let address in this.__accountsMap) {
-            if (count >= endInx) {
+            let c = count;
+            count++;
+            if (c >= endInx) {
                 break;
             }
-            if (count < startInx) {
+            if (c < startInx) {
                 continue;
             }
 
-            count++;
             proList.push( global.goViteIPC['ledger.GetUnconfirmedInfo'](address) );
         }
 
         if (!proList.length) {
-            return Promise.resolve({
-                code: 0,
-                data: []
-            });
+            return Promise.resolve([]);
         }
 
-        return Promise.all(proList).then((data) => {
+        return Promise.all(proList).then((val) => {
             let accountList = [];
 
-            data.forEach((unconfBlock)=>{
-                let address = unconfBlock.Addr;
+            val.forEach(({ data })=>{
+                console.log(data);
+
+                let address = data.Addr;
 
                 // This account already disappear.
                 if (!this.__accountsMap[address]) {
@@ -218,7 +217,7 @@ class Account {
 
                 accountList.push({
                     address,
-                    unconfBlock,
+                    unconfBlock: data,
                     name: this.__accountsMap[address].name,
                     balanceInfos: this.__accountsMap[address].balanceInfos,
                     status: this.__accountsMap[address].status
@@ -246,6 +245,13 @@ class Account {
 
     getTotalBalance() {
         return this.__totalBalance;
+    }
+
+    getBalance(address) {
+        if (!this.__accountsMap[address]) {
+            return Promise.reject(ERRORS.NO_DATA('address'));
+        }
+        return global.goViteIPC['ledger.GetAccountByAccAddr'](address);
     }
 }
 

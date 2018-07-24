@@ -6,6 +6,7 @@ module.exports = {
         "node": true
     },
     "parserOptions": {
+        "parser": "babel-eslint",
         "ecmaFeatures": {
             "jsx": true
         },

@@ -1,7 +1,11 @@
 <template>
     <div v-show="show" class="file-wrapper">
-        <div ref="fileDrag" class="file-drag"></div>
-        <span class="cancel">{{ $t('btn.cancel') }}</span>
+        <div ref="fileDrag" class="file-drag">
+            <span v-show="!files.length">Drag File Here</span>
+            <span v-show="files.length" 
+                  v-for="(path, i) in files" :key="i">{{ path }}</span>
+        </div>
+        <span class="cancel" @click="toHide">{{ $t('btn.cancel') }}</span>
     </div>
 </template>
 
@@ -11,27 +15,50 @@ export default {
         show: {
             type: Boolean,
             default: false
+        },
+        toHide: {
+            type: Function,
+            default: ()=>{}
         }
     },
-    mounted() {
-        this.$refs.fileDrag.ondragstart = (event) => {
-            console.log(event.dataTransfer.files);
-            event.preventDefault();
-            // ipcRenderer.send('ondragstart', '/path/to/item');
+    data() {
+        return {
+            files: []
         };
     },
-    methods: {
-        valiadFile(filePath) {
-            // to sync
-            viteWallet.Account.isValidFile(filePath).then(()=>{
-                if (!this.show) {
-                    return;
-                }
-            }).catch(()=>{
+    mounted() {
+        document.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
 
-            });
-        }
+            let isErr = false;
+            for (let f of e.dataTransfer.files) {
+                try {
+                    let { data } = await viteWallet.Keystore.isValidFile(f.path);
+                    if (!data) {
+                        window.alert('fail');
+                    }
+                } catch(err) {
+                    isErr = true;
+                    window.alert('fail');
+                }
+            }
+            !isErr && this.toHide();
+        });
+
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
     }
 };
 </script>
+
+<style lang="sass" scoped>
+.file-drag {
+    min-width: 100px;
+    min-height: 100px;
+    border: 1px solid black;
+}
+</style>
 
