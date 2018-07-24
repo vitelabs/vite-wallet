@@ -9,19 +9,11 @@ class Account {
     constructor() {
         // name / balance
         this.__accountsMap = {};
-        this.__nameCount = 0;
         this.__totalBalance = [];
 
         // init account names
         let names = readAccountNamesSync();
-        if (names.namesMap) {
-            let namesMap = names.namesMap;
-            for (let address in namesMap) {
-                this.__accountsMap[address] = {
-                    name: namesMap[address]
-                };
-            }
-        }
+        this.__fileAccountsMap = names.namesMap || {};  // AccountName should be saved forever.
         this.__nameCount = names.nameCount || 0;
 
         // start loop address list => check user names
@@ -44,21 +36,29 @@ class Account {
         };
 
         global.goViteIPC['wallet.ListAddress']().then(({ data })=>{
+            // If no data, clear __accountsMap
+            if (!data || !data.length) {
+                this.__accountsMap = {};
+                return;
+            }
+
             let isChange = false;
 
             data.forEach(address => {
-                // already have name
+                // Already have name
                 if (this.__accountsMap[address] && this.__accountsMap[address].name) {
                     return;
                 }
-    
-                isChange = true;
-                this.__accountsMap[address] = this.__accountsMap[address] || {};
-                this.__accountsMap[address].name = `${accNamePre}${++this.__nameCount}`;
+
+                isChange = !this.__fileAccountsMap[address];
+                let name = this.__fileAccountsMap[address] || `${accNamePre}${++this.__nameCount}`;
+                this.__accountsMap[address] = this.__accountsMap[address] || {};    // Maybe other info already completed.
+                this.__accountsMap[address].name = name;
+                this.__fileAccountsMap[address] = name;
             });
 
             // Write name-file only when data changes
-            isChange && writeAccountNames(this.__accountsMap);
+            isChange && writeAccountNames(this.__fileAccountsMap, this.__nameCount);
 
             timeoutLoop();
         }).catch(()=>{
@@ -169,12 +169,13 @@ class Account {
     }
 
     rename(address, name) {
-        if (!this.__accountsMap[address]) {
+        if (!name || !this.__accountsMap[address]) {
             return false;
         }
 
         this.__accountsMap[address].name = name;
-        writeAccountNames(this.__accountsMap);
+        this.__fileAccountsMap[address] = name;
+        writeAccountNames(this.__fileAccountsMap, this.__nameCount);
         return true;
     }
 
@@ -182,16 +183,11 @@ class Account {
         let startInx = pageIndex * pageNum;
         let endInx = (pageIndex + 1) * pageNum;
         let count = 0;
-
         let proList = [];
 
         for(let address in this.__accountsMap) {
-            let c = count;
-            count++;
-            if (c >= endInx) {
-                break;
-            }
-            if (c < startInx) {
+            let c = count++;
+            if (c >= endInx || c < startInx) {
                 continue;
             }
 
@@ -199,15 +195,15 @@ class Account {
         }
 
         if (!proList.length) {
-            return Promise.resolve([]);
+            return Promise.resolve({
+                accountList: [],
+                totalNum: count
+            });
         }
 
         return Promise.all(proList).then((val) => {
             let accountList = [];
-
             val.forEach(({ data })=>{
-                console.log(data);
-
                 let address = data.Addr;
 
                 // This account already disappear.
@@ -224,7 +220,10 @@ class Account {
                 });
             });
 
-            return accountList;
+            return {
+                accountList,
+                totalNum: count
+            };
         });
     }
 

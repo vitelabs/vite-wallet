@@ -49,11 +49,11 @@ export default {
             viteWallet.Account.getList({
                 pageIndex: this.currentPage,
                 pageNum: pageCount
-            }).then((accList)=>{
-                this.accountList = accList;
+            }).then(({ accountList })=>{
+                this.accountList = accountList;
                 loopTimeout = window.setTimeout(reGet, loopListTime);
             }).catch((err)=>{
-                // console.warn(err);
+                console.warn(err);
                 loopTimeout = window.setTimeout(reGet, loopListTime);
             });
         }
