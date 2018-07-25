@@ -1,9 +1,9 @@
 <template>
-    <li>
-        <span>{{ isFinish ? $t("nav.done") : $t("nav.sync") }}</span>
-        <span>{{ blockPercent }}</span>
-        <span v-show="!isFinish" @click="reloadBlock">reload</span>
-        <span v-show="isFinish">done</span>
+    <li class="sync-block-wrapper">
+        <span v-show="status">{{ $t(`nav.${status}`) }}</span>
+        <span v-show="!isFirstSyncDone">{{ blockPercent }}</span>
+        <span v-show="!isFirstSyncDone" @click="reloadBlock">reload</span>
+        <span v-show="isFirstSyncDone">done</span>
     </li>
 </template>
 
@@ -13,18 +13,19 @@ export default {
         return {
             currentHeight: '',
             startHeight: '',
-            targetHeight: ''
+            targetHeight: '',
+
+            isFirstSyncDone: false,
+            status: ''
         };
     },
     mounted() {
         this.getSyncBlock();
     },
     computed: {
-        isFinish() {
-            return this.blockPercent === '100%';
-        },
         blockPercent() {
-            if (!this.currentHeight || !this.startHeight || !this.targetHeight || 
+            if (!this.status ||
+                !this.currentHeight || !this.startHeight || !this.targetHeight || 
                 !(this.targetHeight - this.startHeight)) {
                 return '---';
             }
@@ -33,30 +34,43 @@ export default {
     },
     methods: {
         reloadBlock() {
-            viteWallet.Block.getSyncInfo(false).then(({
-                startHeight, targetHeight, currentHeight
-            }) => {
-                console.log('yes');
-                this.startHeight = startHeight;
-                this.targetHeight = targetHeight;
-                this.currentHeight = currentHeight;
+            viteWallet.Block.getSyncInfo(false).then((data) => {
+                this.syncData(data);
             }).catch((err)=>{
                 console.warn(err);
             });
         },
         getSyncBlock() {
-            let {
-                startHeight, targetHeight, currentHeight
-            } = viteWallet.Block.getSyncInfo();
-            this.startHeight = startHeight;
-            this.targetHeight = targetHeight;
-            this.currentHeight = currentHeight;
+            if (this.isFirstSyncDone) {
+                this.status = 'firstDone';
+
+                let statusTimeout = window.setTimeout(()=>{
+                    window.clearTimeout(statusTimeout);
+                    statusTimeout = null;
+                    this.status = 'sync';
+                }, 1000);
+
+                return;
+            }
+
+            this.syncData( viteWallet.Block.getSyncInfo() );
 
             let loopTimeout = setTimeout(()=>{
                 window.clearTimeout(loopTimeout);
                 loopTimeout = null;
                 this.getSyncBlock();
             }, 2000);
+        },
+
+        syncData({
+            startHeight, targetHeight, currentHeight, isStartFirstSync, isFirstSyncDone
+        }) {
+            this.startHeight = startHeight;
+            this.targetHeight = targetHeight;
+            this.currentHeight = currentHeight;
+            this.isFirstSyncDone = isFirstSyncDone;
+
+            isStartFirstSync && (this.status = 'firstDoing');
         }
     }
 };

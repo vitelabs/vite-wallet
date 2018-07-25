@@ -5,6 +5,8 @@ class Block {
         this.startHeight = '';
         this.targetHeight = '';
         this.currentHeight = '';
+        this.isFirstSyncDone = false;
+        this.isStartFirstSync = false;
 
         this.__loopBlockTimeout = null;
         this.__startSyncBlock();
@@ -15,11 +17,20 @@ class Block {
             this.startHeight = data.StartHeight;
             this.targetHeight = data.TargetHeight;
             this.currentHeight = data.CurrentHeight;
+            this.isFirstSyncDone = data.IsFirstSyncDone;
+            this.isStartFirstSync = data.IsStartFirstSync;
+
+            this.isFirstSyncDone && this.__stopSyncBlock();
+
             return data;
         });
     }
 
     __startSyncBlock() {
+        if (this.isFirstSyncDone) {
+            return;
+        }
+
         let loop = ()=>{
             this.__loopBlockTimeout = setTimeout(()=>{
                 this.__stopSyncBlock();
@@ -44,7 +55,9 @@ class Block {
             return {
                 startHeight: this.startHeight,
                 targetHeight: this.targetHeight,
-                currentHeight: this.currentHeight 
+                currentHeight: this.currentHeight,
+                isFirstSyncDone: this.isFirstSyncDone,
+                isStartFirstSync: this.isStartFirstSync
             };
         }
 
@@ -55,7 +68,9 @@ class Block {
                 res({
                     startHeight: this.startHeight,
                     targetHeight: this.targetHeight,
-                    currentHeight: this.currentHeight 
+                    currentHeight: this.currentHeight,
+                    isFirstSyncDone: this.isFirstSyncDone,
+                    isStartFirstSync: this.isStartFirstSync
                 });
             }).catch((err)=>{
                 rej(err);
@@ -73,6 +88,8 @@ class Block {
             Passphrase: pass,
             TokenTypeId: tokenId,
             Amount: amount
+        }).then(({ data })=>{
+            return data;
         });
     }
 
@@ -81,11 +98,15 @@ class Block {
             Addr: address,
             index: pageIndex,
             count: pageNum
+        }).then(({ data })=>{
+            return data;
         });
     }
 
     getUnconfirmedTX(address) {
-        return global.goViteIPC['ledger.GetUnconfirmedInfo'](address);
+        return global.goViteIPC['ledger.GetUnconfirmedInfo'](address).then(({ data })=>{
+            return data;
+        });
     }
 }
 

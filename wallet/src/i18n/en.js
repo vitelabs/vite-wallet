@@ -11,7 +11,8 @@ module.exports = {
             backup: 'Back Up Account',
         },
         sync: 'Nodes Syncing',
-        done: 'Nodes Sync Completed'
+        firstDone: 'Init done',
+        firstDoing: 'Initing'
     },
 
     // account list

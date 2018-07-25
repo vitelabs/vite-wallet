@@ -160,7 +160,10 @@ class Account {
                 res({
                     name: this.__accountsMap[address].name || '',
                     balanceInfos: this.__accountsMap[address].balanceInfos || [],
-                    fundFloat: data
+                    fundFloat: {
+                        balanceInfos: data ? data.BalanceInfos || [] : [],
+                        len: data ? data.UnConfirmedBlocksLen || '' : ''
+                    }
                 });
             }).catch((err)=>{
                 rej(err);

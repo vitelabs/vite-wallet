@@ -34,11 +34,12 @@ export default {
             let isErr = false;
             for (let f of e.dataTransfer.files) {
                 try {
-                    let { data } = await viteWallet.Keystore.isValidFile(f.path);
+                    let data = await viteWallet.Keystore.importFile(f.path, f.name);
                     if (!data) {
                         window.alert('fail');
                     }
                 } catch(err) {
+                    console.log(err);
                     isErr = true;
                     window.alert('fail');
                 }

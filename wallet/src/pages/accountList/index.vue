@@ -12,13 +12,14 @@
 
         <login :showLogin="showLogin"
                :hideLogin="toHideLogin"
-               :loginSuccess="goAccount"></login>
+               :loginSuccess="goAccount"
+               :address="activeAddress"></login>
     </div>
 </template>
 
 <script>
 import login from 'components/login';
-import accountList from 'components/accountList';
+import accountList from './accountList';
 
 export default {
     components: {
@@ -36,6 +37,17 @@ export default {
     },
     methods: {
         toShowLogin(address) {
+            let accountStatus = viteWallet.Account.status(address);
+            if (!accountStatus) {
+                window.alert('fail');
+                return;
+            }
+
+            if (accountStatus === 'UnLock') {
+                this.goAccount();
+                return;
+            }
+
             this.activeAddress = address;
             this.showLogin = true;
         },
@@ -53,6 +65,7 @@ export default {
                     address: this.activeAddress
                 }
             });
+            this.activeAddress = '';
         }
     }
 };
