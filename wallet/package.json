@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "description": "",
     "scripts": {
-        "clean": "rm -rf dist",
+        "clean": "rm -rf ../app/walletPages",
         "build": "npm run clean && webpack",
         "build:map": "npm run clean && MAP=true webpack",
         "dev": "NODE_ENV=development webpack-dev-server"

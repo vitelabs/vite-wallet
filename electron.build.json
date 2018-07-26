@@ -1,0 +1,6 @@
+{
+    "appId": "com.electron.vite.wallet",
+    "productName": "vite-wallet",
+    "buildDependenciesFromSource": true,
+    "asar": false
+}

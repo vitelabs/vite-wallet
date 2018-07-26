@@ -1,4 +1,4 @@
-const ipcBase = require('../../utils/ipc/index.js');
+const ipcBase = require('~app/utils/ipc/index.js');
 
 const VITE_WALLET_IPC = 'vite.ipc';
 const FILE_PATH = global.goFile;

@@ -1,7 +1,8 @@
 const spawn = require('child_process').spawn;
 const fs = require('fs');
 const path = require('path');
-const binPath = path.join(process.cwd(), '/serverScript/server');
+
+const binPath = path.join(global.APP_PATH, '/viteGoServer');
 
 fs.chmodSync(binPath, 0o777);
 

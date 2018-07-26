@@ -3,18 +3,18 @@ const {app, BrowserWindow, shell} = require('electron');
 const path = require('path');
 const os = require('os');
 global.goFile = path.join(os.homedir(), '/viteisbest/');    // Must be defined in advance
+global.APP_PATH = process.env.NODE_ENV === 'dev' ? path.join(app.getAppPath(), 'app') : app.getAppPath();
 
-const APP_PATH = app.getAppPath();
-const ipcGo = require( path.join(APP_PATH, './walletSrc/modules/ipcGo.js') );
+const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/modules/ipcGo.js') );
 
 let ipcServerFinish = false;
 let ipcServerCb;
 
-const startIPCServer = require('./walletSrc/modules/viteNode.js');
+const startIPCServer = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
 startIPCServer(function() {
     global.goViteIPC = new ipcGo();
     global.goViteIPC.onConnected(function () {
-        require( path.join(APP_PATH, './walletSrc/middle/index.js') );
+        require( path.join(global.APP_PATH, './walletSrc/middle/index.js') );
         emitIPCServer();
     });
 });
@@ -34,7 +34,7 @@ function onIPCServer (cb) {
 
 function loadWeb() {
     // Load file
-    win.loadFile( path.join(APP_PATH, '/wallet/dist/index.html') );
+    win.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
     win.webContents.once('dom-ready', () => {
         win.webContents.executeJavaScript(`
             require(process.cwd() + '/walletSrc/modules/webStart.js');

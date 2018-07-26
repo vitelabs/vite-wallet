@@ -15,7 +15,7 @@ let webpackConfig = {
         vendor: ['vue', 'vue-router']
     },
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, '../app/walletPages'),
         filename: '[name].[hash].js'
     },
     plugins: [

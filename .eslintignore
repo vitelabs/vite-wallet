@@ -4,3 +4,4 @@ wallet/dist/*
 test/keyFiles
 vite_leveldb_database/*
 wallet/vite_leveldb_database/*
+app/*
