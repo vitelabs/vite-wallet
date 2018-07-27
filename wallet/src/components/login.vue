@@ -38,14 +38,16 @@ export default {
     },
     methods: {
         login() {
-            if (!this.pass1) {
+            if (!this.pass) {
                 window.alert(this.$t('create.hint.long'));
                 return;
             }
 
-            viteWallet.Account.unLock(this.address, this.pass).then(()=>{
+            viteWallet.Account.unLock(this.address, this.pass).then((data)=>{
+                console.log(data);
                 this.loginSuccess && this.loginSuccess();
             }).catch((err)=>{
+                console.log(err);
                 window.alert(err);
             });
         }

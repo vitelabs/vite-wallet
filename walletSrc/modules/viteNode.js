@@ -1,13 +1,18 @@
-const spawn = require('child_process').spawn;
+const { execFile } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
 const binPath = path.join(global.APP_PATH, '/viteGoServer');
-
 fs.chmodSync(binPath, 0o777);
 
 module.exports = function(cb) {
-    const subProcess = spawn(binPath);
+    const subProcess = execFile(binPath, {
+        maxBuffer: 500 * 1024
+    }, (error) => {
+        if (error) {
+            throw error;
+        }
+    });
 
     subProcess.once('error', error => {
         console.log('error', error);

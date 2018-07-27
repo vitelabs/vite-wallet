@@ -8,6 +8,8 @@
 </template>
 
 <script>
+let loopTimeout = null;
+
 export default {
     data() {
         return {
@@ -21,6 +23,10 @@ export default {
     },
     mounted() {
         this.getSyncBlock();
+    },
+    destroyed() {
+        window.clearTimeout(loopTimeout);
+        loopTimeout = null;
     },
     computed: {
         blockPercent() {
@@ -55,7 +61,7 @@ export default {
 
             this.syncData( viteWallet.Block.getSyncInfo() );
 
-            let loopTimeout = setTimeout(()=>{
+            loopTimeout = setTimeout(()=>{
                 window.clearTimeout(loopTimeout);
                 loopTimeout = null;
                 this.getSyncBlock();

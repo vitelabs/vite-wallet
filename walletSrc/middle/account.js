@@ -76,7 +76,9 @@ class Account {
         };
 
         let proList = [];
+        let addrList = [];
         for (let address in this.__accountsMap) {
+            addrList.push(address);
             proList.push(global.goViteIPC['ledger.GetAccountByAccAddr'](address));
         }
 
@@ -85,17 +87,19 @@ class Account {
             return;
         }
 
-        Promise.all(proList).then(({ data })=>{
+        Promise.all(proList).then((data)=>{
             let totalBalance = {};
 
-            data.forEach((account) => {
-                if (!this.__accountsMap[account.address]) {
+            data.forEach(({ data }, i) => {
+                let address = data ? data.Addr || addrList[i] : addrList[i];
+
+                if (!this.__accountsMap[address]) {
                     return;
                 }
 
-                let balanceInfos = account.BalanceInfos ? account.BalanceInfos || [] : [];
-                this.__accountsMap[account.address].balanceInfos = balanceInfos;
-                this.__accountsMap[account.address].BlockHeight = account.BlockHeight || '';
+                let balanceInfos = data && data.BalanceInfos ? data.BalanceInfos : [];
+                this.__accountsMap[address].balanceInfos = balanceInfos;
+                this.__accountsMap[address].blockHeight = data && data.BlockHeight ? data.BlockHeight : '';
 
                 balanceInfos.forEach((balanceInfo) => {
                     let id = balanceInfo.TokenTypeId;
@@ -106,7 +110,7 @@ class Account {
                         return;
                     }
 
-                    totalBalance[balanceInfo.id] = {
+                    totalBalance[id] = {
                         tokenSymbol: balanceInfo.TokenSymbol,
                         tokenName: balanceInfo.TokenName,
                         balance: balanceInfo.Balance
@@ -132,6 +136,7 @@ class Account {
         };
 
         global.goViteIPC['wallet.Status']().then(({ data })=>{
+            console.log(data);
             for (let address in data) {
                 if(!this.__accountsMap[address]) {
                     return;
@@ -154,14 +159,14 @@ class Account {
         }
 
         return new Promise((res, rej)=>{
-            global.goViteIPC('ledger.GetUnconfirmedInfo', address).then(({
+            global.goViteIPC['ledger.GetUnconfirmedInfo'](address).then(({
                 data
             }) => {
                 res({
                     name: this.__accountsMap[address].name || '',
                     balanceInfos: this.__accountsMap[address].balanceInfos || [],
                     fundFloat: {
-                        balanceInfos: data ? data.BalanceInfos || [] : [],
+                        balanceInfos: data && data.BalanceInfos ? data.BalanceInfos : [],
                         len: data ? data.UnConfirmedBlocksLen || '' : ''
                     }
                 });
@@ -185,8 +190,10 @@ class Account {
     getList({ pageIndex, pageNum }) {
         let startInx = pageIndex * pageNum;
         let endInx = (pageIndex + 1) * pageNum;
+
         let count = 0;
         let proList = [];
+        let addressList = [];
 
         for(let address in this.__accountsMap) {
             let c = count++;
@@ -194,6 +201,7 @@ class Account {
                 continue;
             }
 
+            addressList.push(address);
             proList.push( global.goViteIPC['ledger.GetUnconfirmedInfo'](address) );
         }
 
@@ -206,8 +214,8 @@ class Account {
 
         return Promise.all(proList).then((val) => {
             let accountList = [];
-            val.forEach(({ data })=>{
-                let address = data.Addr;
+            val.forEach(({ data }, index)=>{
+                let address = data ? data.Addr || addressList[index] : addressList[index];
 
                 // This account already disappear.
                 if (!this.__accountsMap[address]) {
@@ -231,7 +239,7 @@ class Account {
     }
 
     unLock(address, pass) {
-        return global.goViteIPC['wallet.UnLock']([address, pass]);
+        return global.goViteIPC['wallet.UnLock']([address, pass, '0']);
     }
 
     lock(address) {

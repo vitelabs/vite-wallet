@@ -2,8 +2,7 @@
     <div class="account-list-wrapper">
         <div class="content-wrapper">
             <div>account balance: 
-                <span v-show="!accountBalance.length">0</span>
-                <span v-show="accountBalance.length" v-for="(balanceInfo, id) in accountBalance" :key="id">
+                <span v-for="(balanceInfo, id) in accountBalance" :key="id">
                     {{ balanceInfo.balance + ' ' + balanceInfo.tokenSymbol }}
                 </span>
             </div>
@@ -21,12 +20,18 @@
 import login from 'components/login';
 import accountList from './accountList';
 
+let loopTime = null;
+
 export default {
     components: {
         login, accountList
     },
     mounted() {
         this.getTotalBalance();
+    },
+    destroyed() {
+        clearTimeout(loopTime);
+        loopTime = null;
     },
     data() {
         return {
@@ -43,7 +48,7 @@ export default {
                 return;
             }
 
-            if (accountStatus === 'UnLock') {
+            if (accountStatus === 'Unlocked') {
                 this.goAccount();
                 return;
             }
@@ -57,6 +62,12 @@ export default {
         },
         getTotalBalance() {
             this.accountBalance = viteWallet.Account.getTotalBalance();
+
+            let loopTime = setTimeout(()=>{
+                clearTimeout(loopTime);
+                loopTime = null;
+                this.getTotalBalance();
+            }, 3000);
         },
         goAccount() {
             this.$router.push({

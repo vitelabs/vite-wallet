@@ -62,6 +62,7 @@ export default {
             }) => {
                 this.balanceInfos = balanceInfos;
             }).catch((err) => {
+                console.log(err);
                 window.alert(err);
             });
         },

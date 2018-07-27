@@ -18,13 +18,13 @@
                 <span>{{ $t('accDetail.balance') }}: </span>
                 <span v-show="!balanceInfos.length">0</span>
                 <span v-show="balanceInfos.length" v-for="(balanceInfo, i) in balanceInfos" :key="i">
-                    {{ balanceInfo.balance + ' ' + balanceInfo.tokenSymbol }}
+                    {{ balanceInfo.Balance + ' ' + balanceInfo.TokenSymbol }}
                 </span>
             </div>
             <div class="row">
                 <span>{{ $t('accDetail.fundFloat') }}: </span>
                 <span v-for="(balanceInfo, i) in fundFloat.balanceInfos" :key="i">
-                    {{ balanceInfo.balance + ' ' + balanceInfo.tokenSymbol }}
+                    {{ balanceInfo.Balance + ' ' + balanceInfo.TokenSymbol }}
                 </span>
                 <span>{{ fundFloat.len || 0 }}</span>
             </div>
@@ -58,6 +58,10 @@ export default {
             isShowNameInput: false,
             editName: ''
         };
+    },
+    destroyed() {
+        window.clearTimeout(inputTimeout);
+        inputTimeout = null;
     },
     methods: {
         copy() {

@@ -96,9 +96,10 @@ class Block {
     getTXList({ address, pageIndex, pageNum }) {
         return global.goViteIPC['ledger.GetBlocksByAccAddr']({
             Addr: address,
-            index: pageIndex,
-            count: pageNum
+            Index: pageIndex,
+            Count: pageNum
         }).then(({ data })=>{
+            console.log(data);
             return data;
         });
     }

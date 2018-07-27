@@ -11,7 +11,7 @@
 
         <div class="list">
             <div v-for="(item, index) in transList" :key="index">
-                <span>{{ $t(`transList.tType.${type}`) }}</span>
+                <span>{{ $t(`transList.tType.${item.type}`) }}</span>
                 <span>{{ item.status }}</span>
                 <span>{{ item.timestamp }}</span>
                 <span>{{ item.fromAddr || item.toAddr }}</span>
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+let reTimeout = null;
+
 export default {
     props: {
         address: {
@@ -48,10 +50,14 @@ export default {
             totalPage: 0
         };
     },
+    destroyed() {
+        window.clearTimeout(reTimeout);
+        reTimeout = null;
+    },
     methods: {
         fetchTransList() {
             let reFetch = ()=>{
-                let reTimeout = window.setTimeout(()=>{
+                reTimeout = window.setTimeout(()=>{
                     window.clearTimeout(reTimeout);
                     reTimeout = null;
                     this.fetchTransList();
@@ -64,23 +70,25 @@ export default {
                 pageNum: 10
             }).then((list)=>{
                 list = list || [];
+                let nowList = [];
+
                 list.forEach(item => {
-                    let status = ['---', 'unconfirmed', 'confirmed'][item.status];
+                    let status = ['---', 'unconfirmed', 'confirmed'][item.Status];
                     if (status !== '---') {
                         status = this.$t(`transList.status.${status}`);
                     }
-
-                    this.transList.push({
-                        type: item.fromAddr ? 'send' : 'receive',
+                    console.log(item);
+                    nowList.push({
+                        type: item.FromAddr ? 'send' : 'receive',
                         status,
                         timestamp: new Date(item.Timestamp),
                         fromAddr: item.FromAddr,
                         toAddr: item.ToAddr,
-                        amount: item.fromAddr ? '-' + item.Aamount : item.Amount,
+                        amount: item.FromAddr ? '-' + item.Amount : item.Amount,
                         hash: item.Hash
                     });
                 });
-                this.transList = list;
+                this.transList = nowList;
 
                 reFetch();
             }).catch((err)=>{

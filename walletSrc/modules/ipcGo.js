@@ -110,6 +110,14 @@ function netToIPC(methodName, arg) {
                     result = data.result;    
                 }
 
+                if (data.code) {
+                    rej({
+                        code: data.code,
+                        msg: data.message || 'server error'
+                    });
+                    return;
+                }
+
                 res({
                     code: 0,
                     data: result
