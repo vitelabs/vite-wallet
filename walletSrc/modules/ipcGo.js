@@ -14,7 +14,6 @@ let rpcRequestId = 0;
 class ipc {
     constructor() {
         this.__connectStatus = -1;
-        this.dataDIR = '';
 
         ipcBase.connectTo(VITE_WALLET_IPC, () => {
             // listening connect
@@ -42,7 +41,7 @@ class ipc {
 
         const apiList = {
             wallet: [
-                'ListAddress', 'NewAddress', 'Status', 'UnLock', 'Lock', 'ReloadAndFixAddressFile', 'IsMayValidKeystoreFile'
+                'ListAddress', 'NewAddress', 'Status', 'UnLock', 'Lock', 'ReloadAndFixAddressFile', 'IsMayValidKeystoreFile', 'GetDataDir'
             ],
             ledger: [
                 'CreateTxWithPassphrase', 'GetBlocksByAccAddr', 'GetUnconfirmedBlocksByAccAddr', 'GetAccountByAccAddr', 'GetUnconfirmedInfo', 'GetInitSyncInfo'
@@ -64,10 +63,6 @@ class ipc {
         if (!this.__connectStatus) {
             return;
         }
-
-        // netToIPC.bind(this, 'wallet.GetDataDir')().then((data)=>{
-        //     console.log(data);
-        // });
         this.__connectCB && this.__connectCB();
     }
 
@@ -101,19 +96,13 @@ function netToIPC(methodName, arg) {
     return new Promise((res, rej) => {
         // listening api
         ipcBase.of[VITE_WALLET_IPC].on(payload.id, function(data) {
+            // console.log(data);
+
             // system error
             if (data.error) {
                 return rej({
                     code: data.error.code,
                     message: data.error.message || ''
-                });
-            }
-
-            // server error
-            if (data.code) {
-                return rej({
-                    code: data.code,
-                    msg: data.message || 'server error'
                 });
             }
 
@@ -123,6 +112,14 @@ function netToIPC(methodName, arg) {
                 result = JSON.parse(data.result || '');
             } catch (e) {
                 result = data.result;    
+            }
+
+            // server error
+            if (result && result.code) {
+                return rej({
+                    code: result.code,
+                    msg: result.message || 'server error'
+                });
             }
 
             // server success

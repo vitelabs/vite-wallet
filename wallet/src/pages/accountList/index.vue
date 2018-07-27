@@ -48,6 +48,7 @@ export default {
                 return;
             }
 
+            this.activeAddress = address;
             if (accountStatus === 'Unlocked') {
                 this.goAccount();
                 return;

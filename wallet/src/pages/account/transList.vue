@@ -12,11 +12,11 @@
         <div class="list">
             <div v-for="(item, index) in transList" :key="index">
                 <span>{{ $t(`transList.tType.${item.type}`) }}</span>
-                <span>{{ item.status }}</span>
+                <span>{{ $t(`transList.status.${item.status}`) }}</span>
                 <span>{{ item.timestamp }}</span>
-                <span>{{ item.fromAddr || item.toAddr }}</span>
+                <span>{{ item.transAddr }}</span>
                 <span>{{ item.amount }}</span>
-                <a :href="'www.baidu.com' + item.hash" target="_blank">{{ $t('transList.tDetail') }}</a>
+                <a :href="'https://test.vite.net/transaction/' + item.hash" target="_blank">{{ $t('transList.tDetail') }}</a>
             </div>
         </div>
 
@@ -74,17 +74,12 @@ export default {
 
                 list.forEach(item => {
                     let status = ['---', 'unconfirmed', 'confirmed'][item.Status];
-                    if (status !== '---') {
-                        status = this.$t(`transList.status.${status}`);
-                    }
-                    console.log(item);
                     nowList.push({
-                        type: item.FromAddr ? 'send' : 'receive',
+                        type: item.FromAddr ? 'receive' : 'send',
                         status,
                         timestamp: new Date(item.Timestamp),
-                        fromAddr: item.FromAddr,
-                        toAddr: item.ToAddr,
-                        amount: item.FromAddr ? '-' + item.Amount : item.Amount,
+                        transAddr: item.FromAddr || item.ToAddr,
+                        amount: item.FromAddr ? item.Amount : '-' + item.Amount,
                         hash: item.Hash
                     });
                 });

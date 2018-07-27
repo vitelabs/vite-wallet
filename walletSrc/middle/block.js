@@ -99,8 +99,7 @@ class Block {
             Index: pageIndex,
             Count: pageNum
         }).then(({ data })=>{
-            console.log(data);
-            return data;
+            return data || [];
         });
     }
 

@@ -136,7 +136,6 @@ class Account {
         };
 
         global.goViteIPC['wallet.Status']().then(({ data })=>{
-            console.log(data);
             for (let address in data) {
                 if(!this.__accountsMap[address]) {
                     return;

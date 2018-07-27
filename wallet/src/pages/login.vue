@@ -43,7 +43,7 @@ export default {
                 return;
             }
 
-            viteWallet.Account.unLock(this.address, this.pass).then((data)=>{
+            viteWallet.Account.unLock(this.address, this.pass).then(()=>{
                 this.loginSuccess && this.loginSuccess();
             }).catch((err)=>{
                 console.log(err);

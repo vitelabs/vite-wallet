@@ -11,7 +11,7 @@
                 <span>{{ $t('accDetail.balance') }}</span>
                 <span v-show="!balanceInfos.length">0</span>
                 <span v-show="balanceInfos.length" v-for="(balanceInfo, i) in balanceInfos" :key="i">
-                    {{ balanceInfo.balance + ' ' + balanceInfo.tokenSymbol }}
+                    {{ balanceInfo.Balance + ' ' + balanceInfo.TokenSymbol }}
                 </span>
             </div>
             <div class="row">
@@ -57,7 +57,7 @@ export default {
     },
     methods: {
         fetchAccount() {
-            viteWallet.Account.get(this.address).then(({
+            viteWallet.Account.get(this.outAddress).then(({
                 balanceInfos
             }) => {
                 this.balanceInfos = balanceInfos;
@@ -68,14 +68,15 @@ export default {
         },
         transfer() {
             viteWallet.Block.createTX({
-                selfAddr: this.address, 
+                selfAddr: this.outAddress, 
                 toAddr: this.inAddress,
                 pass: this.password,
-                tokenId: 'viteid',
+                tokenId: 'tti_000000000000000000004cfd',
                 amount: this.amount
             }).then(({
                 balanceInfos
             }) => {
+                window.alert('success');
                 this.balanceInfos = balanceInfos;
             }).catch((err) => {
                 window.alert(err);
