@@ -101,32 +101,34 @@ function netToIPC(methodName, arg) {
     return new Promise((res, rej) => {
         // listening api
         ipcBase.of[VITE_WALLET_IPC].on(payload.id, function(data) {
-            if (!data.error) {
-                // Compatible: somtimes data.result is a json string, sometimes not.
-                let result;
-                try {
-                    result = JSON.parse(data.result || '');
-                } catch (e) {
-                    result = data.result;    
-                }
-
-                if (data.code) {
-                    rej({
-                        code: data.code,
-                        msg: data.message || 'server error'
-                    });
-                    return;
-                }
-
-                res({
-                    code: 0,
-                    data: result
+            // system error
+            if (data.error) {
+                return rej({
+                    code: data.error.code,
+                    message: data.error.message || ''
                 });
-                return;
             }
-            rej({
-                code: data.error.code,
-                message: data.error.message || ''
+
+            // server error
+            if (data.code) {
+                return rej({
+                    code: data.code,
+                    msg: data.message || 'server error'
+                });
+            }
+
+            // Compatible: somtimes data.result is a json string, sometimes not.
+            let result;
+            try {
+                result = JSON.parse(data.result || '');
+            } catch (e) {
+                result = data.result;    
+            }
+
+            // server success
+            res({
+                code: 0,
+                data: result
             });
         });
     });
