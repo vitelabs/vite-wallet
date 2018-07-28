@@ -1,11 +1,11 @@
 <template>
-    <li>
+    <div>
         <div @click="toggleLangList">{{ $t('lang') }}</div>
         <ul v-show="showLang">
-            <li v-for="(key, index) in messages" :key="index" 
+            <li v-for="(key, index) in messages" v-show="key.lang !== $t('lang')" :key="index" 
                 @click="changeLocale(index)">{{key.lang}}</li>
         </ul>
-    </li>
+    </div>
 </template>
 
 <script>
@@ -22,6 +22,7 @@ export default {
         },
         changeLocale(locale) {
             this.$i18n.locale = locale;
+            this.toggleLangList();
         }
     }
 };

@@ -4,7 +4,6 @@ class System {
     constructor() {}
 
     clipboardWrite(text) {
-        console.log(text);
         clipboard.writeText(text);
     }
 

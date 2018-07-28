@@ -48,6 +48,9 @@ class ipc {
             ],
             p2p: [
                 'NetworkAvailable'
+            ],
+            types: [
+                'IsValidHexAddress', 'IsValidHexTokenTypeId'
             ]
         };
         for (let namespace in apiList) {
@@ -118,15 +121,12 @@ function netToIPC(methodName, arg) {
             if (result && result.code) {
                 return rej({
                     code: result.code,
-                    msg: result.message || 'server error'
+                    message: result.message || 'server error'
                 });
             }
 
             // server success
-            res({
-                code: 0,
-                data: result
-            });
+            res(result);
         });
     });
 }

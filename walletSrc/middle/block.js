@@ -13,7 +13,7 @@ class Block {
     }
 
     __syncBlock() {
-        return global.goViteIPC['ledger.GetInitSyncInfo']().then(({ data })=>{
+        return global.goViteIPC['ledger.GetInitSyncInfo']().then((data)=>{
             this.startHeight = data.StartHeight;
             this.targetHeight = data.TargetHeight;
             this.currentHeight = data.CurrentHeight;
@@ -49,34 +49,44 @@ class Block {
         clearTimeout(this.__loopBlockTimeout);
         this.__loopBlockTimeout = null;
     }
-      
-    getSyncInfo(passive = true) {
-        if (passive) {
-            return {
-                startHeight: this.startHeight,
-                targetHeight: this.targetHeight,
-                currentHeight: this.currentHeight,
-                isFirstSyncDone: this.isFirstSyncDone,
-                isStartFirstSync: this.isStartFirstSync
-            };
-        }
 
+    __getStatus() {
+        if (this.isFirstSyncDone) {
+            return 2;
+        }
+        if (!this.isStartFirstSync) {
+            return 0;
+        }
+        return 1;
+    }
+    
+    reloadSyncInfo() {
         this.__stopSyncBlock();
         return new Promise((res, rej)=>{
             this.__syncBlock().then(()=>{
                 this.__startSyncBlock();
                 res({
-                    startHeight: this.startHeight,
                     targetHeight: this.targetHeight,
                     currentHeight: this.currentHeight,
-                    isFirstSyncDone: this.isFirstSyncDone,
-                    isStartFirstSync: this.isStartFirstSync
+                    status: this.__getStatus()
                 });
             }).catch((err)=>{
-                rej(err);
                 this.__startSyncBlock();
+                rej(err);
             });
         });
+    }
+
+    getSyncInfo() {
+        return {
+            targetHeight: this.targetHeight,
+            currentHeight: this.currentHeight,
+            status: this.__getStatus()            
+        };
+    }
+
+    getLoopBlockTime() {
+        return loopBlockTime;
     }
 
     createTX({
@@ -88,7 +98,8 @@ class Block {
             Passphrase: pass,
             TokenTypeId: tokenId,
             Amount: amount
-        }).then(({ data })=>{
+        }).then((data)=>{
+            console.log(data);
             return data;
         });
     }
@@ -98,14 +109,8 @@ class Block {
             Addr: address,
             Index: pageIndex,
             Count: pageNum
-        }).then(({ data })=>{
+        }).then((data)=>{
             return data || [];
-        });
-    }
-
-    getUnconfirmedTX(address) {
-        return global.goViteIPC['ledger.GetUnconfirmedInfo'](address).then(({ data })=>{
-            return data;
         });
     }
 }

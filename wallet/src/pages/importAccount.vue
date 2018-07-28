@@ -1,29 +1,24 @@
 <template>
-    <div v-show="show" class="file-wrapper">
-        <div ref="fileDrag" class="file-drag">
+    <div class="import-account-wrapper">
+        <div class="file-drag">
             <span v-show="!files.length">Drag File Here</span>
             <span v-show="files.length" 
                   v-for="(path, i) in files" :key="i">{{ path }}</span>
         </div>
-        <span class="cancel" @click="toHide">login</span>
+        <div v-show="msg.type === 'error'">{{ msg.msg }}</div>
+        <div v-show="msg.type === 'success'">{{ msg.msg }}</div>
+        <router-link :to="{ name: 'login' }">login</router-link>
     </div>
 </template>
 
 <script>
 export default {
-    props: {
-        show: {
-            type: Boolean,
-            default: false
-        },
-        toHide: {
-            type: Function,
-            default: ()=>{}
-        }
-    },
     data() {
         return {
-            files: []
+            files: [],
+            msg: {},
+            errMsg: '',
+            successMsg: ''
         };
     },
     mounted() {
@@ -31,20 +26,28 @@ export default {
             e.preventDefault();
             e.stopPropagation();
 
-            let isErr = false;
             for (let f of e.dataTransfer.files) {
                 try {
                     let data = await viteWallet.Keystore.importFile(f.path, f.name);
                     if (!data) {
-                        window.alert('fail');
+                        this.msg = {
+                            type: 'error',
+                            msg: 'file is illegal'
+                        };
+                        return;
                     }
+   
+                    this.msg = {
+                        type: 'success',
+                        msg: 'import success'
+                    };
+                    this.$router.push({
+                        name: 'login'
+                    });
                 } catch(err) {
-                    console.log(err);
-                    isErr = true;
-                    window.alert('fail');
+                    this.errMsg = err && err.message ? err.message : 'file is illegal';
                 }
             }
-            !isErr && this.toHide();
         });
 
         document.addEventListener('dragover', (e) => {

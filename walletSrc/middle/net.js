@@ -1,3 +1,5 @@
+const loopNetTime = 2000;
+
 class Net {
     constructor() {
         this.netStatus = false;
@@ -5,7 +7,7 @@ class Net {
     }
 
     __startLoopNet() {
-        global.goViteIPC['p2p.NetworkAvailable']().then(({ data })=>{
+        global.goViteIPC['p2p.NetworkAvailable']().then((data)=>{
             this.netStatus = data;
         }).catch(()=>{ });
 
@@ -13,7 +15,7 @@ class Net {
             clearTimeout(loopTimeout);
             loopTimeout = null;
             this.__startLoopNet();
-        }, 2000);
+        }, loopNetTime);
     }
 
     updateFromWeb(status) {
@@ -22,6 +24,10 @@ class Net {
 
     getStatus() {
         return this.netStatus;
+    }
+
+    getLoopNetTime() {
+        return loopNetTime;
     }
 }
 

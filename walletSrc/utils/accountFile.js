@@ -4,7 +4,7 @@ const path = require('path');
 const accountNameFile = path.join(app.getPath('appData'), 'viteWallet_AccountName');
 
 module.exports = {
-    readAccountNamesSync() {
+    readAccountFileSync() {
         let defaultObj = {
             namesMap: {},
             nameCount: 0
@@ -29,9 +29,9 @@ module.exports = {
         }
         return obj || defaultObj;
     },
-    writeAccountNames(namesMap, nameCount) {
+    writeAccountFile(namesMap, nameCount, lastLoginAccount) {
         fs.writeFile(accountNameFile, JSON.stringify({
-            namesMap, nameCount
+            namesMap, nameCount, lastLoginAccount
         }), 'utf8');
     }
 };

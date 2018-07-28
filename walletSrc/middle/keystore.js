@@ -5,7 +5,7 @@ const { shell } = require('electron');
 class Keystore {
     constructor() {
         this.folder = '';
-        global.goViteIPC['wallet.GetDataDir']().then(({data})=>{
+        global.goViteIPC['wallet.GetDataDir']().then((data)=>{
             this.folder = data;
         });
     }
@@ -37,9 +37,7 @@ class Keystore {
     }
 
     importFile(filePath, fileName) {
-        return this.isValidFile(filePath).then(({
-            data
-        }) => {
+        return this.isValidFile(filePath).then((data) => {
             data && fs.renameSync(filePath, path.join(this.folder, fileName));
             return data;
         });

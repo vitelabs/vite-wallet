@@ -1,18 +1,19 @@
 <template>
     <div class="account-wrapper">
-        <account-head :address="address"></account-head>
+        <account-head></account-head>
 
         <div class="account-detail">
-            <div class="row">
-                <span>{{ $t('accDetail.address') }}: </span>
-                <span>{{ address }}</span>
-            </div>
             <div class="row">
                 <span>{{ $t('accDetail.name') }}: </span>
                 <span @click="startRename">{{ accountName }}</span>
                 <input v-show="isShowNameInput" type="text" autofocus
                        v-model="editName" :placeholder="accountName"
                        @input="inputName"/>
+            </div>
+            <div class="row">
+                <span>{{ $t('accDetail.address') }}: </span>
+                <span>{{ address }}</span>
+                <span @click="copy">{{ $t('accDetail.copy') }}</span>
             </div>
             <div class="row">
                 <span>{{ $t('accDetail.balance') }}: </span>
@@ -29,7 +30,6 @@
                 <span>{{ fundFloat.len || 0 }}</span>
             </div>
         </div>
-        <span @click="copy">{{ $t('accDetail.copy') }}</span>
 
         <trans-list :address="address"></trans-list>
     </div>

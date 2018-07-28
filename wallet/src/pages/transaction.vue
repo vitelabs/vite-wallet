@@ -17,17 +17,17 @@
             <div class="row">
                 <span>{{ $t('accDetail.inAddress') }}</span>
                 <input v-model="inAddress" />
-                <span v-show="isValidAddress" class="err"></span>
+                <span v-show="isValidAddress" class="err">address illegal</span>
             </div>
             <div class="row">
                 <span>{{ $t('accDetail.sum') }}</span>
                 <input v-model="amount" />
-                <span class="err"></span>
+                <span v-show="amountErr" class="err">{{ amountErr }}</span>
             </div>
             <div class="row">
                 <span>{{ $t('accDetail.password') }}</span>
                 <input v-model="password" type="password" />
-                <span class="err"></span>
+                <span v-show="passwordErr" class="err">{{ passwordErr }}</span>
             </div>
         </div>
 
@@ -36,6 +36,11 @@
 </template>
 
 <script>
+import BigNumber from 'bignumber.js';
+
+let outAddrTimeout = null;
+let amountTimeout = null;
+
 export default {
     mounted() {
         this.fetchAccount();
@@ -46,13 +51,46 @@ export default {
             inAddress: '',
             amount: '',
             password: '',
-            balanceInfos: []
+            balanceInfos: [],
+
+            isValidAddress: true,
+            amountErr: '',
+            passwordErr: ''
         };
     },
-    computed: {
-        isValidAddress() {
-            // 
-            return true;
+    watch: {
+        outAddress: function() {
+            clearTimeout(outAddrTimeout);
+            outAddrTimeout = null;
+
+            outAddrTimeout = setTimeout(async ()=> {
+                outAddrTimeout = null;
+                try {
+                    this.isValidAddress = await viteWallet.Types.isValidAddress(this.outAddress);
+                } catch(err) {
+                    console.warn(err);
+                    this.isValidAddress = false;
+                }
+            }, 500);
+        },
+        password: function() {
+            this.passwordErr = '';
+        },
+        amount: function() {
+            clearTimeout(amountTimeout);
+            amountTimeout = null;
+
+            amountTimeout = setTimeout(async ()=> {
+                amountTimeout = null;
+                let result = /(^([0-9]+)$)|(^([0-9]+[.][0-9]+)$)/g.test(this.amount);
+ 
+                if (!result || this.amount === '0') {
+                    this.amountErr = 'amount error';
+                    return;
+                }
+
+                this.amountErr = '';
+            }, 500);
         }
     },
     methods: {
@@ -62,24 +100,39 @@ export default {
             }) => {
                 this.balanceInfos = balanceInfos;
             }).catch((err) => {
-                console.log(err);
+                console.warn(err);
                 window.alert(err);
             });
         },
         transfer() {
+            if (!+this.amount) {
+                return;
+            }
+
             viteWallet.Block.createTX({
                 selfAddr: this.outAddress, 
                 toAddr: this.inAddress,
                 pass: this.password,
-                tokenId: 'tti_000000000000000000004cfd',
-                amount: this.amount
-            }).then(({
-                balanceInfos
-            }) => {
+                tokenId: 'tti_000000000000000000004cfd',    // [TODO] fixed viteToken
+                amount: new BigNumber(this.amount).toString()
+            }).then(() => {
                 window.alert('success');
-                this.balanceInfos = balanceInfos;
+
+                this.$router.push({
+                    name: 'account',
+                    params: {
+                        address: this.address
+                    }
+                });
             }).catch((err) => {
-                window.alert(err);
+                console.warn(err);
+
+                if (err && err.code && err.code === 4001) {
+                    this.passwordErr = err.message || 'password error';
+                    return;
+                }
+
+                window.alert(err && err.message? err.message : 'error');
             });
         }
     }

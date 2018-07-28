@@ -1,41 +1,37 @@
 <template>
-    <div v-show="showPassConfirm">
+    <div class="create-account-wrapper">
+        <input placeholder="account name" v-model="name" type="text" />
         <input :placeholder="$t('create.input')" v-model="pass1" type="password" />
         <input :placeholder="$t('create.again')" v-model="pass2" type="password" />
         <span @click="createAccount">{{ $t('btn.create') }}</span>
-        <span @click="toggelPassConfirm">{{ $t('btn.cancel') }}</span>
+        <router-link :to="{ name: 'login' }">login</router-link>
     </div>
 </template>
 
 <script>
 export default {
-    props: {
-        showPassConfirm: {
-            type: Boolean,
-            default: false
-        },
-        toggelPassConfirm: {
-            type: Function,
-            default: ()=>{}
-        }
-    },
     data() {
         return {
+            name: '',
             pass1: '',
             pass2: ''
         };
     },
-    watch: {
-        showPassConfirm: function () {
-            if (this.showPassConfirm) {
+    methods: {
+        trim(str) {
+            return str.replace(/(^\s*)|(\s*$)/g, ''); 
+        },
+        createAccount() {
+            this.name = this.trim(this.name);
+            this.pass1 = this.trim(this.pass1);
+            this.pass2 = this.trim(this.pass2);
+
+            // name
+            if (this.name.match(/(\s+)/g)) {
+                window.alert('name is illegal');
                 return;
             }
-            this.pass1 = '';
-            this.pass2 = '';
-        }
-    },
-    methods: {
-        createAccount() {
+
             // length limit
             if (!this.pass1 || this.pass1.length < 8 || this.pass1.length > 32) {
                 window.alert(this.$t('create.hint.long'));
@@ -52,14 +48,17 @@ export default {
             this.fetchCreateAccount();
         },
         fetchCreateAccount() {
-            viteWallet.Account.create(this.pass1).then(()=>{
+            viteWallet.Account.create(this.name, this.pass1).then((address)=>{
                 window.alert(this.$t('create.hint.save', {
                     '0': viteWallet.Keystore.folder
                 }));
-                this.toggelPassConfirm();
+                this.$router.push({
+                    name: 'account',
+                    params: { address }
+                });
             }).catch((err)=>{
-                console.log(err);
-                window.alert('创建失败');
+                console.warn(err);
+                window.alert('create fail');
             });
         }
     }
