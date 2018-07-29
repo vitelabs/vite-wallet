@@ -98,9 +98,6 @@ class Block {
             Passphrase: pass,
             TokenTypeId: tokenId,
             Amount: amount
-        }).then((data)=>{
-            console.log(data);
-            return data;
         });
     }
 

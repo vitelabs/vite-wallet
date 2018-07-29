@@ -8,8 +8,6 @@ const toModulePath = path.join(appPath, 'modules');
 const except = ['walletPages'];
 const no_build = process.env.NO_BUILD === 'true';
 
-let buildFiles = [];     // electron build.files
-
 traversing(appPath, (fPath, folderLevel, next) => { 
     let stats = fs.statSync(fPath);
 
@@ -23,29 +21,9 @@ traversing(appPath, (fPath, folderLevel, next) => {
     }
 });
 copyServer();
-
+!no_build && copyIcon();
 !no_build && writePackage();
 !no_build && startBuild();
-
-function traversing (startPath, cb, remenber = true) {
-    function readdirSync (startPath, folderLevel) {
-        let files = fs.readdirSync(startPath);
-
-        files.forEach((val) => {
-            folderLevel === './' && remenber && buildFiles.push(`app/${val}`);
-
-            if (except.indexOf(val) !== -1) {
-                return;
-            }
-
-            let fPath = path.join(startPath, val);
-            cb && cb(fPath, folderLevel, readdirSync, val);
-        });
-
-    }
-
-    readdirSync(startPath, './');
-}
 
 function formatFile(filePath, folderLevel) {
     let result = fs.existsSync(filePath);
@@ -64,50 +42,29 @@ function formatFile(filePath, folderLevel) {
     }
 
     let modules = file.match(/(\'~app\/modules\/\S+\')/g);
+    !fs.existsSync(toModulePath) && fs.mkdirSync(toModulePath);
     if (modules && modules.length) {
-        modules.forEach((path) => {
-            let module = path.split('\'~app\/modules\/')[1].replace(/\'/, '');
-            copyNodeModule(module);
+        modules.forEach((mPath) => {
+            let module = mPath.split('\'~app\/modules\/')[1].replace(/\'/, '');
+            copyFolder(
+                path.join(nodeModulesPath, module),
+                path.join(toModulePath, module)
+            );
         });
     }
 
     fs.writeFileSync(filePath, file.replace(/(~app\/)/g, folderLevel), 'utf8');
 }
 
-function copyNodeModule(module) {
-    let modulePath = path.join(nodeModulesPath, module);
-    let tPath = path.join(toModulePath, module);
-
-    if ( !fs.existsSync(modulePath) ) {
-        console.error(new Error(`${modulePath}     is not exist.`));
-        return;
-    }
-
-    if ( !fs.existsSync(toModulePath) ) {
-        buildFiles.push('app/modules');
-        fs.mkdirSync(toModulePath);
-    }
-    !fs.existsSync(tPath) && fs.mkdirSync(tPath);
-    
-    traversing(modulePath, (fPath, folderLevel, next, val) => {
-        let stats = fs.statSync(fPath);
-
-        if (stats.isDirectory()) {
-            !fs.existsSync(fPath) && fs.mkdirSync(fPath);
-            next(fPath, folderLevel + '../');
-            return;
-        }
-
-        if (stats.isFile()) {
-            let file = fs.readFileSync(fPath);
-            let toPath = path.join(tPath, val);
-            fs.writeFileSync(toPath, file);
-        }
-    }, false);
-}
-
 function copyServer() {
     fs.writeFileSync('./app/viteGoServer', fs.readFileSync('./viteGoServer'));
+}
+
+function copyIcon() {
+    copyFolder(
+        path.join(__dirname, '/walletSrc/icon'),
+        path.join(appPath, '/icon')
+    );
 }
 
 function writePackage() {
@@ -127,5 +84,50 @@ function startBuild() {
         publish: 'never'
     }).catch(err => {
         throw new Error(err);
+    });
+}
+
+
+// Base function
+
+function traversing (startPath, cb) {
+    function readdirSync (startPath, folderLevel) {
+        let files = fs.readdirSync(startPath);
+
+        files.forEach((val) => {
+            if (except.indexOf(val) !== -1) {
+                return;
+            }
+
+            let fPath = path.join(startPath, val);
+            cb && cb(fPath, folderLevel, readdirSync, val);
+        });
+
+    }
+
+    readdirSync(startPath, './');
+}
+
+function copyFolder (currentPath, targetPath) {
+    if ( !fs.existsSync(currentPath) ) {
+        console.error(new Error(`${currentPath}     is not exist.`));
+        return;
+    }
+    !fs.existsSync(targetPath) && fs.mkdirSync(targetPath);
+    
+    traversing(currentPath, (fPath, folderLevel, next, val) => {
+        let stats = fs.statSync(fPath);
+
+        if (stats.isDirectory()) {
+            !fs.existsSync(fPath) && fs.mkdirSync(fPath);
+            next(fPath, folderLevel + '../');
+            return;
+        }
+
+        if (stats.isFile()) {
+            let file = fs.readFileSync(fPath);
+            let toPath = path.join(targetPath, val);
+            fs.writeFileSync(toPath, file);
+        }
     });
 }

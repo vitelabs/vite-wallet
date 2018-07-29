@@ -1,6 +1,6 @@
 // const { net } = require('electron');
 
-class Outeside {
+class HttpAPIs {
     constructor() {}
 
     getTransList() {
@@ -12,7 +12,7 @@ class Outeside {
         //     console.log(`BODY: ${chunk}`)
         //   })
         //   response.on('end', () => {
-        //     console.log('response请求中没有更多数据。')
+        //     console.log('response end')
         //   })
         // })
         // request.end()
@@ -23,5 +23,5 @@ class Outeside {
     }
 }
 
-module.exports = Outeside;
+module.exports = HttpAPIs;
     

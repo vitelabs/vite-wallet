@@ -2,7 +2,8 @@
     "appId": "com.electron.vite.wallet",
     "productName": "vite-wallet",
     "buildDependenciesFromSource": true,
-    "asar": {
-        "smartUnpack": false
+    "asar": false,
+    "mac": {
+        "icon": "icon/vite-test.icns"
     }
 }

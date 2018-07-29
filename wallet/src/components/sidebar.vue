@@ -83,7 +83,7 @@ export default {
         },
         loopNet() {
             this.netStatus = viteWallet.Net.getStatus();
-            console.log(this.netStatus);
+
             loopNetTimeout = window.setTimeout(() => {
                 this.stopLoopNet();
                 this.loopNet();

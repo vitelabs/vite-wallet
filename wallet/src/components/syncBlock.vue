@@ -88,7 +88,6 @@ export default {
         syncData({
             targetHeight, currentHeight, status
         }) {
-            console.log(status);
             this.targetHeight = targetHeight;
             this.currentHeight = currentHeight;
             this.status = status;

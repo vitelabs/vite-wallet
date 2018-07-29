@@ -1,5 +1,5 @@
 // [TODO] app-log test mock-server
-const {app, BrowserWindow, shell, dialog} = require('electron');
+const { app, BrowserWindow, shell, dialog, globalShortcut } = require('electron');
 const path = require('path');
 const os = require('os');
 global.goFile = path.join(os.homedir(), '/viteisbest/');    // Must be defined in advance
@@ -37,7 +37,8 @@ function loadWeb() {
     win.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
     win.webContents.once('dom-ready', () => {
         win.webContents.executeJavaScript(`
-            require(process.cwd() + '/walletSrc/modules/webStart.js');
+            const path = require('path');
+            require(path.join(__dirname, '../walletSrc/modules/webStart.js'));
         `);
     });
 
@@ -57,7 +58,7 @@ function createWindow () {
     win = new BrowserWindow({
         width: 800,
         height: 600,
-        title: 'VITE-WALLET',
+        title: 'VITE WALLET',
         images: true
     });
 
@@ -83,6 +84,10 @@ function createWindow () {
         win = null;
         stopIPCServer();
         app.quit();
+    });
+
+    globalShortcut.register('CommandOrControl+Y', () => {
+        win.webContents.openDevTools();
     });
 
     onIPCServer(loadWeb);
