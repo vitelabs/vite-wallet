@@ -112,7 +112,15 @@ export default {
                 let nowList = [];
 
                 list.forEach(item => {
-                    let status = ['---', 'unconfirmed', 'confirmed'][item.Status];
+                    let confirms = item.ConfirmedTimes;
+                    console.log(confirms);
+                    let status = 'unconfirmed';
+                    if (confirms && confirms < 50) {
+                        status = `confirms(${confirms})`;
+                    } else if (confirms && confirms >= 50) {
+                        status = 'confirmed';
+                    }
+
                     let timestamp = item.Timestamp * 1000;
 
                     nowList.push({

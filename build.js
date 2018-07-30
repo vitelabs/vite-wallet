@@ -76,9 +76,10 @@ function writePackage() {
 }
 
 function startBuild() {
+    let target = process.env.p === 'WIN' ? electronBuilder.Platform.WINDOWS : electronBuilder.Platform.MAC;
     electronBuilder.build({
         targets: electronBuilder.createTargets([
-            electronBuilder.Platform.MAC
+            target
         ], null, 'all'),
         projectDir: path.join(__dirname, './app'),
         publish: 'never'
