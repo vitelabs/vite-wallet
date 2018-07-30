@@ -4,6 +4,8 @@
     "description": "",
     "main": "main.js",
     "scripts": {
+        "postinstall": "electron-builder install-app-deps",
+        "dist": "electron-builder --publish onTagOrDraft",
         "start": "electron .",
         "build:map:wallet": "cd wallet && npm run build:map",
         "dev": "npm run build:map:wallet && NODE_ENV=dev npm run start",
@@ -24,10 +26,12 @@
     },
     "homepage": "https://github.com/vitelabs/vite-wallet#readme",
     "devDependencies": {
+        "babel-eslint": "~8.2.6",
         "babel-preset-es2015": "^6.24.1",
         "electron": "^2.0.4",
-        "eslint": "^5.1.0",
-        "eslint-plugin-vue": "^4.7.0",
+        "electron-builder": "^20.24.5",
+        "eslint": "~4.19.1",
+        "eslint-plugin-vue": "~4.7.0",
         "mocha": "^5.2.0",
         "pre-commit": "^1.2.2"
     },
@@ -35,5 +39,35 @@
         "event-pubsub": "^4.3.0",
         "js-queue": "^2.0.0",
         "jsonrpc-lite": "^2.0.0"
+    },
+    "build": {
+        "appId": "com.sigoden.alphat",
+        "mac": {
+            "category": "public.app-category.utilities"
+        },
+        "dmg": {
+            "contents": [
+                {
+                    "x": 110,
+                    "y": 150
+                },
+                {
+                    "x": 240,
+                    "y": 150,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
+        },
+        "win": {
+            "target": "nsis"
+        },
+        "linux": {
+            "category": "Utility",
+            "target": [
+                "deb",
+                "AppImage"
+            ]
+        }
     }
 }

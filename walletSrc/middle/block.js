@@ -1,9 +1,14 @@
+const loopBlockTime = 2000;
+
 class Block {
     constructor() {
         this.startHeight = '';
         this.targetHeight = '';
         this.currentHeight = '';
+        this.isFirstSyncDone = false;
+        this.isStartFirstSync = false;
 
+        this.__loopBlockTimeout = null;
         this.__startSyncBlock();
     }
 
@@ -12,34 +17,65 @@ class Block {
             this.startHeight = data.StartHeight;
             this.targetHeight = data.TargetHeight;
             this.currentHeight = data.CurrentHeight;
+            this.isFirstSyncDone = data.IsFirstSyncDone;
+            this.isStartFirstSync = data.IsStartFirstSync;
+
+            this.isFirstSyncDone && this.__stopSyncBlock();
+
             return data;
         });
     }
 
     __startSyncBlock() {
-        this.__syncBlock().catch(()=>{});
+        if (this.isFirstSyncDone) {
+            return;
+        }
 
-        let loopTimeout = setTimeout(()=>{
-            clearTimeout(loopTimeout);
-            loopTimeout = null;
-            this.__startSyncBlock();
-        }, 2000);
+        let loop = ()=>{
+            this.__loopBlockTimeout = setTimeout(()=>{
+                this.__stopSyncBlock();
+                this.__startSyncBlock();
+            }, loopBlockTime);
+        };
+
+        this.__syncBlock().then(()=>{
+            loop();
+        }).catch(()=>{
+            loop();
+        });
+    }
+
+    __stopSyncBlock() {
+        clearTimeout(this.__loopBlockTimeout);
+        this.__loopBlockTimeout = null;
     }
       
     getSyncInfo(passive = true) {
         if (passive) {
-            return Promise.then({
-                startHeight: this.startHeight,
-                targetHeight: this.targetHeight,
-                currentHeight: this.currentHeight 
-            });
-        }
-        return this.__syncBlock().then(()=>{
             return {
                 startHeight: this.startHeight,
                 targetHeight: this.targetHeight,
-                currentHeight: this.currentHeight 
+                currentHeight: this.currentHeight,
+                isFirstSyncDone: this.isFirstSyncDone,
+                isStartFirstSync: this.isStartFirstSync
             };
+        }
+
+        this.__stopSyncBlock();
+        return new Promise((res, rej)=>{
+            this.__syncBlock().then(()=>{
+                this.__startSyncBlock();
+                res({
+                    startHeight: this.startHeight,
+                    targetHeight: this.targetHeight,
+                    currentHeight: this.currentHeight,
+                    isFirstSyncDone: this.isFirstSyncDone,
+                    isStartFirstSync: this.isStartFirstSync
+                });
+            }).catch((err)=>{
+                rej(err);
+                this.__startSyncBlock();
+            });
         });
     }
 
@@ -52,6 +88,8 @@ class Block {
             Passphrase: pass,
             TokenTypeId: tokenId,
             Amount: amount
+        }).then(({ data })=>{
+            return data;
         });
     }
 
@@ -60,15 +98,15 @@ class Block {
             Addr: address,
             index: pageIndex,
             count: pageNum
+        }).then(({ data })=>{
+            return data;
         });
     }
 
     getUnconfirmedTX(address) {
-        return global.goViteIPC['ledger.GetUnconfirmedInfo'](address);
-    }
-
-    getBalance(address) {
-        return global.goViteIPC['ledger.GetAccountByAccAddr'](address);
+        return global.goViteIPC['ledger.GetUnconfirmedInfo'](address).then(({ data })=>{
+            return data;
+        });
     }
 }
 

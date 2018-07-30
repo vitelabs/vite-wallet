@@ -2,3 +2,5 @@ node_modules/*
 wallet/node_modules/*
 wallet/dist/*
 test/keyFiles
+vite_leveldb_database/*
+wallet/vite_leveldb_database/*

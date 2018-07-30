@@ -2,7 +2,8 @@
     <div class="account-list-wrapper">
         <div class="content-wrapper">
             <div>account balance: 
-                <span v-for="(balanceInfo, id) in accountBalance" :key="id">
+                <span v-show="!accountBalance.length">0</span>
+                <span v-show="accountBalance.length" v-for="(balanceInfo, id) in accountBalance" :key="id">
                     {{ balanceInfo.balance + ' ' + balanceInfo.tokenSymbol }}
                 </span>
             </div>
@@ -11,13 +12,14 @@
 
         <login :showLogin="showLogin"
                :hideLogin="toHideLogin"
-               :loginSuccess="goAccount"></login>
+               :loginSuccess="goAccount"
+               :address="activeAddress"></login>
     </div>
 </template>
 
 <script>
 import login from 'components/login';
-import accountList from 'components/accountList';
+import accountList from './accountList';
 
 export default {
     components: {
@@ -35,6 +37,17 @@ export default {
     },
     methods: {
         toShowLogin(address) {
+            let accountStatus = viteWallet.Account.status(address);
+            if (!accountStatus) {
+                window.alert('fail');
+                return;
+            }
+
+            if (accountStatus === 'UnLock') {
+                this.goAccount();
+                return;
+            }
+
             this.activeAddress = address;
             this.showLogin = true;
         },
@@ -52,6 +65,7 @@ export default {
                     address: this.activeAddress
                 }
             });
+            this.activeAddress = '';
         }
     }
 };

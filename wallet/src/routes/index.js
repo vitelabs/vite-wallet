@@ -1,7 +1,7 @@
-// [TODO] Dynamically generate routes by directory structure
+// [TODO] Dynamically generate routes by directory structure（don't need?）
 
-import account from '../pages/account.vue';
-import accountList from '../pages/accountList.vue';
+import account from '../pages/account/index.vue';
+import accountList from '../pages/accountList/index.vue';
 import transaction from '../pages/transaction.vue';
 
 export default [

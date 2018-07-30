@@ -1,21 +1,26 @@
 const { spawn } = require('child_process');
+const fs = require('fs');
 const path = require('path');
+const binPath = path.join(process.cwd(), '/serverScript/server');
 
-let binPath = path.join(__dirname, '../scripts/server');
+fs.chmodSync(binPath, 0o777);
 
-const proc = spawn(binPath);
+module.exports = function(cb) {
+    const subProcess = spawn(binPath);
 
-proc.once('error', error => {
-    console.log('error');
-    console.log(error);
-});
-
-proc.stdout.on('data', data => {
-    console.log('stdout');
-    console.log(data.toString('utf8'));
-});
-
-proc.stderr.on('data', data => {
-    console.log('stderr');
-    console.log(data.toString('utf8'));
-});
+    subProcess.once('error', error => {
+        console.log('error', error);
+    });
+    
+    subProcess.stdout.on('data', data => {
+        if (data.toString().indexOf('Vite rpc start success!') < 0) {
+            return;
+        }
+        console.log('start ipc Server');
+        cb && cb();
+    });
+    
+    subProcess.on('close', (code) => { 
+        console.log(`quit code: ${code}`);
+    });
+};

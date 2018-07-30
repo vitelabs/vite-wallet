@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const { shell } = require('electron');
 
@@ -16,6 +17,15 @@ class Keystore {
 
     openFolder() {
         shell.showItemInFolder(this.folder);
+    }
+
+    importFile(filePath, fileName) {
+        return this.isValidFile(filePath).then(({
+            data
+        }) => {
+            data && fs.renameSync(filePath, path.join(this.folder, fileName));
+            return data;
+        });
     }
 }
 

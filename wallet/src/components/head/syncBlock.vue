@@ -1,9 +1,9 @@
 <template>
-    <li>
-        <span>{{ isFinish ? $t("nav.done") : $t("nav.sync") }}</span>
-        <span>{{ blockPercent }}</span>
-        <span v-show="!isFinish" @click="fetchSyncBlock">reload</span>
-        <span v-show="isFinish">done</span>
+    <li class="sync-block-wrapper">
+        <span v-show="status">{{ $t(`nav.${status}`) }}</span>
+        <span v-show="!isFirstSyncDone">{{ blockPercent }}</span>
+        <span v-show="!isFirstSyncDone" @click="reloadBlock">reload</span>
+        <span v-show="isFirstSyncDone">done</span>
     </li>
 </template>
 
@@ -11,17 +11,66 @@
 export default {
     data() {
         return {
-            blockPercent: '0%',
-            isFinish: false
+            currentHeight: '',
+            startHeight: '',
+            targetHeight: '',
+
+            isFirstSyncDone: false,
+            status: ''
         };
     },
+    mounted() {
+        this.getSyncBlock();
+    },
+    computed: {
+        blockPercent() {
+            if (!this.status ||
+                !this.currentHeight || !this.startHeight || !this.targetHeight || 
+                !(this.targetHeight - this.startHeight)) {
+                return '---';
+            }
+            return (this.currentHeight - this.startHeight) / (this.targetHeight - this.startHeight) * 100 + '%';
+        }
+    },
     methods: {
-        fetchSyncBlock() {
-            viteWallet.Block.getSyncInfo().then((msg)=>{
-                console.log(msg);
+        reloadBlock() {
+            viteWallet.Block.getSyncInfo(false).then((data) => {
+                this.syncData(data);
             }).catch((err)=>{
-                console.log(err);
+                console.warn(err);
             });
+        },
+        getSyncBlock() {
+            if (this.isFirstSyncDone) {
+                this.status = 'firstDone';
+
+                let statusTimeout = window.setTimeout(()=>{
+                    window.clearTimeout(statusTimeout);
+                    statusTimeout = null;
+                    this.status = 'sync';
+                }, 1000);
+
+                return;
+            }
+
+            this.syncData( viteWallet.Block.getSyncInfo() );
+
+            let loopTimeout = setTimeout(()=>{
+                window.clearTimeout(loopTimeout);
+                loopTimeout = null;
+                this.getSyncBlock();
+            }, 2000);
+        },
+
+        syncData({
+            startHeight, targetHeight, currentHeight, isStartFirstSync, isFirstSyncDone
+        }) {
+            this.startHeight = startHeight;
+            this.targetHeight = targetHeight;
+            this.currentHeight = currentHeight;
+            this.isFirstSyncDone = isFirstSyncDone;
+
+            isStartFirstSync && (this.status = 'firstDoing');
         }
     }
 };

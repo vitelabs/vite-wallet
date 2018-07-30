@@ -10,7 +10,8 @@ module.exports = {
             backup: '备份账户',
         },
         sync: '节点同步中',
-        done: '节点同步完成'
+        firstDone: '初始化已完成',
+        firstDoing: '初始化中'
     },
 
     // account list

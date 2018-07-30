@@ -6,8 +6,10 @@
             <li @click="openDragFile">{{ $t("nav.head.imported") }}</li>
             <li @click="openAccountFile">{{ $t("nav.head.backup") }}</li>
         </ul>
+
         <pass-confirm :showPassConfirm="showPassConfirm"
                       :toggelPassConfirm="toggelPassConfirm"></pass-confirm>
+
         <drag-file :show="showDragFile"
                    :toHide="toHideDragFile"></drag-file>
     </li>
@@ -28,18 +30,31 @@ export default {
             showDragFile: false
         };
     },
+    watch: {
+        showAccountList: function() {
+            if (this.showAccountList) {
+                return;
+            }
+            this.showPassConfirm = false;
+            this.showDragFile = false;
+        }
+    },
     methods: {
         toggleAccountList() {
             this.showAccountList = !this.showAccountList;
         },
         toggelPassConfirm() {
             this.showPassConfirm = !this.showPassConfirm;
+            this.showPassConfirm && this.toHideDragFile();
         },
         openAccountFile() {
             viteWallet.Keystore.openFolder();
+            this.showPassConfirm = false;
+            this.showDragFile = false;
         },
         openDragFile() {
             this.showDragFile = true;
+            this.showPassConfirm = false;
         },
         toHideDragFile() {
             this.showDragFile = false;

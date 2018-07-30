@@ -14,27 +14,28 @@ let rpcRequestId = 0;
 class ipc {
     constructor() {
         this.__connectStatus = -1;
+        this.dataDIR = '';
 
-        ipcBase.connectTo(VITE_WALLET_IPC, function(){
+        ipcBase.connectTo(VITE_WALLET_IPC, () => {
             // listening connect
-            ipcBase.of[VITE_WALLET_IPC].on('connect', function(){
-                this.__connectStatus = 1;
+            ipcBase.of[VITE_WALLET_IPC].on('connect', () => {
+                this.emitConnected(1);
             });
 
             // listening err
-            ipcBase.of[VITE_WALLET_IPC].on('error', function(){
+            ipcBase.of[VITE_WALLET_IPC].on('error', () => {
                 if (ipcBase.of[VITE_WALLET_IPC].retriesRemaining === 0) {
                     ipcBase.disconnect(VITE_WALLET_IPC);
-                    this.__connectStatus = 0;
+                    this.emitConnected(0);
                 }
             });
         
             // listening disconnect
-            ipcBase.of[VITE_WALLET_IPC].on('disconnect', function() {
+            ipcBase.of[VITE_WALLET_IPC].on('disconnect', () => {
                 if (!ipcBase.of[VITE_WALLET_IPC] || 
                     !ipcBase.of[VITE_WALLET_IPC].retriesRemaining || 
                     ipcBase.of[VITE_WALLET_IPC].retriesRemaining <= 0) {
-                    this.__connectStatus = 0;
+                    this.emitConnected(0);
                 }
             });
         });
@@ -57,6 +58,27 @@ class ipc {
             });
         }
     }
+
+    emitConnected(connectStatus) {
+        this.__connectStatus = connectStatus;
+        if (!this.__connectStatus) {
+            return;
+        }
+
+
+        netToIPC.bind(this, 'wallet.GetDataDir')().then((data)=>{
+            console.log(data);
+        });
+        this.__connectCB && this.__connectCB();
+    }
+
+    onConnected(cb) {
+        if (this.__connectStatus === 1) {
+            cb && cb();
+            return;
+        }
+        this.__connectCB = cb;
+    }
 }
 
 function netToIPC(methodName, arg) {
@@ -67,7 +89,6 @@ function netToIPC(methodName, arg) {
         });
     }
 
-    // [TODO] go-api should use another rpc library
     // Simple compatible with this case.
     // If there is only one parameter, go-api needs an array containing this parameter.
     arg = arg === null ? undefined : arg;
@@ -82,7 +103,6 @@ function netToIPC(methodName, arg) {
         // listening api
         ipcBase.of[VITE_WALLET_IPC].on(payload.id, function(data) {
             if (!data.error) {
-                // [TODO] go-api should be perfect
                 // Compatible: somtimes data.result is a json string, sometimes not.
                 let result;
                 try {

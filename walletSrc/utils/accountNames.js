@@ -29,12 +29,7 @@ module.exports = {
         }
         return obj || defaultObj;
     },
-    writeAccountNames(__accountsMap, nameCount) {
-        let namesMap = {};
-        for(let address in __accountsMap) {
-            namesMap[address] = __accountsMap[address].name;
-        }
-
+    writeAccountNames(namesMap, nameCount) {
         fs.writeFile(accountNameFile, JSON.stringify({
             namesMap, nameCount
         }), 'utf8');

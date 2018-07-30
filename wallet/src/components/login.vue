@@ -20,6 +20,10 @@ export default {
         loginSuccess: {
             type: Function,
             default: ()=>{}
+        },
+        address: {
+            type: String,
+            default: ''
         }
     },
     data() {
@@ -29,7 +33,7 @@ export default {
     },
     watch: {
         showLogin: function () {
-            !this.showLogin && (this.pass1 = '');
+            !this.showLogin && (this.pass = '');
         }
     },
     methods: {
@@ -39,7 +43,7 @@ export default {
                 return;
             }
 
-            viteWallet.Account.unLock(this.pass).then(()=>{
+            viteWallet.Account.unLock(this.address, this.pass).then(()=>{
                 this.loginSuccess && this.loginSuccess();
             }).catch((err)=>{
                 window.alert(err);

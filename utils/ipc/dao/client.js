@@ -21,7 +21,8 @@ class Client extends Events{
                 emit    : emit,
                 log     : log,
                 retriesRemaining: config.maxRetries||0,
-                explicitlyDisconnected: false
+                explicitlyDisconnected: false,
+                ipcBuffer: ''
             }
         );
     }
@@ -136,16 +137,17 @@ function connect(){
         function(data) {
             client.log('## received events ##');
 
-            if(!this.ipcBuffer){
-                this.ipcBuffer='';
+            if (data.slice(-1)!='\n' || data.indexOf('\n') == -1) {
+                this.ipcBuffer += data;
+                return;
             }
 
-            data = (this.ipcBuffer+=data);
-
+            if (this.ipcBuffer) {
+                data = this.ipcBuffer + data;
+            }
             this.ipcBuffer='';
 
             data = eventParser.parse(data);
-
             data.forEach((ele) => {
                 client.log('detected event', ele.id, ele);
                 client.publish(ele.id, ele);
