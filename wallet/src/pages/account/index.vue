@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <trans-list :address="address"></trans-list>
+        <trans-list :totalNum="blockHeight" ></trans-list>
     </div>
 </template>
 
@@ -54,6 +54,7 @@ export default {
             accountName: '',
             balanceInfos: [],
             fundFloat: {},
+            blockHeight: '0',
 
             isShowNameInput: false,
             editName: ''
@@ -95,11 +96,12 @@ export default {
 
         fetchAccount() {
             viteWallet.Account.get(this.address).then(({
-                name, balanceInfos, fundFloat
+                name, balanceInfos, fundFloat, blockHeight
             }) => {
                 this.accountName = name;
                 this.balanceInfos = balanceInfos;
                 this.fundFloat = fundFloat;
+                this.blockHeight = blockHeight;
             }).catch((err) => {
                 window.alert(err);
             });

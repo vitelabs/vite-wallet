@@ -57,7 +57,7 @@ function formatFile(filePath, folderLevel) {
 }
 
 function copyServer() {
-    fs.writeFileSync('./app/viteGoServer', fs.readFileSync('./viteGoServer'));
+    fs.writeFileSync('./app/viteGoServer', fs.readFileSync(`./viteGoServer_${process.env.p || 'MAC'}`));
 }
 
 function copyIcon() {

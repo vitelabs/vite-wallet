@@ -22,6 +22,7 @@ export default {
         },
         changeLocale(locale) {
             this.$i18n.locale = locale;
+            viteWallet.EventEmitter.emit('changeLang', locale);
             this.toggleLangList();
         }
     }

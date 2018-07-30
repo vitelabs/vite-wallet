@@ -3,7 +3,7 @@ const { net } = require('electron');
 const protocol = 'https:';
 const hostname = 'test.vite.net';
 
-class HttpAPIs {
+class TestToken {
     constructor() {}
 
     __getRequest(path, params, method = 'POST') {
@@ -33,7 +33,13 @@ class HttpAPIs {
                     }
 
                     try {
-                        let { data } = JSON.parse(bodyData);
+                        let { code, msg, data } = JSON.parse(bodyData);
+                        if (code !== 0) {
+                            return rej({
+                                code,
+                                message: msg
+                            });
+                        }
                         res(data);
                     } catch(err) {
                         rej({
@@ -49,20 +55,11 @@ class HttpAPIs {
         });
     }
 
-    getTransList() {
-        // [test code]
-        // return this.__getRequest('/api/transaction/list', {
-        //     accountAddress: 'vite_60f445d22ecef16fa8ff746b9e279afd8eee796b3e27805ec2',
-        //     paging: {
-        //         index: 0, 
-        //         count: 6
-        //     }
-        // });
-    }
-
-    getTestToken() {
-        
+    get(accountAddress) {
+        return this.__getRequest('/api/account/newtesttoken', {
+            accountAddress
+        });
     }
 }
 
-module.exports = HttpAPIs;
+module.exports = TestToken;

@@ -51,7 +51,8 @@ class Account {
                     balanceInfos: unconfirmedInfo.BalanceInfos || [],
                     len: unconfirmedInfo.UnConfirmedBlocksLen || ''
                 },
-                balanceInfos: accountBalance.BalanceInfos || []
+                balanceInfos: accountBalance.BalanceInfos || [],
+                blockHeight: accountBalance.BlockHeight || '0'
             };
 
             return account;
@@ -60,7 +61,7 @@ class Account {
 
     getName(address) {
         this.__checkName(address);
-        return this.__fileAccountsMap(address);
+        return this.__fileAccountsMap[address];
     }
 
     rename(address, name) {

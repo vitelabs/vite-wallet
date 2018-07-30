@@ -17,7 +17,7 @@
             <div class="row">
                 <span>{{ $t('accDetail.inAddress') }}</span>
                 <input v-model="inAddress" />
-                <span v-show="isValidAddress" class="err">address illegal</span>
+                <span v-show="!isValidAddress" class="err">address illegal</span>
             </div>
             <div class="row">
                 <span>{{ $t('accDetail.sum') }}</span>
@@ -59,14 +59,20 @@ export default {
         };
     },
     watch: {
-        outAddress: function() {
+        inAddress: function() {
             clearTimeout(outAddrTimeout);
             outAddrTimeout = null;
 
             outAddrTimeout = setTimeout(async ()=> {
                 outAddrTimeout = null;
+                
+                if (!this.inAddress) {
+                    this.isValidAddress = false;
+                    return;
+                }
+
                 try {
-                    this.isValidAddress = await viteWallet.Types.isValidAddress(this.outAddress);
+                    this.isValidAddress = await viteWallet.Types.isValidAddress(this.inAddress);
                 } catch(err) {
                     console.warn(err);
                     this.isValidAddress = false;

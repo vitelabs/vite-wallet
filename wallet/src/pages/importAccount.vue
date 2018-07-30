@@ -26,6 +26,14 @@ export default {
             e.preventDefault();
             e.stopPropagation();
 
+            if (e.dataTransfer.files.length > 1) {
+                this.msg = {
+                    type: 'error',
+                    msg: 'only 1'
+                };
+                return;
+            }
+            
             for (let f of e.dataTransfer.files) {
                 try {
                     let data = await viteWallet.Keystore.importFile(f.path, f.name);
@@ -42,7 +50,10 @@ export default {
                         msg: 'import success'
                     };
                     this.$router.push({
-                        name: 'login'
+                        name: 'login',
+                        params: {
+                            address: data
+                        }
                     });
                 } catch(err) {
                     this.errMsg = err && err.message ? err.message : 'file is illegal';

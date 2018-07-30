@@ -12,6 +12,7 @@
         "clean": "rm -rf ./app",
         "build": "npm run clean && npm run build:walletpages && gulp && node build.js",
         "builddev": "npm run clean && npm run build:walletmap && gulp && node build.js",
+        "buildWIN": "p=WIN npm run build",
         "dev": "NO_BUILD=true npm run builddev && NODE_ENV=dev electron .",
         "test": "mocha",
         "lint": "eslint ./ --cache"
@@ -28,8 +29,8 @@
         "eslint": "~4.19.1",
         "eslint-plugin-vue": "~4.7.0",
         "event-pubsub": "^4.3.0",
-        "gulp": "^3.9.1",
-        "gulp-babel": "^7.0.1",
+        "gulp": "~3.9.1",
+        "gulp-babel": "~7.0.1",
         "js-queue": "^2.0.0",
         "mocha": "^5.2.0",
         "pre-commit": "^1.2.2"
