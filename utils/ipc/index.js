@@ -18,4 +18,4 @@ class IPCModule extends IPC{
     }
 }
 
-module.exports=new IPCModule;
+module.exports = new IPCModule;

@@ -1,237 +1,108 @@
-const { readAccountNamesSync, writeAccountNames } = require('../utils/accountNames.js');
-const ERRORS = require('../utils/errors.js');
+const { readAccountFileSync, writeAccountFile } = require('../utils/accountFile.js');
 
 const accNamePre = 'account';
-const loopAddrListTime = 5000;
-const loopBalanceListTime = 5000;
 
 class Account {
     constructor() {
-        // name / balance
-        this.__accountsMap = {};
-        this.__totalBalance = [];
-
         // init account names
-        let names = readAccountNamesSync();
-        this.__fileAccountsMap = names.namesMap || {};  // AccountName should be saved forever.
-        this.__nameCount = names.nameCount || 0;
-
-        // start loop address list => check user names
-        this.__loopAddressList();
-        
-        // start loop balance list => computed tatal balance
-        this.__loopBalanceList();
-
-        // start loop account-status
-        this.__loopStatusList();
+        let accountFile = readAccountFileSync();
+        this.__fileAccountsMap = accountFile.namesMap || {};  // AccountName should be saved forever.
+        this.__nameCount = accountFile.nameCount || 0;
+        this.__lastLoginAccount = accountFile.lastLoginAccount || '';
     }
 
-    __loopAddressList() {
-        let timeoutLoop = ()=>{
-            let loopTimeout = setTimeout(()=>{
-                clearTimeout(loopTimeout);
-                loopTimeout = null;
-                this.__loopAddressList();
-            }, loopAddrListTime);
-        };
-
-        global.goViteIPC['wallet.ListAddress']().then(({ data })=>{
-            // If no data, clear __accountsMap
-            if (!data || !data.length) {
-                this.__accountsMap = {};
-                return;
-            }
-
-            let isChange = false;
-
-            data.forEach(address => {
-                // Already have name
-                if (this.__accountsMap[address] && this.__accountsMap[address].name) {
-                    return;
-                }
-
-                isChange = !this.__fileAccountsMap[address];
-                let name = this.__fileAccountsMap[address] || `${accNamePre}${++this.__nameCount}`;
-                this.__accountsMap[address] = this.__accountsMap[address] || {};    // Maybe other info already completed.
-                this.__accountsMap[address].name = name;
-                this.__fileAccountsMap[address] = name;
-            });
-
-            // Write name-file only when data changes
-            isChange && writeAccountNames(this.__fileAccountsMap, this.__nameCount);
-
-            timeoutLoop();
-        }).catch(()=>{
-            timeoutLoop();
-        });
-    }
-
-    __loopBalanceList() {
-        let timeoutLoop = ()=>{
-            let loopTimeout = setTimeout(()=>{
-                clearTimeout(loopTimeout);
-                loopTimeout = null;
-                this.__loopBalanceList();
-            }, loopBalanceListTime);
-        };
-
-        let proList = [];
-        for (let address in this.__accountsMap) {
-            proList.push(global.goViteIPC['ledger.GetAccountByAccAddr'](address));
+    __checkName(address, isSave = true) {
+        if (this.__fileAccountsMap[address]) {
+            return true;
         }
-
-        if (!proList.length) {
-            timeoutLoop();
-            return;
-        }
-
-        Promise.all(proList).then(({ data })=>{
-            let totalBalance = {};
-
-            data.forEach((account) => {
-                if (!this.__accountsMap[account.address]) {
-                    return;
-                }
-
-                let balanceInfos = account.BalanceInfos ? account.BalanceInfos || [] : [];
-                this.__accountsMap[account.address].balanceInfos = balanceInfos;
-                this.__accountsMap[account.address].BlockHeight = account.BlockHeight || '';
-
-                balanceInfos.forEach((balanceInfo) => {
-                    let id = balanceInfo.TokenTypeId;
-
-                    if (totalBalance[id]) {
-                        // [TODO] bignumber
-                        totalBalance[id].balance += balanceInfo.Balance;
-                        return;
-                    }
-
-                    totalBalance[balanceInfo.id] = {
-                        tokenSymbol: balanceInfo.TokenSymbol,
-                        tokenName: balanceInfo.TokenName,
-                        balance: balanceInfo.Balance
-                    };
-                });
-            });
-            
-            this.__totalBalance = totalBalance;
-
-            timeoutLoop();
-        }).catch(()=>{
-            timeoutLoop();
-        });
+        let name = `${accNamePre}${++this.__nameCount}`;
+        this.__fileAccountsMap[address] = name;
+        isSave && this.__writeFile();
+        return false;
     }
 
-    __loopStatusList() {
-        let timeoutLoop = ()=>{
-            let loopTimeout = setTimeout(()=>{
-                clearTimeout(loopTimeout);
-                loopTimeout = null;
-                this.__loopStatusList();
-            }, loopAddrListTime);
-        };
-
-        global.goViteIPC['wallet.Status']().then(({ data })=>{
-            for (let address in data) {
-                if(!this.__accountsMap[address]) {
-                    return;
-                }
-                this.__accountsMap[address].status = data[address];
-            }
-            timeoutLoop();
-        }).catch(()=>{
-            timeoutLoop();
-        });
+    __writeFile() {
+        writeAccountFile(this.__fileAccountsMap, this.__nameCount, this.__lastLoginAccount);
     }
 
-    create(pass) {
-        return global.goViteIPC['wallet.NewAddress'](pass);
+    create(name, pass) {
+        return global.goViteIPC['wallet.NewAddress'](pass).then((address)=>{
+            this.__fileAccountsMap[address] = name;
+            this.__lastLoginAccount = address;
+            this.__writeFile();
+            return address;
+        });
     }
 
     get(address) {
-        if (!this.__accountsMap[address]) {
-            return Promise.reject( ERRORS.NO_DATA('account') );
-        }
+        return Promise.all([
+            global.goViteIPC['ledger.GetUnconfirmedInfo'](address),
+            global.goViteIPC['ledger.GetAccountByAccAddr'](address)
+        ]).then((result) => {
+            this.__checkName(address);
 
-        return new Promise((res, rej)=>{
-            global.goViteIPC('ledger.GetUnconfirmedInfo', address).then(({
-                data
-            }) => {
-                res({
-                    name: this.__accountsMap[address].name || '',
-                    balanceInfos: this.__accountsMap[address].balanceInfos || [],
-                    fundFloat: {
-                        balanceInfos: data ? data.BalanceInfos || [] : [],
-                        len: data ? data.UnConfirmedBlocksLen || '' : ''
-                    }
-                });
-            }).catch((err)=>{
-                rej(err);
-            });
+            let unconfirmedInfo = result[0] || {};
+            let accountBalance = result[1] || {};
+
+            let account = {
+                address,
+                name: this.__fileAccountsMap[address],
+                fundFloat: {
+                    balanceInfos: unconfirmedInfo.BalanceInfos || [],
+                    len: unconfirmedInfo.UnConfirmedBlocksLen || ''
+                },
+                balanceInfos: accountBalance.BalanceInfos || [],
+                blockHeight: accountBalance.BlockHeight || '0'
+            };
+
+            return account;
         });
     }
 
+    getName(address) {
+        this.__checkName(address);
+        return this.__fileAccountsMap[address];
+    }
+
     rename(address, name) {
-        if (!name || !this.__accountsMap[address]) {
+        if (!address || !name) {
             return false;
         }
 
-        this.__accountsMap[address].name = name;
         this.__fileAccountsMap[address] = name;
-        writeAccountNames(this.__fileAccountsMap, this.__nameCount);
+        this.__writeFile();
         return true;
     }
 
-    getList({ pageIndex, pageNum }) {
-        let startInx = pageIndex * pageNum;
-        let endInx = (pageIndex + 1) * pageNum;
-        let count = 0;
-        let proList = [];
-
-        for(let address in this.__accountsMap) {
-            let c = count++;
-            if (c >= endInx || c < startInx) {
-                continue;
+    getList() {
+        return global.goViteIPC['wallet.ListAddress']().then((data)=>{
+            if (!data || !data.length) {
+                return [];
             }
 
-            proList.push( global.goViteIPC['ledger.GetUnconfirmedInfo'](address) );
-        }
+            let isChange = false;
+            let list = [];
 
-        if (!proList.length) {
-            return Promise.resolve({
-                accountList: [],
-                totalNum: count
-            });
-        }
-
-        return Promise.all(proList).then((val) => {
-            let accountList = [];
-            val.forEach(({ data })=>{
-                let address = data.Addr;
-
-                // This account already disappear.
-                if (!this.__accountsMap[address]) {
-                    return;
-                }
-
-                accountList.push({
+            data.forEach(address => {
+                isChange = isChange || !this.__checkName(address, false);
+                list.push({
                     address,
-                    unconfBlock: data,
-                    name: this.__accountsMap[address].name,
-                    balanceInfos: this.__accountsMap[address].balanceInfos,
-                    status: this.__accountsMap[address].status
+                    name: this.__fileAccountsMap[address]
                 });
             });
 
-            return {
-                accountList,
-                totalNum: count
-            };
+            // Write name-file only when data changes
+            isChange && this.__writeFile();
+            return list;
         });
     }
 
     unLock(address, pass) {
-        return global.goViteIPC['wallet.UnLock']([address, pass]);
+        return global.goViteIPC['wallet.UnLock']([address, pass, '0']).then((data)=>{
+            this.__lastLoginAccount = address;
+            this.__writeFile();
+            return data;
+        });
     }
 
     lock(address) {
@@ -239,21 +110,30 @@ class Account {
     }
 
     status(address) {
-        if (!this.__accountsMap[address]) {
+        return global.goViteIPC['wallet.Status']().then((data)=>{
+            data = data || {};
+            for (let addr in data) {
+                if (addr === address) {
+                    return data[addr];
+                }
+            }
             return '';
-        }
-        return this.__accountsMap[address].status;
-    }
-
-    getTotalBalance() {
-        return this.__totalBalance;
+        });
     }
 
     getBalance(address) {
-        if (!this.__accountsMap[address]) {
-            return Promise.reject(ERRORS.NO_DATA('address'));
-        }
         return global.goViteIPC['ledger.GetAccountByAccAddr'](address);
+    }
+
+    getLast() {
+        if (!this.__lastLoginAccount) {
+            return {};
+        }
+        this.__checkName(this.__lastLoginAccount);
+        return {
+            address: this.__lastLoginAccount,
+            name: this.__fileAccountsMap[this.__lastLoginAccount]
+        };
     }
 }
 

@@ -4,6 +4,7 @@ package-lock.json
 dist
 .eslintcache
 .idea
-serverScript
-viteWebConfig.json
+viteGoServer_MAC
+viteGoServer_WIN
 vite_leveldb_database
+app

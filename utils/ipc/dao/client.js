@@ -2,9 +2,9 @@
 
 const net = require('net'),
     EventParser = require('../entities/EventParser.js'),
-    Queue = require('js-queue');
+    Queue = require('~app/modules/js-queue');
 
-let Events = require('event-pubsub');
+let Events = require('~app/modules/event-pubsub');
 let eventParser = new EventParser();
 
 class Client extends Events{

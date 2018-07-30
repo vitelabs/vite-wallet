@@ -1,11 +1,4 @@
 const { remote } = require('electron');
-const { Account, Net, Block, Keystore } = remote.require('./walletSrc/middle/index.js');
 
-// System APIs
-const System = {
-    getLocale: remote.app.getLocale
-};
-
-window.viteWallet = {
-    Account, Net, Block, System, Keystore
-};
+// Account, Net, Block, Keystore, System, Types, TestToken
+window.viteWallet = remote.require('./walletSrc/middle/index.js');

@@ -7,6 +7,7 @@ import './mixins.scss';
 import App from 'pages/index.vue';
 import routes from 'routes/index';
 import i18nConfig from 'i18n';
+import EventEmitter from 'utils/eventEmitter.js';
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
@@ -42,7 +43,8 @@ appReady(function () {
             System: {},
             Net: {},
             Account: {},
-            Block: {}
+            Block: {},
+            EventEmitter
         };
         new Vue({
             el: '#app',
@@ -54,6 +56,8 @@ appReady(function () {
         return;
     }
 
+    viteWallet.EventEmitter = EventEmitter;
+    
     const { System, Net } = viteWallet;
 
     let locale = System.getLocale();

@@ -1,10 +1,14 @@
-const { clipboard } = require('electron');
+const { clipboard, app } = require('electron');
 
 class System {
     constructor() {}
 
     clipboardWrite(text) {
         clipboard.writeText(text);
+    }
+
+    getLocale() {
+        return app.getLocale();
     }
 }
 

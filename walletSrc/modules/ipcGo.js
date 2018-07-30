@@ -1,4 +1,4 @@
-const ipcBase = require('../../utils/ipc/index.js');
+const ipcBase = require('~app/utils/ipc/index.js');
 
 const VITE_WALLET_IPC = 'vite.ipc';
 const FILE_PATH = global.goFile;
@@ -14,7 +14,6 @@ let rpcRequestId = 0;
 class ipc {
     constructor() {
         this.__connectStatus = -1;
-        this.dataDIR = '';
 
         ipcBase.connectTo(VITE_WALLET_IPC, () => {
             // listening connect
@@ -42,13 +41,16 @@ class ipc {
 
         const apiList = {
             wallet: [
-                'ListAddress', 'NewAddress', 'Status', 'UnLock', 'Lock', 'ReloadAndFixAddressFile', 'IsMayValidKeystoreFile'
+                'ListAddress', 'NewAddress', 'Status', 'UnLock', 'Lock', 'ReloadAndFixAddressFile', 'IsMayValidKeystoreFile', 'GetDataDir'
             ],
             ledger: [
                 'CreateTxWithPassphrase', 'GetBlocksByAccAddr', 'GetUnconfirmedBlocksByAccAddr', 'GetAccountByAccAddr', 'GetUnconfirmedInfo', 'GetInitSyncInfo'
             ],
             p2p: [
                 'NetworkAvailable'
+            ],
+            types: [
+                'IsValidHexAddress', 'IsValidHexTokenTypeId'
             ]
         };
         for (let namespace in apiList) {
@@ -69,6 +71,7 @@ class ipc {
         netToIPC.bind(this, 'wallet.GetDataDir')().then((data)=>{
             console.log(data);
         });
+
         this.__connectCB && this.__connectCB();
     }
 
@@ -102,25 +105,34 @@ function netToIPC(methodName, arg) {
     return new Promise((res, rej) => {
         // listening api
         ipcBase.of[VITE_WALLET_IPC].on(payload.id, function(data) {
-            if (!data.error) {
-                // Compatible: somtimes data.result is a json string, sometimes not.
-                let result;
-                try {
-                    result = JSON.parse(data.result || '');
-                } catch (e) {
-                    result = data.result;    
-                }
+            // console.log(data);
 
-                res({
-                    code: 0,
-                    data: result
+            // system error
+            if (data.error) {
+                return rej({
+                    code: data.error.code,
+                    message: data.error.message || ''
                 });
-                return;
             }
-            rej({
-                code: data.error.code,
-                message: data.error.message || ''
-            });
+
+            // Compatible: somtimes data.result is a json string, sometimes not.
+            let result;
+            try {
+                result = JSON.parse(data.result || '');
+            } catch (e) {
+                result = data.result;    
+            }
+
+            // server error
+            if (result && result.code) {
+                return rej({
+                    code: result.code,
+                    message: result.message || 'server error'
+                });
+            }
+
+            // server success
+            res(result);
         });
     });
 }

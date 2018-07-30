@@ -11,76 +11,121 @@
 
         <div class="list">
             <div v-for="(item, index) in transList" :key="index">
-                <span>{{ $t(`transList.tType.${type}`) }}</span>
-                <span>{{ item.status }}</span>
-                <span>{{ item.timestamp }}</span>
-                <span>{{ item.fromAddr || item.toAddr }}</span>
+                <span>{{ $t(`transList.tType.${item.type}`) }}</span>
+                <span>{{ $t(`transList.status.${item.status}`) }}</span>
+                <span>{{ item.date }}</span>
+                <span>{{ item.transAddr }}</span>
                 <span>{{ item.amount }}</span>
-                <a :href="'www.baidu.com' + item.hash" target="_blank">{{ $t('transList.tDetail') }}</a>
+                <a :href="'https://test.vite.net/transaction/' + item.hash" target="_blank">{{ $t('transList.tDetail') }}</a>
             </div>
         </div>
 
         <div class="btn-list">
-            <span>{{ $t('paging.first') }}</span>
-            <span>{{ $t('paging.pre') }}</span>
-            <span>{{ currentPage + '/' + totalPage }}</span>
-            <span>{{ $t('paging.next') }}</span>
-            <span>{{ $t('paging.last') }}</span>
+            <span @click="fetchTransList(0)">{{ $t('paging.first') }}</span>
+            <span @click="fetchTransList(currentPage - 1)">{{ $t('paging.pre') }}</span>
+            <span>{{ pageNumber }}</span>
+            <span @click="fetchTransList(currentPage + 1)">{{ $t('paging.next') }}</span>
+            <span @click="fetchTransList(totalPage - 1)">{{ $t('paging.last') }}</span>
         </div>
     </div>
 </template>
 
 <script>
+import date from 'utils/date.js';
+import BigNumber from 'bignumber.js';
+
+const pageCount = 10;
+let reTimeout = null;
+let eventChangeLang = null;
+
 export default {
     props: {
-        address: {
+        totalNum: {
             type: String,
-            default: ''
+            default: '0'
         }
     },
     mounted() {
-        this.fetchTransList();
+        this.fetchTransList(0);
+
+        eventChangeLang = viteWallet.EventEmitter.on('changeLang', (locale)=>{
+            this.updateTransListTime(locale);
+        });
     },
     data() {
         return {
+            address: this.$route.params.address, 
             transList: [],
-            currentPage: 0,
-            totalPage: 0
+            currentPage: 0
         };
     },
+    computed: {
+        totalPage() {
+            let totalNum = new BigNumber(this.totalNum);
+            return totalNum.dividedToIntegerBy(pageCount).integerValue();
+        },
+        pageNumber() {
+            return `${this.currentPage + 1}/${this.totalPage}`;
+        }
+    },
+    destroyed() {
+        window.clearTimeout(reTimeout);
+        reTimeout = null;
+        viteWallet.EventEmitter.off(eventChangeLang);
+    },
     methods: {
-        fetchTransList() {
+        updateTransListTime(locale) {
+            let list = [];
+            this.transList.forEach((oldTrans) => {
+                let trans = Object.assign({}, oldTrans);
+                trans.date = date(trans.timestamp, locale);
+                list.push(trans);
+            });
+            this.transList = list;
+        },
+
+        fetchTransList(pageIndex) {
+            if ( (pageIndex >= this.totalPage && pageIndex) || pageIndex < 0 ) {
+                return;
+            }
+
             let reFetch = ()=>{
-                let reTimeout = window.setTimeout(()=>{
+                reTimeout = window.setTimeout(()=>{
                     window.clearTimeout(reTimeout);
                     reTimeout = null;
-                    this.fetchTransList();
+                    this.fetchTransList(this.currentPage);
                 }, 5000);
             };
 
+            this.currentPage = pageIndex;
             viteWallet.Block.getTXList({
                 address: this.address,
                 pageIndex: this.currentPage,
-                pageNum: 10
+                pageNum: pageCount
             }).then((list)=>{
-                list = list || [];
-                list.forEach(item => {
-                    let status = ['---', 'unconfirmed', 'confirmed'][item.status];
-                    if (status !== '---') {
-                        status = this.$t(`transList.status.${status}`);
-                    }
+                // [TODO] request order
+                if (pageIndex !== this.currentPage) {
+                    return;
+                }
 
-                    this.transList.push({
-                        type: item.fromAddr ? 'send' : 'receive',
+                list = list || [];
+                let nowList = [];
+
+                list.forEach(item => {
+                    let status = ['---', 'unconfirmed', 'confirmed'][item.Status];
+                    let timestamp = item.Timestamp * 1000;
+
+                    nowList.push({
+                        type: item.FromAddr ? 'receive' : 'send',
                         status,
-                        timestamp: new Date(item.Timestamp),
-                        fromAddr: item.FromAddr,
-                        toAddr: item.ToAddr,
-                        amount: item.fromAddr ? '-' + item.Aamount : item.Amount,
+                        timestamp,
+                        date: date(timestamp, this.$i18n.locale),
+                        transAddr: item.FromAddr || item.ToAddr,
+                        amount: item.FromAddr ? item.Amount : '-' + item.Amount,
                         hash: item.Hash
                     });
                 });
-                this.transList = list;
+                this.transList = nowList;
 
                 reFetch();
             }).catch((err)=>{

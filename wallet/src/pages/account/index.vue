@@ -1,12 +1,8 @@
 <template>
     <div class="account-wrapper">
-        <account-head :address="address"></account-head>
+        <account-head></account-head>
 
         <div class="account-detail">
-            <div class="row">
-                <span>{{ $t('accDetail.address') }}: </span>
-                <span>{{ address }}</span>
-            </div>
             <div class="row">
                 <span>{{ $t('accDetail.name') }}: </span>
                 <span @click="startRename">{{ accountName }}</span>
@@ -15,23 +11,27 @@
                        @input="inputName"/>
             </div>
             <div class="row">
+                <span>{{ $t('accDetail.address') }}: </span>
+                <span>{{ address }}</span>
+                <span @click="copy">{{ $t('accDetail.copy') }}</span>
+            </div>
+            <div class="row">
                 <span>{{ $t('accDetail.balance') }}: </span>
                 <span v-show="!balanceInfos.length">0</span>
                 <span v-show="balanceInfos.length" v-for="(balanceInfo, i) in balanceInfos" :key="i">
-                    {{ balanceInfo.balance + ' ' + balanceInfo.tokenSymbol }}
+                    {{ balanceInfo.Balance + ' ' + balanceInfo.TokenSymbol }}
                 </span>
             </div>
             <div class="row">
                 <span>{{ $t('accDetail.fundFloat') }}: </span>
                 <span v-for="(balanceInfo, i) in fundFloat.balanceInfos" :key="i">
-                    {{ balanceInfo.balance + ' ' + balanceInfo.tokenSymbol }}
+                    {{ balanceInfo.Balance + ' ' + balanceInfo.TokenSymbol }}
                 </span>
                 <span>{{ fundFloat.len || 0 }}</span>
             </div>
         </div>
-        <span @click="copy">{{ $t('accDetail.copy') }}</span>
 
-        <trans-list :address="address"></trans-list>
+        <trans-list :totalNum="blockHeight" ></trans-list>
     </div>
 </template>
 
@@ -54,10 +54,15 @@ export default {
             accountName: '',
             balanceInfos: [],
             fundFloat: {},
+            blockHeight: '0',
 
             isShowNameInput: false,
             editName: ''
         };
+    },
+    destroyed() {
+        window.clearTimeout(inputTimeout);
+        inputTimeout = null;
     },
     methods: {
         copy() {
@@ -91,11 +96,12 @@ export default {
 
         fetchAccount() {
             viteWallet.Account.get(this.address).then(({
-                name, balanceInfos, fundFloat
+                name, balanceInfos, fundFloat, blockHeight
             }) => {
                 this.accountName = name;
                 this.balanceInfos = balanceInfos;
                 this.fundFloat = fundFloat;
+                this.blockHeight = blockHeight;
             }).catch((err) => {
                 window.alert(err);
             });
