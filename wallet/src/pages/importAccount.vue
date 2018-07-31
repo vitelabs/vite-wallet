@@ -1,13 +1,8 @@
 <template>
-    <div class="import-account-wrapper">
-        <div class="file-drag">
-            <span v-show="!files.length">Drag File Here</span>
-            <span v-show="files.length" 
-                  v-for="(path, i) in files" :key="i">{{ path }}</span>
-        </div>
-        <div v-show="msg.type === 'error'">{{ msg.msg }}</div>
-        <div v-show="msg.type === 'success'">{{ msg.msg }}</div>
-        <router-link :to="{ name: 'login' }">login</router-link>
+    <div class="__index_wrapper import-account-wrapper">
+        <div class="msg" v-show="errMsg" >{{ errMsg }}</div>
+        <div ref="fileArea" class="file-drag">Drag File Here</div>
+        <router-link class="__btn_link" :to="{ name: 'login' }">login</router-link>
     </div>
 </template>
 
@@ -16,9 +11,7 @@ export default {
     data() {
         return {
             files: [],
-            msg: {},
-            errMsg: '',
-            successMsg: ''
+            errMsg: ''
         };
     },
     mounted() {
@@ -26,11 +19,12 @@ export default {
             e.preventDefault();
             e.stopPropagation();
 
+            if (e.target !== this.$refs.fileArea) {
+                return;
+            }
+
             if (e.dataTransfer.files.length > 1) {
-                this.msg = {
-                    type: 'error',
-                    msg: 'only 1'
-                };
+                this.errMsg = 'only 1';
                 return;
             }
             
@@ -38,17 +32,11 @@ export default {
                 try {
                     let data = await viteWallet.Keystore.importFile(f.path, f.name);
                     if (!data) {
-                        this.msg = {
-                            type: 'error',
-                            msg: 'file is illegal'
-                        };
+                        this.errMsg = 'file is illegal';
                         return;
                     }
    
-                    this.msg = {
-                        type: 'success',
-                        msg: 'import success'
-                    };
+                    this.errMsg = '';
                     this.$router.push({
                         name: 'login',
                         params: {
@@ -70,10 +58,30 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.__index_wrapper {
+    position: relative;
+    margin-top: 0;
+}
 .file-drag {
-    min-width: 100px;
-    min-height: 100px;
-    border: 1px solid black;
+    height: 171px;
+    background: #F3F6F9;
+    border: 1px solid #D4DEE7;
+    border-radius: 3px;
+    line-height: 171px;
+    text-align: center;
+    opacity: 0.3;
+    font-size: 16px;
+    color: #283D4A;
+}
+.__btn_link {
+    margin-top: 22.5px;
+}
+.msg {
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FF2929;
+    text-align: center;
 }
 </style>
 

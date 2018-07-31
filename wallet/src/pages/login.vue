@@ -1,9 +1,9 @@
 <template>
-    <div class="login-wrapper">
+    <div class="__index_wrapper login-wrapper">
         <div class="__btn" @click="toggleAccountList">
             <div v-show="activeAccount" class="__btn_input_active">
-                <span class="name">{{activeAccount.name}}</span>
-                <span class="address">{{activeAccount.address}}</span>
+                <div class="name">{{activeAccount.name}}</div>
+                <div class="address">{{activeAccount.address}}</div>
             </div>
 
             <div v-show="!activeAccount" class="__btn_input">choose account</div>
@@ -13,11 +13,11 @@
                 'down': !isShowAccountList,
                 'up': isShowAccountList
             }"></span>
-        </div>
 
-        <account-list v-show="isShowAccountList" 
-                      :accountList="accountList"
-                      :clickAccount="chooseAccount"></account-list>
+            <account-list class="account-list" v-show="isShowAccountList" 
+                          :accountList="accountList"
+                          :clickAccount="chooseAccount"></account-list>
+        </div>
 
         <div class="__btn __btn_input" >
             <input :placeholder="$t('create.input')" 
@@ -26,7 +26,7 @@
 
         <div class="__btn __btn_all_in" @click="login">{{ $t('btn.login') }}</div>
 
-        <router-link class="import-account" :to="{ name: 'importAccount' }">import account</router-link>
+        <router-link class="__btn_link" :to="{ name: 'importAccount' }">import account</router-link>
     </div>
 </template>
 
@@ -112,12 +112,6 @@ export default {
 
 <style lang="sass" scoped>
 .login-wrapper {
-    .import-account {
-        text-align: center;
-        font-size: 14px;
-        color: #195BDD;
-    }
-
     .__btn {
         position: relative;
         margin-bottom: 15px;
@@ -140,31 +134,30 @@ export default {
         }
     }
 }
-
-.__btn_input {
-    padding: 0 16px;
-    input {
-        width: 100%;
-        font-size: 14px;
-    }
-}
 </style>
 
 <style lang="sass">
 .__btn_input_active {
-    padding: 7px 15px;
+    border: 1px solid #D4DEE7;
+    padding: 7px 40px 7px 15px;
+    text-align: left;
+    .address, .name {
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+    }
     .name {
-        font-size: 12px;
+        font-weight: bold;
+        font-size: 14px;
         color: #333333;
+        line-height: 20px;
     }
     .address {
-        font-size: 10px;
+        font-size: 12px;
+        line-height: 20px;
         color: #333333;
     }
     background: #fff;
-}
-.__btn_input_active:hover {
-    background: #232738;
 }
 </style>
 
