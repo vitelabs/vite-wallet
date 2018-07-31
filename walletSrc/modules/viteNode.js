@@ -1,15 +1,21 @@
-const { execFile } = require('child_process');
+const isWindows = require('~app/modules/is-windows')();
+const spawn = require('~app/modules/cross-spawn');
 const fs = require('fs');
 const path = require('path');
 
-const binPath = path.join(global.APP_PATH, '/viteGoServer');
-fs.chmodSync(binPath, 0o777);
+let binPath = '';
+if (!isWindows) {
+    binPath = path.join(global.APP_PATH, '/viteGoServer');
+    fs.chmodSync(binPath, 0o777);
+} else {
+    binPath = path.join(global.APP_PATH, '/viteGoServer.exe');
+}
 
 let subProcess = null;
 
 module.exports = {
     startIPCServer: function(cb) {
-        subProcess = execFile(binPath, {
+        subProcess = spawn(binPath, {
             maxBuffer: 500 * 1024
         }, (error) => {
             if (error) {

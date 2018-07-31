@@ -6,7 +6,9 @@ const appPath = path.join(__dirname, 'app/');
 const nodeModulesPath = path.join(__dirname, 'node_modules');
 const toModulePath = path.join(appPath, 'modules');
 const except = ['walletPages'];
+
 const no_build = process.env.NO_BUILD === 'true';
+const build_win = process.env.p === 'WIN';
 
 traversing(appPath, (fPath, folderLevel, next) => { 
     let stats = fs.statSync(fPath);
@@ -19,7 +21,7 @@ traversing(appPath, (fPath, folderLevel, next) => {
     if (stats.isFile()) {
         formatFile(fPath, folderLevel);
     }
-});
+}, './');
 copyServer();
 !no_build && copyIcon();
 !no_build && writePackage();
@@ -57,7 +59,12 @@ function formatFile(filePath, folderLevel) {
 }
 
 function copyServer() {
-    fs.writeFileSync('./app/viteGoServer', fs.readFileSync(`./viteGoServer_${process.env.p || 'MAC'}`));
+    if (!build_win) {
+        fs.writeFileSync('./app/viteGoServer', fs.readFileSync('./viteGoServer_MAC'));
+        return;
+    }
+
+    fs.writeFileSync('./app/viteGoServer.exe', fs.readFileSync('./viteGoServer_WIN'));
 }
 
 function copyIcon() {
@@ -91,7 +98,7 @@ function startBuild() {
 
 // Base function
 
-function traversing (startPath, cb) {
+function traversing (startPath, cb, folderLevel) {
     function readdirSync (startPath, folderLevel) {
         let files = fs.readdirSync(startPath);
 
@@ -106,7 +113,7 @@ function traversing (startPath, cb) {
 
     }
 
-    readdirSync(startPath, './');
+    readdirSync(startPath, folderLevel);
 }
 
 function copyFolder (currentPath, targetPath) {
@@ -116,19 +123,19 @@ function copyFolder (currentPath, targetPath) {
     }
     !fs.existsSync(targetPath) && fs.mkdirSync(targetPath);
     
-    traversing(currentPath, (fPath, folderLevel, next, val) => {
+    traversing(currentPath, (fPath, targetPath, next, val) => {
         let stats = fs.statSync(fPath);
+        let toPath = path.join(targetPath, val);
 
         if (stats.isDirectory()) {
-            !fs.existsSync(fPath) && fs.mkdirSync(fPath);
-            next(fPath, folderLevel + '../');
+            !fs.existsSync(toPath) && fs.mkdirSync(toPath);
+            next(fPath, toPath);
             return;
         }
 
         if (stats.isFile()) {
             let file = fs.readFileSync(fPath);
-            let toPath = path.join(targetPath, val);
             fs.writeFileSync(toPath, file);
         }
-    });
+    }, targetPath);
 }
