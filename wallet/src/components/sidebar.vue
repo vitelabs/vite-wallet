@@ -54,10 +54,10 @@ export default {
                 return;
             }
 
-            if (!this.blockStatus || !this.netStatus) {
-                window.alert('no net');
-                return;
-            }
+            // if (!this.blockStatus || !this.netStatus) {
+            //     window.alert('no net');
+            //     return;
+            // }
 
             this.$router.push({
                 name: 'transaction',
@@ -114,8 +114,9 @@ export default {
 
 <style lang="sass" scoped>
 .sidebar-wrapper {
-    position: relative;
-    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
     width: 100%;
     background: #fff;
     border: 1px solid #F5F4F5;

@@ -19,9 +19,9 @@
                           :clickAccount="chooseAccount"></account-list>
         </div>
 
-        <div class="__btn __btn_input" >
-            <input :placeholder="$t('create.input')" 
-                   v-model="password" type="password" />
+        <div class="__btn __btn_input" 
+             :class="{ 'active': !!password }">
+            <input :placeholder="$t('create.input')" v-model="password" :type="'password'" />
         </div>
 
         <div class="__btn __btn_all_in" @click="login">{{ $t('btn.login') }}</div>
@@ -34,11 +34,11 @@
 import accountList from 'components/accountList.vue';
 
 export default {
-    mounted() {
-        this.getAccountList();
-    },
     components: {
         accountList
+    },
+    mounted() {
+        this.getAccountList();
     },
     data() {
         let activeAccount;
@@ -109,7 +109,6 @@ export default {
 };
 </script>
 
-
 <style lang="sass" scoped>
 .login-wrapper {
     .__btn {
@@ -160,4 +159,3 @@ export default {
     background: #fff;
 }
 </style>
-

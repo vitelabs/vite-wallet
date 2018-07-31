@@ -67,14 +67,14 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
+    background: #efefef;
     .sidebar {
         float: left;
         width: 88.5px;
     }
     .page-content {
         margin-left: 88.5px;
-        width: 100%;
-        background: #efefef;
+        height: 100%;
     }
 }
 </style>

@@ -1,14 +1,18 @@
 <template>
     <div class="__index_wrapper create-account-wrapper">
-        <div class="__btn __btn_input">
-            <input placeholder="account name" v-model="name" type="text" />
+        <div class="__btn __btn_input" 
+             :class="{ 'active': !!name }">
+            <input :placeholder="'account name'" v-model="name" type='text' />
         </div>
-        <div class="__btn __btn_input">        
-            <input :placeholder="$t('create.input')" v-model="pass1" type="password" />
+        <div class="__btn __btn_input" 
+             :class="{ 'active': !!pass1 }">
+            <input :placeholder="$t('create.input')" v-model="pass1" :type="'password'" />
         </div>
-        <div class="__btn __btn_input">
-            <input :placeholder="$t('create.again')" v-model="pass2" type="password" />
+        <div class="__btn __btn_input" 
+             :class="{ 'active': !!pass2 }">
+            <input :placeholder="$t('create.again')" v-model="pass2" :type="'password'" />
         </div>
+
         <span class="__btn __btn_all_in" @click="createAccount">{{ $t('btn.create') }}</span>
         <router-link class="__btn_link" :to="{ name: 'login' }">login</router-link>
     </div>

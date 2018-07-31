@@ -60,10 +60,14 @@ input {
     border: 1px solid #D4DEE7;
     border-radius: 4px;
     opacity: 0.3;
-    color: #283D4A;
+    color: #333;
     text-align: left;
     padding: 0 16px;
+    &.active {
+        opacity: 1;
+    }
     input {
+        background: #F3F6F9;
         width: 100%;
         font-size: 16px;
     }
