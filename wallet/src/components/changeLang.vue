@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="change-lang-wrapper">
         <div @click="toggleLangList">{{ $t('lang') }}</div>
         <ul v-show="showLang">
             <li v-for="(key, index) in messages" v-show="key.lang !== $t('lang')" :key="index" 
@@ -28,4 +28,13 @@ export default {
     }
 };
 </script>
+
+<style lang="sass" scoped>
+.change-lang-wrapper {
+    font-size: 14px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+}
+
+</style>
 

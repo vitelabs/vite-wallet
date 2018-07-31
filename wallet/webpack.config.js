@@ -32,7 +32,7 @@ let webpackConfig = {
                 loader: 'vue-loader'
             }]
         }, {
-            test: /\.(png|jpg|gif)$/,
+            test: /\.(svg|png|jpg|gif)$/,
             use: [
                 {
                     loader: 'file-loader'

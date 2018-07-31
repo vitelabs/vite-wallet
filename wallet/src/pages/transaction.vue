@@ -127,7 +127,7 @@ export default {
                 this.$router.push({
                     name: 'account',
                     params: {
-                        address: this.address
+                        address: this.outAddress
                     }
                 });
             }).catch((err) => {

@@ -1,27 +1,24 @@
 <template>
     <div class="app-wrapper">
-        <div v-if="layoutType === 'logo'" class="logo-layout">
-            <change-lang></change-lang>
-            <logo></logo>
+        <index-layout v-if="layoutType === 'logo'">
             <router-view/>
-        </div>
+        </index-layout>
 
-        <layout v-else :title="pageTitle" >
+        <page-layout v-else :title="pageTitle" >
             <router-view/>
-        </layout>
+        </page-layout>
     </div>
 </template>
 
 <script>
-import logo from 'components/logo.vue';
-import changeLang from 'components/changeLang.vue';
-import layout from 'components/layout.vue';
+import indexLayout from 'components/indexLayout.vue';
+import pageLayout from 'components/pageLayout.vue';
 
 const pageLayouts = ['account', 'transaction'];
 
 export default {
     components: {
-        logo, changeLang, layout
+        indexLayout, pageLayout
     },
     mounted() {
         this.$router.beforeEach((to, from, next)=>{
@@ -50,6 +47,10 @@ export default {
 
 <style lang="sass" scoped>
 .app-wrapper {
-    padding: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 </style>

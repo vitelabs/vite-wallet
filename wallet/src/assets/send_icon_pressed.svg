@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>send_icon_pressed</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="100%" y1="38.7352683%" x2="-137.88902%" y2="38.7352675%" id="linearGradient-1">
+            <stop stop-color="#1B3BD8" offset="0%"></stop>
+            <stop stop-color="#176CE0" offset="31.4739301%"></stop>
+            <stop stop-color="#0B92E7" offset="49.1836977%"></stop>
+            <stop stop-color="#0BB6EB" offset="71.3239784%"></stop>
+            <stop stop-color="#00E0F2" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="vite-钱包7" transform="translate(-46.000000, -214.000000)" fill="url(#linearGradient-1)">
+            <g id="Group-9" transform="translate(46.000000, 214.000000)">
+                <path d="M15.2042668,1 L26.430391,12.3504405 L23.2818229,15.5675239 L15.2042668,7.24457787 L7.14218936,15.4586695 L4,12.3504405 L15.2042668,1 Z M15.2042668,14.4324761 L26.430391,25.7829166 L23.2818229,29 L15.2042668,20.6770539 L7.14218936,28.8911455 L4,25.7829166 L15.2042668,14.4324761 Z" id="Mask"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,5 +1,5 @@
 <template>
-    <div class="layout-wrapper">
+    <div class="page-layout-wrapper">
         <sidebar></sidebar>
         <div class="page-content">
             <div class="head">
