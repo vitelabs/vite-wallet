@@ -1,5 +1,5 @@
 <template>
-    <div v-show="transList.length" class="trans-list-wrapper">
+    <div v-show="true" class="trans-list-wrapper">
         <div class="title">
             <span>{{ $t('transList.tType.title') }}</span>
             <span>{{ $t('transList.status.title') }}</span>
@@ -107,6 +107,7 @@ export default {
                 if (pageIndex !== this.currentPage) {
                     return;
                 }
+                console.log(list);
 
                 list = list || [];
                 let nowList = [];
@@ -144,3 +145,11 @@ export default {
     }
 };
 </script>
+
+<style lang="scss" scoped>
+    .trans-list-wrapper{
+        width: 100%;
+        display: block;
+        background-color: bisque;
+    }
+</style>

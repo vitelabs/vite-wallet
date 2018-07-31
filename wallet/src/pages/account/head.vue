@@ -1,7 +1,14 @@
 <template>
     <div class="account-head-wrapper">
-        <backup-account></backup-account>
-        <span @click="getTestToken">{{ $t('accDetail.getTestToken') }}</span>
+        <div class="row">
+            <span>{{ $t('accDetail.name') }}: </span>
+            <span @click="startRename">{{ accountName }}</span>
+            <input v-show="isShowNameInput" type="text" autofocus
+                   v-model="editName" :placeholder="accountName"
+                   @input="inputName"/>
+        </div>
+        <backup-account class="backup"></backup-account>
+        <span class="test-token" @click="getTestToken">{{ $t('accDetail.getTestToken') }}</span>
         <a :href="'https://test.vite.net/account/' + address" target="_blank">
             {{ $t('accDetail.transDetail') }}
         </a>
@@ -35,3 +42,21 @@ export default {
     }
 };
 </script>
+<style lang="scss">
+    .account-head-wrapper{
+        width: 100%;
+        height: 95px;
+        line-height: 94px;
+        margin: 0 34px;
+        text-align: center;
+        .backup{
+            display: inline-block;
+            float: right;
+        }
+        .test-token{
+            display: inline-block;
+            float: right;
+        }
+    }
+
+</style>
