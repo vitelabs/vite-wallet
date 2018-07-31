@@ -1,10 +1,10 @@
 <template>
     <div class="app-wrapper">
-        <index-layout v-if="layoutType === 'logo'">
+        <!-- <index-layout v-if="layoutType === 'logo'">
             <router-view/>
-        </index-layout>
+        </index-layout> -->
 
-        <page-layout v-else :title="pageTitle" >
+        <page-layout :title="pageTitle" >
             <router-view/>
         </page-layout>
     </div>
@@ -52,5 +52,6 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
+    overflow: auto;
 }
 </style>

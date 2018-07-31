@@ -1,7 +1,8 @@
 <template>
-    <div>
-        <div @click="goNext">start</div>
-        <router-link :to="{ name: 'importAccount' }">import account</router-link>
+    <div class="start-wrapper">
+        <div class="__btn __btn_all_in" @click="goNext">start</div>
+        <div class="line"></div>
+        <router-link class="__btn __btn_border" :to="{ name: 'importAccount' }">import account</router-link>
     </div>
 </template>
 
@@ -40,3 +41,12 @@ export default {
     }
 };
 </script>
+
+<style lang="sass" scoped>
+.line {
+    margin: 15px 0;
+    width: 100%;
+    height: 2px;
+    background: #E5EDF3;
+}
+</style>

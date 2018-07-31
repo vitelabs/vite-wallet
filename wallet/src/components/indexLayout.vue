@@ -6,8 +6,8 @@
         </div>
         <div class="confirm-wrapper">
             <div class="confirm">
-                <img src="../assets/ViteLogo.svg"/>
-                <!-- <logo></logo> -->
+                <img class="top-background" src="../assets/bg2.svg"/>
+                <img class="confirm-logo" src="../assets/ViteLogo.svg"/>
                 <slot></slot>
             </div>
         </div>
@@ -29,17 +29,20 @@ export default {
 .index-layout-wrapper {
     width: 100%;
     height: 100%;
-    background: url('../assets/bg1.svg') 100% no-repeat;
+    background: url('../assets/bg1.svg') rgba(255, 255, 255, 0.1) 100% no-repeat;
     background-size: 100%;
+    background-position: 0 0;
 
     .header {
         position: absolute;
         top: 0;
+        left: 0;
+        right: 0;
         padding: 4.9% 5.6%;
         .header-logo {
-            float: left;
         }
         .change-lang {
+            display: inline-block;
             float: right;
         }
     }
@@ -49,10 +52,28 @@ export default {
         height: 100%;
         display: flex;
         justify-content: center;
+        align-items: center;
         .confirm {
-            width: 33.2%;
-            background: url('../assets/bg2.svg') 100% no-repeat;
-            background-size: 100%;
+            background: #fff;
+            position: relative;
+            width: 375.5px;
+            text-align: center;
+            box-shadow: 0 2px 48px 1px rgba(29,17,86,0.12);
+            border-radius: 8px;
+            padding-bottom: 40px;
+            .top-background {
+                width: 100%;
+                border-radius: 8px 8px 0 0;
+                margin-bottom: 30px;
+            }
+            .confirm-logo {
+                position: absolute;
+                top: 45px;
+                left: 50%;
+                margin-left: -82.5px;
+                width: 165px;
+                height: 96.75px;
+            }
         }
     }
 }

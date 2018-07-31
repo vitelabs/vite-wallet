@@ -56,8 +56,8 @@ function loadWeb() {
 let win;
 function createWindow () {
     win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1080,
+        height: 768,
         title: 'VITE WALLET',
         images: true
     });

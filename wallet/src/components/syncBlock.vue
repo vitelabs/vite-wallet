@@ -96,5 +96,11 @@ export default {
 };
 </script>
 
+<style lang="sass" scoped>
+.sync-block-wrapper {
+    color: #fff;
+    font-size: 14px;
+}
+</style>
 
 
