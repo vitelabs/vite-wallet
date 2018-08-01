@@ -32,6 +32,12 @@ tasksConfig.forEach((taskConf) => {
     });
 });
 
+gulp.task('srcJson', function () {
+    return gulp.src('walletSrc/**/*.json')
+        .pipe(gulp.dest(path.join(BUILD_PATH, '/walletSrc')));
+});
+taskNames.push('srcJson');
+
 gulp.task('default', taskNames, function (done) {
     done();
 });

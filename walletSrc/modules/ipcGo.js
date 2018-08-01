@@ -84,8 +84,8 @@ class ipc {
 function netToIPC(methodName, arg) {
     if (this.__connectStatus === 0 || !ipcBase.of[VITE_WALLET_IPC]) {
         return Promise.reject({
-            code: -5000,
-            message: 'server error'
+            code: -50000,
+            message: 'IPC no connection.'
         });
     }
 

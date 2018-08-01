@@ -39,7 +39,7 @@ export default {
             if (this.status === 2) {
                 return '100%';
             }
-            return this.currentHeight / this.targetHeight * 100 + '%';
+            return parseInt(this.currentHeight / this.targetHeight * 100) + '%';
         }
     },
     watch: {

@@ -49,6 +49,13 @@ module.exports = {
         });
     },
     stopIPCServer: function() {
-        subProcess && subProcess.kill('SIGHUP');
+        if (!subProcess) {
+            return;
+        }
+        if (isWindows) {
+            spawn('taskkill /pid ' + subProcess.pid + ' /T /F');
+            return;
+        }
+        subProcess.kill('SIGHUP');
     }
 };
