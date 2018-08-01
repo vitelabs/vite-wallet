@@ -37,7 +37,9 @@ export default {
             this.pass2 = this.trim(this.pass2);
 
             // name
-            if (this.name.match(/(\s+)/g)) {
+            if (!this.name || 
+                this.name.match(/(\s+)/g) ||
+                this.name.length > 32) {
                 window.alert('name is illegal');
                 return;
             }
@@ -47,6 +49,17 @@ export default {
                 window.alert(this.$t('create.hint.long'));
                 return;
             }
+
+            // Chinese
+            if ( /[\u4e00-\u9fa5]|\s+/g.test(this.pass1) ) {
+                window.alert('password error');
+                return;
+            }
+            // Full-width
+            // if ( /[\uFF00-\uFFFF]|\s+]/g.test(this.pass1) ) {
+            //     window.alert('password error');
+            //     return;
+            // }
 
             // same password
             if (!this.pass2 || this.pass1 !== this.pass2) {

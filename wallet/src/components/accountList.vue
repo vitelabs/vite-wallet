@@ -66,6 +66,6 @@ export default {
     border-top: none;
 }
 .__btn_input_active:hover {
-    background: #232738;
+    background: #efefef;
 }
 </style>

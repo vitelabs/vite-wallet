@@ -1,19 +1,21 @@
 <template>
     <div class="__index_wrapper login-wrapper">
-        <div class="__btn" @click="toggleAccountList">
-            <div v-show="activeAccount" class="__btn_input_active">
-                <div class="name">{{activeAccount.name}}</div>
-                <div class="address">{{activeAccount.address}}</div>
+        <div class="__btn">
+            <div @click="toggleAccountList">
+                <div v-show="activeAccount" class="__btn_input_active">
+                    <div class="name">{{activeAccount.name}}</div>
+                    <div class="address">{{activeAccount.address}}</div>
+                </div>
+
+                <div v-show="!activeAccount" class="__btn_input">choose account</div>
+
+                <span :class="{ 
+                    'slide': true,
+                    'down': !isShowAccountList,
+                    'up': isShowAccountList
+                }"></span>
             </div>
-
-            <div v-show="!activeAccount" class="__btn_input">choose account</div>
-
-            <span :class="{ 
-                'slide': true,
-                'down': !isShowAccountList,
-                'up': isShowAccountList
-            }"></span>
-
+            
             <account-list class="account-list" v-show="isShowAccountList" 
                           :accountList="accountList"
                           :clickAccount="chooseAccount"></account-list>
@@ -86,6 +88,8 @@ export default {
                 console.warn(message);
                 if (code === 4001) {
                     window.alert('password wrong');
+                } else {
+                    window.alert(message);
                 }
             });
         },

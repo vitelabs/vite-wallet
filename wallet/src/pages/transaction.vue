@@ -7,8 +7,8 @@
                 <div class="row-t">{{ $t('accDetail.balance') }}</div>
                 <div class="balance" v-show="!balanceInfos.length">0</div>
                 <div v-show="balanceInfos.length" v-for="(balanceInfo, i) in balanceInfos" :key="i">
-                    <span class="balance">{{ balanceInfo.Balance }}</span>
-                    <span class="symbol">{{ balanceInfo.TokenSymbol }}</span>
+                    <span class="balance">{{ balanceInfo.balance }}</span>
+                    <span class="symbol">{{ balanceInfo.tokenSymbol }}</span>
                 </div>
             </div>
             <div class="row">
@@ -43,7 +43,9 @@
                 </span>
             </div>
 
-            <div class="btn" @click="transfer">{{ $t('accDetail.transfer') }}</div>
+            <div class="btn" :class="{
+                'unuse': amountErr || !isValidAddress
+            }" @click="transfer">{{ $t('accDetail.transfer') }}</div>
         </div>
     </div>
 </template>
@@ -51,7 +53,10 @@
 <script>
 import BigNumber from 'bignumber.js';
 
-let outAddrTimeout = null;
+const MIN_UNIT = new BigNumber('1000000000000000000');
+const TOKEN_ID = 'tti_000000000000000000004cfd';    // vite id
+
+let inAddrTimeout = null;
 let amountTimeout = null;
 
 export default {
@@ -73,11 +78,11 @@ export default {
     },
     watch: {
         inAddress: function() {
-            clearTimeout(outAddrTimeout);
-            outAddrTimeout = null;
+            clearTimeout(inAddrTimeout);
+            inAddrTimeout = null;
 
-            outAddrTimeout = setTimeout(async ()=> {
-                outAddrTimeout = null;
+            inAddrTimeout = setTimeout(async ()=> {
+                inAddrTimeout = null;
                 
                 if (!this.inAddress) {
                     this.isValidAddress = false;
@@ -101,9 +106,11 @@ export default {
 
             amountTimeout = setTimeout(async ()=> {
                 amountTimeout = null;
-                let result = /(^([0-9]+)$)|(^([0-9]+[.][0-9]+)$)/g.test(this.amount);
+                let result = /(^(\d+)$)|(^(\d+[.]\d{1,8})$)/g.test(this.amount);
+
+                let amount = new BigNumber(this.amount);
  
-                if (!result || this.amount === '0') {
+                if (!result || amount.isEqualTo(0)) {
                     this.amountErr = 'amount error';
                     return;
                 }
@@ -117,23 +124,42 @@ export default {
             viteWallet.Account.get(this.outAddress).then(({
                 balanceInfos
             }) => {
-                this.balanceInfos = balanceInfos;
+                balanceInfos = balanceInfos || [];
+                let list = [];
+
+                balanceInfos.forEach(({ Balance, TokenSymbol })=>{
+                    console.log(Balance, TokenSymbol);
+
+                    let balance = new BigNumber(Balance).dividedBy(MIN_UNIT);
+                    console.log(balance.toString());
+                    
+                    list.push({
+                        balance: balance.decimalPlaces(8).toString(),
+                        tokenSymbol: TokenSymbol
+                    });
+                });
+
+                this.balanceInfos = list;
             }).catch((err) => {
                 console.warn(err);
                 window.alert(err);
             });
         },
         transfer() {
-            if (!+this.amount) {
+            if (this.amountErr || !this.isValidAddress) {
                 return;
             }
+
+            console.log('transfer amount', this.amount);
+            let amount = new BigNumber(this.amount).multipliedBy(MIN_UNIT).toString();
+            console.log(amount);
 
             viteWallet.Block.createTX({
                 selfAddr: this.outAddress, 
                 toAddr: this.inAddress,
                 pass: this.password,
-                tokenId: 'tti_000000000000000000004cfd',    // [TODO] fixed viteToken
-                amount: new BigNumber(this.amount).toString()
+                tokenId: TOKEN_ID,    // [TODO] fixed viteToken
+                amount
             }).then(() => {
                 window.alert('success');
 
@@ -249,5 +275,9 @@ export default {
     font-size: 14px;
     color: #FFFFFF;
     margin-top: 30px;
+    &.unuse {
+        background: #efefef;
+        color: #666;
+    }
 }
 </style>
