@@ -6,8 +6,8 @@
         </div>
         <div class="confirm-wrapper">
             <div class="confirm">
-                <img class="top-background" src="../assets/bg2.svg"/>
-                <img class="confirm-logo" src="../assets/ViteLogo.svg"/>
+                <img class="top-background" src="../assets/imgs/bg2.svg"/>
+                <img class="confirm-logo" src="../assets/imgs/ViteLogo.svg"/>
                 <div class="confirm-content">
                     <slot></slot>
                 </div>
@@ -31,7 +31,7 @@ export default {
 .index-layout-wrapper {
     width: 100%;
     height: 100%;
-    background: url('../assets/bg1.svg') rgba(255, 255, 255, 0.1) 100% no-repeat;
+    background: url('../assets/imgs/bg1.svg') rgba(255, 255, 255, 0.1) 100% no-repeat;
     background-size: 100%;
     background-position: 0 0;
 

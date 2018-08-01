@@ -1,10 +1,10 @@
 <template>
     <div class="app-wrapper">
-        <index-layout v-if="layoutType === 'logo'">
-            <router-view/>
-        </index-layout>
+        <!--<index-layout v-if="layoutType === 'logo'">-->
+            <!--<router-view/>-->
+        <!--</index-layout>-->
 
-        <page-layout v-else :title="pageTitle" >
+        <page-layout :title="pageTitle" >
             <router-view/>
         </page-layout>
     </div>
@@ -24,11 +24,11 @@ export default {
         this.$router.beforeEach((to, from, next)=>{
             let i = pageLayouts.indexOf(to.name);
 
-            if (i === -1) {
-                this.layoutType = 'logo';
-                next();
-                return;
-            }
+            // if (i === -1) {
+            //     this.layoutType = 'logo';
+            //     next();
+            //     return;
+            // }
 
             this.layoutType = 'page';
             this.pageTitle = pageLayouts[i];

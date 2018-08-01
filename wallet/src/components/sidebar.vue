@@ -35,14 +35,14 @@ export default {
     },
     data() {
         return {
-            address: this.$route.params.address,
+            address: 1 || this.$route.params.address,
             blockStatus: 0,
             netStatus: false
         };
     },
     mounted() {
-        this.loopBlock();
-        this.loopNet();
+        // this.loopBlock();
+        // this.loopNet();
     },
     destroyed() {
         this.stopLoopBlock();
@@ -135,15 +135,15 @@ export default {
         }
     }
     .home {
-        background: url('../assets/index_icon_default.svg') no-repeat center;
+        background: url('../assets/imgs/index_icon_default.svg') no-repeat center;
         &.active {
-            background: url('../assets/index_icon_pressed.svg') no-repeat center;
+            background: url('../assets/imgs/index_icon_pressed.svg') no-repeat center;
         }
     }
     .send {
-        background: url('../assets/send_icon_default.svg') no-repeat center;
+        background: url('../assets/imgs/send_icon_default.svg') no-repeat center;
         &.send-active {
-            background: url('../assets/send_icon_pressed.svg') no-repeat center;
+            background: url('../assets/imgs/send_icon_pressed.svg') no-repeat center;
         }
     }
     .logout {
@@ -151,9 +151,9 @@ export default {
         bottom: 0;
         width: 100%;
         height: 88.5px;
-        background: url('../assets/logout_icon.svg') no-repeat center;
+        background: url('../assets/imgs/logout_icon.svg') no-repeat center;
         &:hover {
-            background: url('../assets/logout_icon_hover.svg') no-repeat center;
+            background: url('../assets/imgs/logout_icon_hover.svg') no-repeat center;
         }
     }
 }

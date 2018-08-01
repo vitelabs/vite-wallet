@@ -9,7 +9,7 @@
 <script>
 export default {
     mounted() {
-        this.getAccountList();
+        // this.getAccountList();
     },
     data() {
         return {

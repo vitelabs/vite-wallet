@@ -5,11 +5,11 @@
         </span>
         <span v-show="statusText !== 'sync'">{{ blockPercent }}</span>
 
-        <img src="../assets/sync_icon.svg" 
+        <img src="../assets/imgs/sync_icon.svg"
              v-show="statusText !== 'firstDone'" 
              @click="reloadBlock"
              class="icon"/>
-        <img src="../assets/done_icon.svg" class="icon" v-show="statusText === 'firstDone'" />
+        <img src="../assets/imgs/done_icon.svg" class="icon" v-show="statusText === 'firstDone'" />
     </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
         };
     },
     mounted() {
-        this.startLoopSyncBlock();
+        // this.startLoopSyncBlock();
     },
     destroyed() {
         this.stopLoopSyncBlock();

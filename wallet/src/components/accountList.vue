@@ -10,7 +10,7 @@
         </div>
 
         <router-link class="add-acc" :to="{ name: 'createAccount' }">
-            <img class="icon" src="../assets/add_icon.svg"/>add account
+            <img class="icon" src="../assets/imgs/add_icon.svg"/>add account
         </router-link>
     </div>
 </template>
