@@ -1,5 +1,5 @@
 // [TODO] app-log test mock-server
-const { app, BrowserWindow, shell, dialog, globalShortcut } = require('electron');
+const { app, BrowserWindow, shell, dialog, globalShortcut, Menu } = require('electron');
 const path = require('path');
 const os = require('os');
 global.goFile = path.join(os.homedir(), '/viteisbest/');    // Must be defined in advance
@@ -89,6 +89,30 @@ function createWindow () {
     globalShortcut.register('CommandOrControl+Y', () => {
         win.webContents.openDevTools();
     });
+
+    // init menu
+    let template = [
+        {
+            label: 'ViteWallet',
+            submenu: [
+                { label: 'About ViteWallet', selector: 'orderFrontStandardAboutPanel:' },
+                { type: 'separator' },
+                { label: 'Quit', accelerator: 'Command+Q', click: function() { app.quit(); }}
+            ]
+        }, {
+            label: 'Edit',
+            submenu: [
+                { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
+                { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
+                { type: 'separator' },
+                { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
+                { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
+                { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
+                { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' }
+            ]
+        }
+    ];
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 
     onIPCServer(loadWeb);
 }

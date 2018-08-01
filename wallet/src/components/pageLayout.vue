@@ -75,6 +75,7 @@ export default {
     .page-content {
         margin-left: 88.5px;
         height: 100%;
+        overflow: auto;
     }
 }
 </style>

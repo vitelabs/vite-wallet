@@ -64,7 +64,7 @@ function copyServer() {
         return;
     }
 
-    fs.writeFileSync('./app/viteGoServer.exe', fs.readFileSync('./viteGoServer_WIN'));
+    fs.writeFileSync('./app/viteGoServer.exe', fs.readFileSync('./viteGoServer_WIN.exe'));
 }
 
 function copyIcon() {

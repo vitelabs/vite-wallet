@@ -52,6 +52,16 @@
 
 <script>
 import BigNumber from 'bignumber.js';
+BigNumber.config({ 
+    FORMAT: {
+        decimalSeparator: '.',
+        groupSeparator: '',
+        groupSize: 0,
+        secondaryGroupSize: 0,
+        fractionGroupSeparator: ' ',
+        fractionGroupSize: 0
+    }
+});
 
 const MIN_UNIT = new BigNumber('1000000000000000000');
 const TOKEN_ID = 'tti_000000000000000000004cfd';    // vite id
@@ -151,7 +161,7 @@ export default {
             }
 
             console.log('transfer amount', this.amount);
-            let amount = new BigNumber(this.amount).multipliedBy(MIN_UNIT).toString();
+            let amount = new BigNumber(this.amount).multipliedBy(MIN_UNIT).toFormat();
             console.log(amount);
 
             viteWallet.Block.createTX({
@@ -174,6 +184,9 @@ export default {
 
                 if (err && err.code && err.code === 4001) {
                     this.passwordErr = err.message || 'password error';
+                    return;
+                } else if (err && err.code && err.code === 5001) {
+                    this.amountErr = err.message || 'amount error';
                     return;
                 }
 
@@ -219,14 +232,25 @@ export default {
         padding-bottom: 12px;
     }
     .balance {
+        font-weight: bold;
         font-size: 48px;
         color: #1D2024;
         line-height: 48px;
     }
     .symbol {
-
+        position: relative;
+        top: -20px;
+        margin-left: 15px;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3A3C43;
+        line-height: 16px;
     }
     .__btn_text {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
         display: inline-block;
         box-sizing: border-box;
         background: #F3F6F9;

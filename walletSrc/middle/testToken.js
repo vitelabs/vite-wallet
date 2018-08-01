@@ -13,7 +13,8 @@ class TestToken {
             hostname,
             path
         });
-        request.setHeader('content-type', 'application/json; charset=utf-8');
+        // request.setHeader('content-type', 'application/json');
+        request.setHeader('content-type', 'application/x-www-form-urlencoded;charset=utf-8');
 
         return new Promise((res, rej) => {
             let bodyData = '';
@@ -33,11 +34,11 @@ class TestToken {
                     }
 
                     try {
-                        let { code, msg, data } = JSON.parse(bodyData);
+                        let { code, msg, data, error } = JSON.parse(bodyData);
                         if (code !== 0) {
                             return rej({
                                 code,
-                                message: msg
+                                message: msg || error
                             });
                         }
                         res(data);
@@ -50,7 +51,12 @@ class TestToken {
                 });
             });
     
-            request.write(JSON.stringify(params));
+            // request.write(JSON.stringify(params));
+            let text = '';
+            for (let key in params) {
+                text += `${key}=${params[key]}&`;
+            }
+            request.write(text);
             request.end();
         });
     }

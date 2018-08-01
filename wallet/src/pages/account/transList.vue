@@ -12,7 +12,7 @@
         <div class="list">
             <div v-for="(item, index) in transList" :key="index">
                 <span>{{ $t(`transList.tType.${item.type}`) }}</span>
-                <span>{{ $t(`transList.status.${item.status}`) }}</span>
+                <span>{{ item.status }}</span>
                 <span>{{ item.date }}</span>
                 <span>{{ item.transAddr }}</span>
                 <span>{{ item.amount }}</span>
@@ -97,14 +97,17 @@ export default {
                 }, 5000);
             };
 
+            console.log('fetch List');
             this.currentPage = pageIndex;
             viteWallet.Block.getTXList({
                 address: this.address,
                 pageIndex: this.currentPage,
                 pageNum: pageCount
             }).then((list)=>{
+                console.log(list);
                 // [TODO] request order
                 if (pageIndex !== this.currentPage) {
+                    console.log('removeList');
                     return;
                 }
 
@@ -113,11 +116,10 @@ export default {
 
                 list.forEach(item => {
                     let confirms = item.ConfirmedTimes;
-                    console.log(confirms);
                     let status = 'unconfirmed';
-                    if (confirms && confirms < 50) {
+                    if (confirms && confirms <= 50) {
                         status = `confirms(${confirms})`;
-                    } else if (confirms && confirms >= 50) {
+                    } else if (confirms && confirms > 50) {
                         status = 'confirmed';
                     }
 

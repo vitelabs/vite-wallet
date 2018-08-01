@@ -22,10 +22,8 @@ export default {
     },
     methods: {
         getTestToken() {
-            viteWallet.TestToken.get().then(({
-                amount, tokenId
-            })=>{
-                console.log(amount, tokenId);
+            viteWallet.TestToken.get(this.address).then((data)=>{
+                console.log(data);
                 window.alert(this.$t('accDetail.hint.token'));
             }).catch((err)=>{
                 console.warn(err);

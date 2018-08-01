@@ -23,6 +23,8 @@ class ipc {
 
             // listening err
             ipcBase.of[VITE_WALLET_IPC].on('error', () => {
+                console.log('error');
+
                 if (ipcBase.of[VITE_WALLET_IPC].retriesRemaining === 0) {
                     ipcBase.disconnect(VITE_WALLET_IPC);
                     this.emitConnected(0);
@@ -31,6 +33,7 @@ class ipc {
         
             // listening disconnect
             ipcBase.of[VITE_WALLET_IPC].on('disconnect', () => {
+                console.log('disconnect');
                 if (!ipcBase.of[VITE_WALLET_IPC] || 
                     !ipcBase.of[VITE_WALLET_IPC].retriesRemaining || 
                     ipcBase.of[VITE_WALLET_IPC].retriesRemaining <= 0) {
@@ -94,6 +97,7 @@ function netToIPC(methodName, arg) {
     }
 
     let payload = jsonrpcPayload(methodName, arg);
+    // console.log('fetch', payload);
     ipcBase.of[VITE_WALLET_IPC].emit(methodName, payload);
 
     return new Promise((res, rej) => {

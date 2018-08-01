@@ -6,5 +6,7 @@ dist
 .idea
 viteGoServer_MAC
 viteGoServer_WIN
+viteGoServer_WIN.exe
 vite_leveldb_database
 app
+err.out

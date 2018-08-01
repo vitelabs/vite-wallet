@@ -54,10 +54,10 @@ export default {
                 return;
             }
 
-            // if (!this.blockStatus || !this.netStatus) {
-            //     window.alert('no net');
-            //     return;
-            // }
+            if (!this.blockStatus || !this.netStatus) {
+                window.alert('no net');
+                return;
+            }
 
             this.$router.push({
                 name: 'transaction',

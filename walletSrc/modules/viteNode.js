@@ -2,11 +2,18 @@ const isWindows = require('~app/modules/is-windows')();
 const spawn = require('~app/modules/cross-spawn');
 const fs = require('fs');
 const path = require('path');
+const { app } = require('electron');
 
 let binPath = '';
 if (!isWindows) {
-    binPath = path.join(global.APP_PATH, '/viteGoServer');
-    fs.chmodSync(binPath, 0o777);
+    // [NOTICE] MAC: this file is read-only under the dmg, so move to /appData
+    binPath = path.join(app.getPath('appData'), '/viteGoServer');
+    fs.writeFileSync(binPath, fs.readFileSync(path.join(global.APP_PATH, '/viteGoServer')));
+    try {
+        fs.chmodSync(binPath, 0o777);
+    } catch(err) {
+        console.log(err);
+    }
 } else {
     binPath = path.join(global.APP_PATH, '/viteGoServer.exe');
 }
@@ -16,7 +23,8 @@ let subProcess = null;
 module.exports = {
     startIPCServer: function(cb) {
         subProcess = spawn(binPath, {
-            maxBuffer: 500 * 1024
+            stdio: ['ignore', 'pipe', 'ignore']
+            // stdio: ['ignore', 'pipe', fs.openSync('./err.out', 'w')]
         }, (error) => {
             if (error) {
                 throw error;
@@ -41,6 +49,6 @@ module.exports = {
         });
     },
     stopIPCServer: function() {
-        subProcess && subProcess.unref();
+        subProcess && subProcess.kill('SIGHUP');
     }
 };
