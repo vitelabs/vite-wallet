@@ -23,8 +23,8 @@ let subProcess = null;
 module.exports = {
     startIPCServer: function(cb) {
         subProcess = spawn(binPath, {
-            // stdio: ['ignore', 'pipe', 'ignore']
-            stdio: ['ignore', 'pipe', fs.openSync('./server.log', 'w')]
+            stdio: ['ignore', 'pipe', 'ignore']
+            // stdio: ['ignore', 'pipe', fs.openSync('./server.log', 'w')]
         }, (error) => {
             if (!error) {
                 return;

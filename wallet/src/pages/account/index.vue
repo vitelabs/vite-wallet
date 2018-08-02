@@ -1,25 +1,33 @@
 <template>
     <div class="account-wrapper">
-        <account-head></account-head>
+        <account-head :accountName="accountName" :rename="rename"></account-head>
 
         <div class="account-detail">
             <div class="row">
-                <div class="row-title">{{ $t('accDetail.balance') }}: </div>
-                <div class="row-content" v-show="!balanceInfos.length">0</div>
-                <span v-show="balanceInfos.length" v-for="(balanceInfo, i) in balanceInfos" :key="i">
-                    {{ balanceInfo.Balance + ' ' + balanceInfo.TokenSymbol }}
-                </span>
-            </div>
-            <div class="row">
-                <div class="row-title">{{ $t('accDetail.fundFloat') }}: </div>
-                <span v-for="(balanceInfo, i) in fundFloat.balanceInfos" :key="i">
-                    {{ balanceInfo.Balance + ' ' + balanceInfo.TokenSymbol }}
-                </span>
-                <div class="row-content">{{ fundFloat.len || 0 }}</div>
+                <div class="row-title">{{ $t('accDetail.balance') }}</div>
+
+                <span class="__balance" v-show="!balanceInfos.length">0</span>
+                <div v-show="balanceInfos.length" v-for="(balanceInfo, i) in balanceInfos" :key="i">
+                    <span class="__balance">{{ balanceInfo.balance }}</span>
+                    <span class="__symbol">{{ balanceInfo.tokenSymbol }}</span>
+                </div>
             </div>
             <div class="row">
                 <div class="row-title">
-                    <span class="row-title__text">{{ $t('accDetail.address') }}: </span>
+                    {{ $t('accDetail.fundFloat') }}
+                    <span class="row-content">（{{ fundFloat.len || 0 }} wait for）</span>
+                </div>
+
+                <span v-show="!fundFloat.balanceInfos || !fundFloat.balanceInfos.length"
+                      class="__balance" >0</span>
+                <div v-for="(balanceInfo, i) in fundFloat.balanceInfos" :key="i">
+                    <span class="__balance">{{ balanceInfo.balance }}</span>
+                    <span class="__symbol">{{ balanceInfo.tokenSymbol }}</span>
+                </div>
+            </div>
+            <div class="row address">
+                <div class="row-title">
+                    <span class="row-title__text">{{ $t('accDetail.address') }}</span>
                     <span @click="copy" class="row-title__copy">{{ $t('accDetail.copy') }}</span>
                 </div>
                 <div class="__btn_text">{{ address }}</div>
@@ -33,23 +41,25 @@
 <script>
 import accountHead from './head.vue';
 import transList from './transList.vue';
+import BigNumber from 'bignumber.js';
 
 let inputTimeout = null;
+const MIN_UNIT = new BigNumber('1000000000000000000');
 
 export default {
     components: {
         transList, accountHead
     },
     mounted() {
-        // this.fetchAccount();
+        this.fetchAccount();
     },
     data() {
         return {
             address: this.$route.params.address,
+            accountName: '',
             balanceInfos: [],
             fundFloat: {},
-            blockHeight: '0',
-
+            blockHeight: '0'
         };
     },
     destroyed() {
@@ -61,18 +71,14 @@ export default {
             viteWallet.System.clipboardWrite(this.address);
         },
 
-        clearInputTime() {
-            window.clearTimeout(inputTimeout);
-            inputTimeout = null;
-        },
-        rename(name) {
+        rename(name, cb) {
             let result = viteWallet.Account.rename(this.address, name);
             if (!result) {
                 window.alert('fail');
                 return;
             }
             this.accountName = name;
-            this.isShowNameInput = false;
+            cb && cb();
         },
 
         fetchAccount() {
@@ -80,9 +86,41 @@ export default {
                 name, balanceInfos, fundFloat, blockHeight
             }) => {
                 this.accountName = name;
-                this.balanceInfos = balanceInfos;
                 this.fundFloat = fundFloat;
                 this.blockHeight = blockHeight;
+
+                // deal with balanceinfo
+                balanceInfos = balanceInfos || [];
+                let balanceList = [];
+                balanceInfos.forEach(({ Balance, TokenSymbol })=>{
+                    console.log(Balance, TokenSymbol);
+
+                    let balance = new BigNumber(Balance).dividedBy(MIN_UNIT);
+                    console.log(balance.toString());
+                    
+                    balanceList.push({
+                        balance: balance.decimalPlaces(8).toString(),
+                        tokenSymbol: TokenSymbol
+                    });
+                });
+                this.balanceInfos = balanceList;
+
+                // deal with fundinfo
+                let fundInfos = fundFloat.balanceInfos || [];
+                let fundList = [];
+                fundInfos.forEach(({ Balance, TokenSymbol })=>{
+                    console.log(Balance, TokenSymbol);
+
+                    let balance = new BigNumber(Balance).dividedBy(MIN_UNIT);
+                    console.log(balance.toString());
+                    
+                    fundList.push({
+                        balance: balance.decimalPlaces(8).toString(),
+                        tokenSymbol: TokenSymbol
+                    });
+                });
+                this.fundFloat.balanceInfos = fundList;
+
             }).catch((err) => {
                 window.alert(err);
             });
@@ -99,15 +137,16 @@ export default {
         height: 100%;
         .account-detail{
             display: flex;
-            padding: 0 30px;
-            height: 140px;
+            padding: 24.5px 22.5px 20.2px;
             background: #FFF;
             border: 1px solid #F6F5F5;
             box-shadow: 0 2px 15px 1px rgba(176,192,237,0.42);
             border-radius: 8px;
             .row {
                 flex: 1;
-                padding-top: 20px;
+                &.address {
+                    min-width: 447px;
+                }
                 .row-title {
                     display: inline-block;
                     width: 100%;
@@ -121,12 +160,11 @@ export default {
                     }
                     .row-title__copy{
                         float: right;
+                        color: #4B74FF;
                     }
                 }
                 .row-content {
-                    font-size: 48px;
-                    color: #1D2024;
-                    line-height: 48px;
+                    color: #8D9BAE;
                 }
                 .__btn_text {
                     width: 100%;

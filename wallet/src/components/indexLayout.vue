@@ -1,7 +1,7 @@
 <template>
     <div class="index-layout-wrapper">
         <div class="header">
-            <span class="header-logo">TESTNET</span>
+            <img class="header-logo" src="../assets/imgs/testnet.svg" />
             <change-lang class="change-lang"></change-lang>
         </div>
         <div class="confirm-wrapper">
@@ -42,6 +42,8 @@ export default {
         right: 0;
         padding: 4.9% 5.6%;
         .header-logo {
+            display: inline-block;
+            width: 70.5px;
         }
         .change-lang {
             display: inline-block;

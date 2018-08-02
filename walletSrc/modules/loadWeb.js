@@ -20,11 +20,13 @@ function showError(win, title) {
 module.exports = function loadWeb(win) {
     // Load file
     win.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
+
     win.webContents.once('dom-ready', () => {
         // Account, Net, Block, Keystore, System, Types, TestToken
+        // [TODO] format path
         win.webContents.executeJavaScript(`
             const { remote } = require('electron');
-            window.viteWallet = remote.require('../walletSrc/middle/index.js');
+            window.viteWallet = remote.require('./walletSrc/middle/index.js');
         `);
     });
 

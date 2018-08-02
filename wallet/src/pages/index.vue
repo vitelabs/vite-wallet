@@ -21,19 +21,9 @@ export default {
         indexLayout, pageLayout
     },
     mounted() {
+        this.changeLayout(this.$route.name);
         this.$router.beforeEach((to, from, next)=>{
-            let i = pageLayouts.indexOf(to.name);
-
-            if (i === -1) {
-                this.layoutType = 'logo';
-                next();
-                return;
-            }
-
-            this.layoutType = 'page';
-            this.pageTitle = pageLayouts[i];
-
-            next();
+            this.changeLayout(to.name, next);
         });
     },
     data() {
@@ -41,6 +31,21 @@ export default {
             layoutType: 'logo',
             pageTitle: ''
         };
+    },
+    methods: {
+        changeLayout(name, next) {
+            let i = pageLayouts.indexOf(name);
+
+            if (i === -1) {
+                this.layoutType = 'logo';
+                next && next();
+                return;
+            }
+
+            this.layoutType = 'page';
+            this.pageTitle = pageLayouts[i];
+            next && next();
+        }
     }
 };
 </script>

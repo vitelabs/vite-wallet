@@ -3,8 +3,8 @@
         <div class="__btn">
             <div @click="toggleAccountList">
                 <div v-show="activeAccount" class="__btn_input_active">
-                    <div class="name">{{activeAccount.name}}</div>
-                    <div class="address">{{activeAccount.address}}</div>
+                    <div class="name __ellipsis">{{activeAccount.name}}</div>
+                    <div class="address __ellipsis">{{activeAccount.address}}</div>
                 </div>
 
                 <div v-show="!activeAccount" class="__btn_input">choose account</div>
@@ -144,11 +144,6 @@ export default {
     border: 1px solid #D4DEE7;
     padding: 7px 40px 7px 15px;
     text-align: left;
-    .address, .name {
-        overflow: hidden;
-        text-overflow:ellipsis;
-        white-space: nowrap;
-    }
     .name {
         font-weight: bold;
         font-size: 14px;

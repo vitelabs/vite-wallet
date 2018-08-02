@@ -1,8 +1,8 @@
 <template>
     <div class="account-head-wrapper">
-        <div class="custom-name">
-            <span>{{ $t('accDetail.name') }}: </span>
-            <span @click="startRename">{{ accountName }}</span>
+        <div class="custom-name __ellipsis">
+            <span v-show="!isShowNameInput">{{ accountName }}</span>
+            <img v-show="!isShowNameInput" @click="startRename" class="edit" src="../../assets/imgs/edit_icon.svg"/>            
             <input v-show="isShowNameInput" type="text" autofocus
                    v-model="editName" :placeholder="accountName"
                    @input="inputName"/>
@@ -11,13 +11,13 @@
             <backup-account class="btn__small"></backup-account>
             <div class="btn__small __btn-test" @click="getTestToken">
                 <span>{{ $t('accDetail.getTestToken') }}</span>
-                <img src="../../assets/imgs/done_icon.svg" class="icon" />
+                <img src="../../assets/imgs/Vite_icon.svg" class="icon" />
             </div>
             <div class="btn__small __btn-detail">
                 <a :href="'https://test.vite.net/account/' + address" target="_blank">
                     {{ $t('accDetail.transDetail') }}
                 </a>
-                <img src="../../assets/imgs/done_icon.svg" class="icon" />
+                <img src="../../assets/imgs/more_icon.svg" class="icon" />
             </div>
         </div>
     </div>
@@ -31,10 +31,19 @@ export default {
     components: {
         backupAccount
     },
+    props: {
+        accountName: {
+            type: String,
+            default: ''
+        },
+        rename: {
+            type: Function,
+            default: () =>{}
+        }
+    },
     data() {
         return {
             address: this.$route.params.address,
-            accountName: '',
             isShowNameInput: false,
             editName: ''
         };
@@ -49,74 +58,69 @@ export default {
                 window.alert('get test-token fail');
             });
         },
-        inputName() {
-            this.clearInputTime();
 
-            inputTimeout = window.setTimeout(() => {
-                this.clearInputTime();
-                this.rename(this.editName);
-            }, 500);
-        },
         startRename() {
             this.isShowNameInput = true;
         },
         clearInputTime() {
             window.clearTimeout(inputTimeout);
             inputTimeout = null;
+        },
+        inputName() {
+            this.clearInputTime();
+            inputTimeout = window.setTimeout(()=>{
+                this.clearInputTime();
+                this.rename(this.editName, () => {
+                    this.isShowNameInput = false;
+                });
+            }, 500);
         }
     }
 };
 </script>
 
 <style lang="scss">
-    @import "~assets/scss/vars.scss";
+@import "~assets/scss/vars.scss";
 
-    .account-head-wrapper {
-        display: flex;
-        width: 100%;
-        height: 100px;
-        line-height: 100px;
-        vertical-align: center;
-        .custom-name {
-            flex: 2;
-            font-size: 20px;
-            margin-left: 6px;
-            color: #272727;
+.account-head-wrapper {
+    display: flex;
+    margin: 0 6px;
+    height: 84px;
+    .custom-name {
+        flex: 1;
+        font-size: 24px;
+        color: #272727;
+        line-height: 84px;
+        .edit {
+            width: 20px;
         }
-        .btn-group {
-            display: flex;
-            align-items: center;
-            flex: 1;
-            .btn__small {
-                width: fit-content;
-                max-width: 184px;
-                min-width: 100px;
-                margin-left: 17px;
-                height: 28px;
-                line-height: 26px;
-                background-color: $btn-color;
-                border-radius: 24px;
-                text-align: center;
-                font-size: 14px;
-                color: #fff;
-            }
-            .__btn-test {
-                width: 125px;
-                a {
-                    color: #fff;
-                }
-            }
-            .__btn-detail {
-                width: 180px;
-                a {
-                    color: #fff;
-                }
-            }
-            .icon {
-                width: 9px;
-                height: 11px;
-                margin: 0 0 -2px 2px;
-            }
+        input {
+            height: 32px;
+            line-height: 32px;
+            font-size: 20px;
+            min-width: 200px;
+            text-indent: 10px;
         }
     }
+    .btn-group {
+        display: flex;
+        align-items: center;
+        .btn__small {
+            margin-left: 17px;
+            padding: 4px 4px 4px 16px;
+            background-color: $btn-color;
+            border-radius: 24px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 24px;
+            color: #fff;
+            a {
+                color: #fff;
+            }
+        }
+        .icon {
+            margin-bottom: -7px;
+        }
+    }
+}
 </style>

@@ -1,7 +1,14 @@
 <template>
     <div class="page-layout-wrapper">
         <div class="head">
-            <div class="logo">logo</div>
+            <div @mouseenter="overLogo"  @mouseleave="leaveLogo" class="logo">
+                <img src="../assets/imgs/logo_tastnet.svg" />
+                <div v-show="isShowNotice" class="hover-notice">
+                    <div class="hover-title">test</div>
+                    <div class="hover-content">test:test:test:test:test:test:test:test:test::test</div>
+                </div>
+
+            </div>
             <sync-block class="sync-block"></sync-block>
             <change-lang class="change-lang"></change-lang>
         </div>
@@ -26,12 +33,24 @@ export default {
     props: {
         title: {
             type: String,
-            default: ''
+            default: '',
+        }
+    },
+    data() {
+        return {
+            isShowNotice: false
+        };
+    },
+    methods: {
+        overLogo() {
+            this.isShowNotice = true;
+        },
+        leaveLogo() {
+            this.isShowNotice = false;
         }
     }
 };
 </script>
-
 
 <style lang="scss" scoped>
 .page-layout-wrapper {
@@ -53,6 +72,10 @@ export default {
     .logo {
         display: inline-block;
         float: left;
+        margin-top: 10px;
+        img {
+            width: 58.5px;
+        }
     }
     .sync-block {
         display: inline-block;
@@ -61,6 +84,32 @@ export default {
         display: inline-block;
         float: right;
         top: 20px;
+    }
+    .hover-notice {
+        position: absolute;
+        top: 49.5px;
+        left: 81.75px;
+        max-width: 260px;
+        padding: 30px;
+        background: #FFFFFF;
+        border: 1px solid #E5EDF3;
+        box-shadow: 0 6px 36px 0 rgba(176,192,237,0.04);
+        border-radius: 8px;
+        z-index: 100;
+        .hover-title {
+            text-align: left;
+            font-size: 16px;
+            line-height: 16px;
+            color: #195ADD;
+            margin-bottom: 16px;
+            word-break: break-all;
+        }
+        .hover-content {
+            opacity: 0.66;
+            font-size: 14px;
+            color: #283D4A;
+            line-height: 22px;
+        }
     }
 }
 .page-wrapper {

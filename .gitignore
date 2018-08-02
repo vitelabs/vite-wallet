@@ -9,4 +9,4 @@ viteGoServer_WIN
 viteGoServer_WIN.exe
 vite_leveldb_database
 app
-err.out
+server.log

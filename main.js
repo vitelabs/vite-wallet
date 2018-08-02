@@ -10,7 +10,7 @@ const initMenu = require(path.join(global.APP_PATH, '/walletSrc/modules/menus.js
 const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/modules/ipcGo.js') );
 const updateAPP = require( path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js') );
 const loadWeb = require( path.join(global.APP_PATH, '/walletSrc/modules/loadWeb.js') );
-const log = require( path.join(global.APP_PATH, '/walletSrc/utils/log.js') );
+// const log = require( path.join(global.APP_PATH, '/walletSrc/utils/log.js') );
 
 let ipcServerFinish = false;
 let ipcServerCb;
@@ -91,5 +91,5 @@ app.on('window-all-closed', () => {
 });
 
 app.on('will-quit', () => {
-    log.save();
+    // log.save();
 });

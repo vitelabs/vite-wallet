@@ -18,15 +18,10 @@
 </template>
 
 <script>
-import logo from 'components/logo';
-
 let loopBlockTimeout = null;
 let loopNetTimeout = null;
 
 export default {
-    components: {
-        logo
-    },
     props: {
         title: {
             type: String,

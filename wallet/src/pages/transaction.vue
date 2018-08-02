@@ -5,42 +5,51 @@
         <div class="content-wrapper">
             <div class="row">
                 <div class="row-t">{{ $t('accDetail.balance') }}</div>
-                <div class="balance" v-show="!balanceInfos.length">0</div>
+                <div class="__balance" v-show="!balanceInfos.length">0</div>
                 <div v-show="balanceInfos.length" v-for="(balanceInfo, i) in balanceInfos" :key="i">
-                    <span class="balance">{{ balanceInfo.balance }}</span>
-                    <span class="symbol">{{ balanceInfo.tokenSymbol }}</span>
+                    <span class="__balance">{{ balanceInfo.balance }}</span>
+                    <span class="__symbol">{{ balanceInfo.tokenSymbol }}</span>
                 </div>
             </div>
             <div class="row">
                 <div class="row-t">{{ $t('accDetail.outAddress') }}</div>
-                <div class="__btn_text out-address">{{ outAddress }}</div>
+                <div class="__btn_text __ellipsis out-address">{{ outAddress }}</div>
             </div>
+            
             <div class="row">
                 <div class="row-t">{{ $t('accDetail.inAddress') }}</div>
-                <span class="__btn_text __input" :class="{ 'active': !!inAddress }">
-                    <input v-model="inAddress" />
-                </span>
-                <span v-show="!isValidAddress" class="err">
-                    <img class="icon" src="../assets/imgs/error_icon.svg"/>address illegal
-                </span>
+                <div class="row-content">
+                    <span class="__btn_text __ellipsis __input" :class="{ 'active': !!inAddress }">
+                        <input v-model="inAddress" />
+                    </span>
+                    <span v-show="!isValidAddress" class="err">
+                        <img class="icon" src="../assets/imgs/error_icon.svg"/>address illegal
+                    </span>
+                </div>
             </div>
+
             <div class="row">
                 <div class="row-t">{{ $t('accDetail.sum') }}</div>
-                <span class="__btn_text __input amount" :class="{ 'active': !!amount }">
-                    <input v-model="amount" />VITE
-                </span>
-                <span v-show="amountErr" class="err">
-                    <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ amountErr }}
-                </span>
+                <div class="row-content">
+                    <span class="__btn_text __ellipsis __input" :class="{ 'active': !!amount }">
+                        <input class="amount" v-model="amount" />VITE
+                    </span>
+                    <span v-show="amountErr" class="err">
+                        <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ amountErr }}
+                    </span>
+                </div>
             </div>
+
             <div class="row">
                 <div class="row-t">{{ $t('accDetail.password') }}</div>
-                <span class="__btn_text __input" :class="{ 'active': !!password }">
-                    <input v-model="password" type="password" />
-                </span>
-                <span v-show="passwordErr" class="err">
-                    <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ passwordErr }}
-                </span>
+                <div class="row-content">
+                    <span class="__btn_text __ellipsis __input" :class="{ 'active': !!password }">
+                        <input v-model="password" type="password" />
+                    </span>
+                    <span v-show="passwordErr" class="err">
+                        <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ passwordErr }}
+                    </span>
+                </div>
             </div>
 
             <div class="btn" :class="{
@@ -231,26 +240,15 @@ export default {
         line-height: 16px;
         padding-bottom: 12px;
     }
-    .balance {
-        font-weight: bold;
-        font-size: 48px;
-        color: #1D2024;
-        line-height: 48px;
+    .row-content {
+        display: flex;
+        align-items: center;
     }
-    .symbol {
-        position: relative;
-        top: -20px;
-        margin-left: 15px;
+    .__balance {
         font-weight: bold;
-        font-size: 14px;
-        color: #3A3C43;
-        line-height: 16px;
     }
     .__btn_text {
         max-width: 100%;
-        overflow: hidden;
-        text-overflow:ellipsis;
-        white-space: nowrap;
         display: inline-block;
         box-sizing: border-box;
         background: #F3F6F9;
@@ -267,33 +265,25 @@ export default {
     }
     .__input {
         width: 300px;
+        display: flex;
+        border: 1px solid #D4DEE7;
+        border-radius: 2px;
         input {
+            flex: 1;
             background: #F3F6F9;
-            border: 1px solid #D4DEE7;
-            border-radius: 2px;
             height: 36px;
             line-height: 36px;
-            padding: 0 15px;
             opacity: 0.3;
             color: #5E6875;
+            &.amount {
+                margin-right: 10px;
+            }
         }
         &.out-address {
             min-width: 300px;
         }
-        .__input {
-            width: 300px;
-            input {
-                background: #F3F6F9;
-                font-size: 14px;
-                width: 100%;
-            }
-            &.active {
-                opacity: 1;
-            }
-            &.amount input {
-                width: 220px;
-                margin-right: 10px;
-            }
+        &.active {
+            opacity: 1;
         }
     }
     .btn {
@@ -321,5 +311,4 @@ export default {
     color: #272727;
     line-height: 32px;
 }
-
 </style>
