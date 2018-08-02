@@ -1,10 +1,10 @@
 <template>
     <div class="app-wrapper">
-        <!-- <index-layout v-if="layoutType === 'logo'">
+        <index-layout v-if="layoutType === 'logo'">
             <router-view/>
-        </index-layout> -->
+        </index-layout>
 
-        <page-layout :title="pageTitle" >
+        <page-layout v-else :title="pageTitle" >
             <router-view/>
         </page-layout>
     </div>

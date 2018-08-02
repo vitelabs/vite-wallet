@@ -1,32 +1,34 @@
 <template>
-    <div class="login-wrapper">
-        <div class="__btn" @click="toggleAccountList">
-            <div v-show="activeAccount" class="__btn_input_active">
-                <span class="name">{{activeAccount.name}}</span>
-                <span class="address">{{activeAccount.address}}</span>
+    <div class="__index_wrapper login-wrapper">
+        <div class="__btn">
+            <div @click="toggleAccountList">
+                <div v-show="activeAccount" class="__btn_input_active">
+                    <div class="name">{{activeAccount.name}}</div>
+                    <div class="address">{{activeAccount.address}}</div>
+                </div>
+
+                <div v-show="!activeAccount" class="__btn_input">choose account</div>
+
+                <span :class="{ 
+                    'slide': true,
+                    'down': !isShowAccountList,
+                    'up': isShowAccountList
+                }"></span>
             </div>
-
-            <div v-show="!activeAccount" class="__btn_input">choose account</div>
-
-            <span :class="{ 
-                'slide': true,
-                'down': !isShowAccountList,
-                'up': isShowAccountList
-            }"></span>
+            
+            <account-list class="account-list" v-show="isShowAccountList" 
+                          :accountList="accountList"
+                          :clickAccount="chooseAccount"></account-list>
         </div>
 
-        <account-list v-show="isShowAccountList" 
-                      :accountList="accountList"
-                      :clickAccount="chooseAccount"></account-list>
-
-        <div class="__btn __btn_input" >
-            <input :placeholder="$t('create.input')" 
-                   v-model="password" type="password" />
+        <div class="__btn __btn_input" 
+             :class="{ 'active': !!password }">
+            <input :placeholder="$t('create.input')" v-model="password" :type="'password'" />
         </div>
 
         <div class="__btn __btn_all_in" @click="login">{{ $t('btn.login') }}</div>
 
-        <router-link class="import-account" :to="{ name: 'importAccount' }">import account</router-link>
+        <router-link class="__btn_link" :to="{ name: 'importAccount' }">import account</router-link>
     </div>
 </template>
 
@@ -34,11 +36,11 @@
 import accountList from 'components/accountList.vue';
 
 export default {
-    mounted() {
-        this.getAccountList();
-    },
     components: {
         accountList
+    },
+    mounted() {
+        // this.getAccountList();
     },
     data() {
         let activeAccount;
@@ -86,6 +88,8 @@ export default {
                 console.warn(message);
                 if (code === 4001) {
                     window.alert('password wrong');
+                } else {
+                    window.alert(message);
                 }
             });
         },
@@ -109,15 +113,8 @@ export default {
 };
 </script>
 
-
 <style lang="sass" scoped>
 .login-wrapper {
-    .import-account {
-        text-align: center;
-        font-size: 14px;
-        color: #195BDD;
-    }
-
     .__btn {
         position: relative;
         margin-bottom: 15px;
@@ -131,40 +128,38 @@ export default {
         width: 12px;
         height: 12px;
         &.down {
-            background: url('../assets/down_icon.svg');
+            background: url('../assets/imgs/down_icon.svg');
             background-size: 12px 12px;
         }
         &.up {
-            background: url('../assets/up_icon.svg');
+            background: url('../assets/imgs/up_icon.svg');
             background-size: 12px 12px;
         }
-    }
-}
-
-.__btn_input {
-    padding: 0 16px;
-    input {
-        width: 100%;
-        font-size: 14px;
     }
 }
 </style>
 
 <style lang="sass">
 .__btn_input_active {
-    padding: 7px 15px;
+    border: 1px solid #D4DEE7;
+    padding: 7px 40px 7px 15px;
+    text-align: left;
+    .address, .name {
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+    }
     .name {
-        font-size: 12px;
+        font-weight: bold;
+        font-size: 14px;
         color: #333333;
+        line-height: 20px;
     }
     .address {
-        font-size: 10px;
+        font-size: 12px;
+        line-height: 20px;
         color: #333333;
     }
     background: #fff;
 }
-.__btn_input_active:hover {
-    background: #232738;
-}
 </style>
-

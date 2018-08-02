@@ -1,10 +1,20 @@
 <template>
-    <div class="create-account-wrapper">
-        <input placeholder="account name" v-model="name" type="text" />
-        <input :placeholder="$t('create.input')" v-model="pass1" type="password" />
-        <input :placeholder="$t('create.again')" v-model="pass2" type="password" />
-        <span @click="createAccount">{{ $t('btn.create') }}</span>
-        <router-link :to="{ name: 'login' }">login</router-link>
+    <div class="__index_wrapper create-account-wrapper">
+        <div class="__btn __btn_input" 
+             :class="{ 'active': !!name }">
+            <input :placeholder="'account name'" v-model="name" type='text' />
+        </div>
+        <div class="__btn __btn_input" 
+             :class="{ 'active': !!pass1 }">
+            <input :placeholder="$t('create.input')" v-model="pass1" :type="'password'" />
+        </div>
+        <div class="__btn __btn_input" 
+             :class="{ 'active': !!pass2 }">
+            <input :placeholder="$t('create.again')" v-model="pass2" :type="'password'" />
+        </div>
+
+        <span class="__btn __btn_all_in" @click="createAccount">{{ $t('btn.create') }}</span>
+        <router-link class="__btn_link" :to="{ name: 'login' }">login</router-link>
     </div>
 </template>
 
@@ -27,7 +37,9 @@ export default {
             this.pass2 = this.trim(this.pass2);
 
             // name
-            if (this.name.match(/(\s+)/g)) {
+            if (!this.name || 
+                this.name.match(/(\s+)/g) ||
+                this.name.length > 32) {
                 window.alert('name is illegal');
                 return;
             }
@@ -37,6 +49,17 @@ export default {
                 window.alert(this.$t('create.hint.long'));
                 return;
             }
+
+            // Chinese
+            if ( /[\u4e00-\u9fa5]|\s+/g.test(this.pass1) ) {
+                window.alert('password error');
+                return;
+            }
+            // Full-width
+            // if ( /[\uFF00-\uFFFF]|\s+]/g.test(this.pass1) ) {
+            //     window.alert('password error');
+            //     return;
+            // }
 
             // same password
             if (!this.pass2 || this.pass1 !== this.pass2) {
@@ -64,3 +87,9 @@ export default {
     }
 };
 </script>
+
+<style lang="sass" scoped>
+.__btn {
+    margin-bottom: 15px;
+}
+</style>

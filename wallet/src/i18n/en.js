@@ -6,13 +6,13 @@ module.exports = {
         home: 'Home',
         head: {
             title: 'Account',
-            create: 'Create Account',
-            imported: 'Import Account',
-            backup: 'Back Up Account',
+            create: 'Create',
+            imported: 'Import',
+            backup: 'Back Up',
         },
         sync: 'Nodes Syncing',
-        firstDone: 'Init done',
-        firstDoing: 'Initing'
+        firstDone: 'Init Done',
+        firstDoing: 'Initializing'
     },
 
     // account list
@@ -40,7 +40,7 @@ module.exports = {
         title: 'Account Detail',
         transfer: 'Transfer',
         getTestToken: 'Get Test Tokens',
-        transDetail: 'See more account transaction details',
+        transDetail: 'More transaction details',
         name: 'Account Name',
         address: 'Account Address',
         balance: 'Balance',
@@ -81,7 +81,7 @@ module.exports = {
     btn: {
         create: 'Create',
         cancel: 'Cancel',
-        login: '登录'
+        login: 'login'
     },
     paging: {
         pre: 'Prev',

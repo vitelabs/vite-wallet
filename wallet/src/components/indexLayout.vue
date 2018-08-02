@@ -6,9 +6,11 @@
         </div>
         <div class="confirm-wrapper">
             <div class="confirm">
-                <img class="top-background" src="../assets/bg2.svg"/>
-                <img class="confirm-logo" src="../assets/ViteLogo.svg"/>
-                <slot></slot>
+                <img class="top-background" src="../assets/imgs/bg2.svg"/>
+                <img class="confirm-logo" src="../assets/imgs/ViteLogo.svg"/>
+                <div class="confirm-content">
+                    <slot></slot>
+                </div>
             </div>
         </div>
     </div>
@@ -29,7 +31,7 @@ export default {
 .index-layout-wrapper {
     width: 100%;
     height: 100%;
-    background: url('../assets/bg1.svg') rgba(255, 255, 255, 0.1) 100% no-repeat;
+    background: url('../assets/imgs/bg1.svg') rgba(255, 255, 255, 0.1) 100% no-repeat;
     background-size: 100%;
     background-position: 0 0;
 
@@ -60,11 +62,10 @@ export default {
             text-align: center;
             box-shadow: 0 2px 48px 1px rgba(29,17,86,0.12);
             border-radius: 8px;
-            padding-bottom: 40px;
+            padding-bottom: 30px;
             .top-background {
                 width: 100%;
                 border-radius: 8px 8px 0 0;
-                margin-bottom: 30px;
             }
             .confirm-logo {
                 position: absolute;

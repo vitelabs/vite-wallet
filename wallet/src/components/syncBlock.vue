@@ -1,9 +1,15 @@
 <template>
     <div class="sync-block-wrapper">
-        <span v-show="statusText">{{ statusText ? $t(`nav.${statusText}`) : '' }}</span>
+        <span class="status-text" v-show="statusText">
+            {{ statusText ? $t(`nav.${statusText}`) : '' }}
+        </span>
         <span v-show="statusText !== 'sync'">{{ blockPercent }}</span>
-        <span v-show="statusText !== 'firstDone'" @click="reloadBlock">reload</span>
-        <span v-show="statusText === 'firstDone'">done</span>
+
+        <img src="../assets/imgs/sync_icon.svg"
+             v-show="statusText !== 'firstDone'" 
+             @click="reloadBlock"
+             class="icon"/>
+        <img src="../assets/imgs/done_icon.svg" class="icon" v-show="statusText === 'firstDone'" />
     </div>
 </template>
 
@@ -33,7 +39,7 @@ export default {
             if (this.status === 2) {
                 return '100%';
             }
-            return this.currentHeight / this.targetHeight * 100 + '%';
+            return parseInt(this.currentHeight / this.targetHeight * 100) + '%';
         }
     },
     watch: {
@@ -100,7 +106,14 @@ export default {
 .sync-block-wrapper {
     color: #fff;
     font-size: 14px;
+    .status-text {
+        margin-right: 10px;
+    }
+    .icon {
+        width: 16px;
+        height: 16px;
+        margin-bottom: -4px;
+        margin-left: 20px;
+    }
 }
 </style>
-
-

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img src="../assets/ViteLogo.svg"/>
+        <img src="../assets/imgs/ViteLogo.svg"/>
         <!-- <img src="../assets/index_icon_default.svg"/>
         <img src="../assets/add_icon.svg"/>
         <img src="../assets/correct_icon.svg"/>

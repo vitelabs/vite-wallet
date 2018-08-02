@@ -43,10 +43,13 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.line {
-    margin: 15px 0;
-    width: 100%;
-    height: 2px;
-    background: #E5EDF3;
+.start-wrapper {
+    margin-top: 15px;
+    .line {
+        margin: 15px 0;
+        width: 100%;
+        height: 2px;
+        background: #E5EDF3;
+    }
 }
 </style>
