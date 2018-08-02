@@ -39,7 +39,7 @@
             <span v-show="totalPage - 1 > 1">{{ pageNumber }}</span>
             <span :class="{
                 'active': currentPage === totalPage - 1
-            }" v-show="totalPage - 1 > 1" @click="fetchTransList(totalPage - 1)">{{ totalPage - 1 }}</span>
+            }" v-show="totalPage - 1 > 1" @click="fetchTransList(totalPage - 1)">{{ totalPage }}</span>
             <span @click="fetchTransList(currentPage + 1)"> &gt; </span>
         </div>
     </div>
