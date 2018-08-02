@@ -4,6 +4,9 @@
     "buildDependenciesFromSource": true,
     "asar": false,
     "mac": {
-        "icon": "icon/vite-test.icns"
+        "icon": "icon/vite_512x512@2x.png"
+    },
+    "win": {
+        "icon": "icon/vite_wallet_256_256.png"
     }
 }
