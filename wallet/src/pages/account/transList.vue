@@ -1,26 +1,48 @@
 <template>
     <div v-show="true" class="trans-list-wrapper">
-        <div class="title">
-            <span>{{ $t('transList.tType.title') }}</span>
-            <span>{{ $t('transList.status.title') }}</span>
-            <span>{{ $t('transList.timestamp') }}</span>
-            <span>{{ $t('transList.tAddress') }}</span>
-            <span>{{ $t('transList.sum') }}</span>
-            <span>{{ $t('transList.tDetail') }}</span>
-        </div>
+        <div class="table">
+            <div class="t-header">
+                <div class="cell-text">{{ $t('transList.tType.title') }}</div>
+                <div class="cell-text">{{ $t('transList.status.title') }}</div>
+                <div class="cell-text">{{ $t('transList.timestamp') }}</div>
+                <div class="cell-text">{{ $t('transList.tAddress') }}</div>
+                <div class="cell-text">{{ $t('transList.sum') }}</div>
+                <div class="cell-text">{{ $t('transList.tDetail') }}</div>
+            </div>
 
-        <div class="list">
-            <div v-for="(item, index) in transList" :key="index">
+
+            <div class="t-row" v-for="(item, index) in testList" :key="index">
+                <div class="cell-text">{{ item.a }}</div>
+                <div :class="{
+                    'cell-text': true,
+                    'pink': item.status === 'unconfirmed',
+                    'blue': item.status !== 'unconfirmed'
+                }">{{ item.status }}
+                </div>
+                <div class="cell-text">{{ item.c }}</div>
+                <div class="cell-text">{{ item.d }}</div>
+                <div class="cell-text">{{ item.e }}</div>
+                <div class="cell-text">
+                    <a :href="'https://test.vite.net/transaction/' + item.f" target="_blank">{{item.g}}</a>
+                </div>
+            </div>
+            <!-- <div v-for="(item, index) in transList" :key="index">
                 <span>{{ $t(`transList.tType.${item.type}`) }}</span>
                 <span>{{ item.status }}</span>
                 <span>{{ item.date }}</span>
                 <span>{{ item.transAddr }}</span>
                 <span>{{ item.amount }}</span>
                 <a :href="'https://test.vite.net/transaction/' + item.hash" target="_blank">{{ $t('transList.tDetail') }}</a>
-            </div>
+            </div> -->
         </div>
+        <div class="pagination">
+            <div class="page-box">
+                <img src="../../assets/imgs/done_icon.svg" class="icon"/>
+            </div>
+            <div class="page-box">
+                <img src="../../assets/imgs/done_icon.svg" class="icon"/>
+            </div>
 
-        <div class="btn-list">
             <span @click="fetchTransList(0)">{{ $t('paging.first') }}</span>
             <span @click="fetchTransList(currentPage - 1)">{{ $t('paging.pre') }}</span>
             <span>{{ pageNumber }}</span>
@@ -54,8 +76,56 @@ export default {
     },
     data() {
         return {
-            address: this.$route.params.address, 
+            address: this.$route.params.address,
             transList: [],
+            isConfirm: false,
+            testList: [
+                {
+                    a: 1,
+                    status: 'unconfirmed',
+                    c: 2,
+                    d: 2,
+                    e: 2,
+                    f: 2,
+                    g: 2,
+                },
+                {
+                    a: 1,
+                    status: 'unconfirmed',
+                    c: 2,
+                    d: 2,
+                    e: 2,
+                    f: 2,
+                    g: 2,
+                },
+                {
+                    a: 1,
+                    status: 'confirmed',
+                    c: 2,
+                    d: 2,
+                    e: 2,
+                    f: 2,
+                    g: 2,
+                },
+                {
+                    a: 1,
+                    status: 'confirmed',
+                    c: 2,
+                    d: 2,
+                    e: 2,
+                    f: 2,
+                    g: 2,
+                },
+                {
+                    a: 1,
+                    status: 'unconfirmed',
+                    c: 2,
+                    d: 2,
+                    e: 2,
+                    f: 2,
+                    g: 2,
+                },
+            ],
             currentPage: 0
         };
     },
@@ -85,12 +155,12 @@ export default {
         },
 
         fetchTransList(pageIndex) {
-            if ( (pageIndex >= this.totalPage && pageIndex) || pageIndex < 0 ) {
+            if ((pageIndex >= this.totalPage && pageIndex) || pageIndex < 0) {
                 return;
             }
 
-            let reFetch = ()=>{
-                reTimeout = window.setTimeout(()=>{
+            let reFetch = () => {
+                reTimeout = window.setTimeout(() => {
                     window.clearTimeout(reTimeout);
                     reTimeout = null;
                     this.fetchTransList(this.currentPage);
@@ -110,7 +180,6 @@ export default {
                     console.log('removeList');
                     return;
                 }
-                console.log(list);
 
                 list = list || [];
                 let nowList = [];
@@ -139,7 +208,7 @@ export default {
                 this.transList = nowList;
 
                 reFetch();
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.warn(err);
                 reFetch();
             });
@@ -148,10 +217,53 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-    .trans-list-wrapper{
-        width: 100%;
-        display: block;
-        background-color: bisque;
+<style lang="scss">
+    .trans-list-wrapper {
+        position: relative;
+        box-sizing: border-box;
+        margin-top: 30px;
+        background: #FFF;
+        border: 1px solid #F6F5F5;
+        box-shadow: 0 2px 15px 1px rgba(176, 192, 237, 0.42);
+        border-radius: 8px;
+        .table{
+            display: table;
+            width: 100%;
+            .t-header {
+                display: table-row;
+                color: #1D2024;
+                .cell-text {
+                    display: table-cell;
+                    padding-top: 20px;
+                    text-align: right;
+                    line-height: 16px;
+                    font-size: 14px;
+                    letter-spacing: 0;
+                }
+            }
+            .t-row {
+                display: table-row;
+                height: 64px;
+                color: #5E6875;
+                .pink {
+                    color: #EA60AC;
+                }
+                .blue {
+                    color: #195ADD;
+                }
+                .cell-text {
+                    display: table-cell;
+                    padding: 30px 0 0 30px;
+                    border-bottom: 1px solid #f3f6f9;
+                    text-align: right;
+                    line-height: 16px;
+                    font-size: 14px;
+                    letter-spacing: 0;
+                }
+            }
+        }
+        .pagination{
+            text-align: center;
+        }
     }
 </style>

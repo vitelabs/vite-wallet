@@ -14,6 +14,7 @@ class Block {
 
     __syncBlock() {
         return global.goViteIPC['ledger.GetInitSyncInfo']().then((data)=>{
+            console.log(data);
             this.startHeight = data.StartHeight;
             this.targetHeight = data.TargetHeight;
             this.currentHeight = data.CurrentHeight;

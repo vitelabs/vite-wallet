@@ -50,6 +50,9 @@ export default {
     },
     methods: {
         goTransaction() {
+            console.log(this.blockStatus);
+            console.log(this.netStatus);
+
             if (this.$route.name === 'transaction') {
                 return;
             }
@@ -124,43 +127,36 @@ export default {
     .icon {
         display: inline-block;
         width: 100%;
-        background: #fff;
-        border: 1px solid #F5F4F5;
-        box-shadow: 0 2px 40px 1px rgba(221, 229, 252, 0.50);
-        .icon {
+        height: 40px;
+        margin-top: 24px;
+        &.active:before {
+            content: '';
             display: inline-block;
-            width: 100%;
+            width: 6px;
             height: 40px;
-            margin-top: 24px;
-            &.active:before {
-                content: '';
-                display: inline-block;
-                width: 6px;
-                height: 40px;
-                background-image: linear-gradient(-90deg, #1B3BD8 0%, #176CE0 31%, #0B92E7 49%, #0BB6EB 71%, #00E0F2 100%);
-            }
+            background-image: linear-gradient(-90deg, #1B3BD8 0%, #176CE0 31%, #0B92E7 49%, #0BB6EB 71%, #00E0F2 100%);
         }
-        .home {
-            background: url('../assets/index_icon_default.svg') no-repeat center;
-            &.active {
-                background: url('../assets/index_icon_pressed.svg') no-repeat center;
-            }
+    }
+    .home {
+        background: url('../assets/imgs/index_icon_default.svg') no-repeat center;
+        &.active {
+            background: url('../assets/imgs/index_icon_pressed.svg') no-repeat center;
         }
-        .send {
-            background: url('../assets/send_icon_default.svg') no-repeat center;
-            &.send-active {
-                background: url('../assets/send_icon_pressed.svg') no-repeat center;
-            }
+    }
+    .send {
+        background: url('../assets/imgs/send_icon_default.svg') no-repeat center;
+        &.send-active {
+            background: url('../assets/imgs/send_icon_pressed.svg') no-repeat center;
         }
-        .logout {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 88.5px;
-            background: url('../assets/logout_icon.svg') no-repeat center;
-            &:hover {
-                background: url('../assets/logout_icon_hover.svg') no-repeat center;
-            }
+    }
+    .logout {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 88.5px;
+        background: url('../assets/imgs/logout_icon.svg') no-repeat center;
+        &:hover {
+            background: url('../assets/imgs/logout_icon_hover.svg') no-repeat center;
         }
     }
 }

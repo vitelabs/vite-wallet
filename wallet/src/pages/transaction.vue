@@ -21,7 +21,7 @@
                     <input v-model="inAddress" />
                 </span>
                 <span v-show="!isValidAddress" class="err">
-                    <img class="icon" src="../assets/error_icon.svg"/>address illegal
+                    <img class="icon" src="../assets/imgs/error_icon.svg"/>address illegal
                 </span>
             </div>
             <div class="row">
@@ -30,7 +30,7 @@
                     <input v-model="amount" />VITE
                 </span>
                 <span v-show="amountErr" class="err">
-                    <img class="icon" src="../assets/error_icon.svg"/>{{ amountErr }}
+                    <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ amountErr }}
                 </span>
             </div>
             <div class="row">
@@ -39,7 +39,7 @@
                     <input v-model="password" type="password" />
                 </span>
                 <span v-show="passwordErr" class="err">
-                    <img class="icon" src="../assets/error_icon.svg"/>{{ passwordErr }}
+                    <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ passwordErr }}
                 </span>
             </div>
 
@@ -71,7 +71,7 @@ let amountTimeout = null;
 
 export default {
     mounted() {
-        this.fetchAccount();
+        // this.fetchAccount();
     },
     data() {
         return {
@@ -197,30 +197,30 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 .transaction-wrapper {
     position: relative;
     box-sizing: border-box;
     padding: 92px 30px 30px 30px;
     height: 100%;
-}
-.content-wrapper {
-    padding: 0 30px;
-    height: 100%;
-    background: #FFFFFF;
-    border: 1px solid #F6F5F5;
-    box-shadow: 0 2px 48px 1px rgba(176,192,237,0.42);
-    border-radius: 8px;
-    .row {
-        padding-top: 20px;
-        .err {
-            font-size: 12px;
-            color: #FF2929;
-            line-height: 16px;
-            .icon {
-                width: 20px;
-                height: 20px;
-                margin: 0 5px -5px 10px;
+    .content-wrapper {
+        padding: 0 30px;
+        height: 100%;
+        background: #FFFFFF;
+        border: 1px solid #F6F5F5;
+        box-shadow: 0 2px 48px 1px rgba(176,192,237,0.42);
+        border-radius: 8px;
+        .row {
+            padding-top: 20px;
+            .err {
+                font-size: 12px;
+                color: #FF2929;
+                line-height: 16px;
+                .icon {
+                    width: 20px;
+                    height: 20px;
+                    margin: 0 5px -5px 10px;
+                }
             }
         }
     }
@@ -269,18 +269,50 @@ export default {
         width: 300px;
         input {
             background: #F3F6F9;
-            font-size: 14px;
-            width: 100%;
+            border: 1px solid #D4DEE7;
+            border-radius: 2px;
+            height: 36px;
+            line-height: 36px;
+            padding: 0 15px;
+            opacity: 0.3;
+            color: #5E6875;
         }
-        &.active {
-            opacity: 1;
+        &.out-address {
+            min-width: 300px;
         }
-        &.amount input {
-            width: 220px;
-            margin-right: 10px;
+        .__input {
+            width: 300px;
+            input {
+                background: #F3F6F9;
+                font-size: 14px;
+                width: 100%;
+            }
+            &.active {
+                opacity: 1;
+            }
+            &.amount input {
+                width: 220px;
+                margin-right: 10px;
+            }
+        }
+    }
+    .btn {
+        width: 300px;
+        height: 36px;
+        line-height: 36px;
+        background: #195BDD;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 14px;
+        color: #FFFFFF;
+        margin-top: 30px;
+        &.unuse {
+            background: #efefef;
+            color: #666;
         }
     }
 }
+
 .title {
     position: absolute;
     top: 30px;
@@ -289,19 +321,5 @@ export default {
     color: #272727;
     line-height: 32px;
 }
-.btn {
-    width: 300px;
-    height: 36px;
-    line-height: 36px;
-    background: #195BDD;
-    border-radius: 4px;
-    text-align: center;
-    font-size: 14px;
-    color: #FFFFFF;
-    margin-top: 30px;
-    &.unuse {
-        background: #efefef;
-        color: #666;
-    }
-}
+
 </style>

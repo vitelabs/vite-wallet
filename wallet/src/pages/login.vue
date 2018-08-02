@@ -40,7 +40,7 @@ export default {
         accountList
     },
     mounted() {
-        this.getAccountList();
+        // this.getAccountList();
     },
     data() {
         let activeAccount;
@@ -128,11 +128,11 @@ export default {
         width: 12px;
         height: 12px;
         &.down {
-            background: url('../assets/down_icon.svg');
+            background: url('../assets/imgs/down_icon.svg');
             background-size: 12px 12px;
         }
         &.up {
-            background: url('../assets/up_icon.svg');
+            background: url('../assets/imgs/up_icon.svg');
             background-size: 12px 12px;
         }
     }
