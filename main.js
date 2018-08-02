@@ -1,5 +1,5 @@
 // [TODO] app-log test mock-server
-const { app, BrowserWindow, shell, dialog } = require('electron');
+const { app, BrowserWindow, dialog } = require('electron');
 const path = require('path');
 const os = require('os');
 
@@ -9,6 +9,8 @@ global.APP_PATH = process.env.NODE_ENV === 'dev' ? path.join(app.getAppPath(), '
 const initMenu = require(path.join(global.APP_PATH, '/walletSrc/modules/menus.js'));
 const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/modules/ipcGo.js') );
 const updateAPP = require( path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js') );
+const loadWeb = require( path.join(global.APP_PATH, '/walletSrc/modules/loadWeb.js') );
+const log = require( path.join(global.APP_PATH, '/walletSrc/utils/log.js') );
 
 let ipcServerFinish = false;
 let ipcServerCb;
@@ -33,27 +35,6 @@ function onIPCServer (cb) {
         return;
     }
     ipcServerCb = cb;
-}
-
-function loadWeb() {
-    // Load file
-    win.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
-    win.webContents.once('dom-ready', () => {
-        win.webContents.executeJavaScript(`
-            const path = require('path');
-            require(path.join(__dirname, '../walletSrc/modules/webStart.js'));
-        `);
-    });
-
-    // Redefine file
-    win.webContents.on('new-window', (event, url) => {
-        // [TODO] only vite.net
-        const protocol = require('url').parse(url).protocol;
-        if (protocol === 'http:' || protocol === 'https:') {
-            event.preventDefault();
-            shell.openExternal(url);
-        }
-    });
 }
 
 let win;
@@ -93,11 +74,22 @@ function createWindow () {
 
     initMenu(win);
 
-    onIPCServer(loadWeb);
+    onIPCServer(()=>{
+        loadWeb(win);
+    });
 }
 
 app.on('ready', createWindow);
 
+app.on('gpu-process-crashed', () => {
+    // event.preventDefault()
+    // callback('username', 'secret')
+});
+
 app.on('window-all-closed', () => {
     process.platform !== 'darwin' && app.quit();
+});
+
+app.on('will-quit', () => {
+    log.save();
 });
