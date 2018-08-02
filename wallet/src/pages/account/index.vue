@@ -111,4 +111,9 @@ export default {
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
+    .account-wrapper{
+        position: relative;
+        width: 100%;
+        background-color: #fafcff;
+    }
 </style>
