@@ -80,7 +80,7 @@ let amountTimeout = null;
 
 export default {
     mounted() {
-        // this.fetchAccount();
+        this.fetchAccount();
     },
     data() {
         return {
@@ -213,8 +213,9 @@ export default {
     padding: 92px 30px 30px 30px;
     height: 100%;
     .content-wrapper {
-        padding: 0 30px;
+        padding: 0px 30px;
         height: 100%;
+        overflow: auto;
         background: #FFFFFF;
         border: 1px solid #F6F5F5;
         box-shadow: 0 2px 48px 1px rgba(176,192,237,0.42);
@@ -289,6 +290,7 @@ export default {
     .btn {
         width: 300px;
         height: 36px;
+        margin-bottom: 20px;
         line-height: 36px;
         background: #195BDD;
         border-radius: 4px;

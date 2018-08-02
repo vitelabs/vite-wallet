@@ -3,18 +3,22 @@
         <span class="status-text" v-show="statusText">
             {{ statusText ? $t(`nav.${statusText}`) : '' }}
         </span>
-        <span v-show="statusText !== 'sync'">{{ blockPercent }}</span>
+        <span v-show="statusText !== 'sync' && statusText !== 'netWeak'">{{ blockPercent }}</span>
 
         <img src="../assets/imgs/sync_icon.svg"
              v-show="statusText !== 'firstDone'" 
              @click="reloadBlock"
-             class="icon"/>
+             :class="{
+                 'icon': true,
+                 'loading': reloading || statusText === 'netWeak'
+        }"/>
         <img src="../assets/imgs/done_icon.svg" class="icon" v-show="statusText === 'firstDone'" />
     </div>
 </template>
 
 <script>
-let loopTimeout = null;
+let netEvent = null;
+let blockEvent = null;
 
 export default {
     data() {
@@ -22,14 +26,32 @@ export default {
             currentHeight: '',
             targetHeight: '',
             status: null,
-            statusText: ''
+            statusText: '',
+            netStatus: false,
+            reloading: false
         };
     },
     mounted() {
-        this.startLoopSyncBlock();
+        blockEvent = viteWallet.EventEmitter.on('blockInfo', (blockInfo) => {
+            this.syncData(blockInfo);
+        });
+        netEvent = viteWallet.EventEmitter.on('netStatus', (netStatus) => {
+            this.netStatus = netStatus;
+        });
+
+        this.syncData( viteWallet.Block.getSyncInfo() );
+        this.netStatus = viteWallet.Net.getStatus();
+
+        window.addEventListener('offline',  ()=>{
+            this.updateStatusText(null, false);
+        });
+        window.addEventListener('online',  ()=>{
+            this.updateStatusText(null, true);
+        });
     },
     destroyed() {
-        this.stopLoopSyncBlock();
+        viteWallet.EventEmitter.off(netEvent);
+        viteWallet.EventEmitter.off(blockEvent);
     },
     computed: {
         blockPercent() {
@@ -44,19 +66,48 @@ export default {
     },
     watch: {
         status: function(val, oldVal) {
-            val === 2 && this.stopLoopSyncBlock();
+            val === 2 && viteWallet.EventEmitter.off(blockEvent);
+            this.updateStatusText(oldVal);
+        }
+    },
+    methods: {
+        reloadBlock() {
+            if (this.reloading || this.statusText === 'netWeak') {
+                return;
+            }
 
-            if (val === 0) {
+            this.reloading = true;
+            viteWallet.Block.reloadSyncInfo().then((data) => {
+                this.reloading = false;
+                this.syncData(data);
+            }).catch((err)=>{
+                this.reloading = false;
+                console.warn(err);
+            });
+        },
+
+        updateStatusText(oldVal, clientNet = true) {
+            if (!clientNet) {
+                this.statusText = 'netWeak';
+                return;
+            }
+
+            if (this.status === 0) {
                 this.statusText = '';
                 return;
             }
 
-            if (val === 1) {
+            if (this.status === 1) {
                 this.statusText = 'firstDoing';
                 return;
             }
 
-            if (oldVal === null && val === 2) {
+            if (!this.netStatus) {
+                this.statusText = 'netWeak';
+                return;
+            }
+
+            if (oldVal === null && this.status === 2) {
                 this.statusText = 'sync';
                 return;
             }
@@ -67,30 +118,7 @@ export default {
                 textTimeout = null;
                 this.statusText = 'sync';
             }, 500);
-        }
-    },
-    methods: {
-        reloadBlock() {
-            viteWallet.Block.reloadSyncInfo().then((data) => {
-                this.syncData(data);
-            }).catch((err)=>{
-                console.warn(err);
-            });
         },
-
-        startLoopSyncBlock() {
-            this.syncData( viteWallet.Block.getSyncInfo() );
-            loopTimeout = setTimeout(()=>{
-                this.stopLoopSyncBlock();
-                this.startLoopSyncBlock();
-            }, viteWallet.Block.getLoopBlockTime());
-        },
-
-        stopLoopSyncBlock() {
-            window.clearTimeout(loopTimeout);
-            loopTimeout = null;
-        },
-
         syncData({
             targetHeight, currentHeight, status
         }) {
@@ -102,7 +130,7 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 .sync-block-wrapper {
     color: #fff;
     font-size: 14px;
@@ -114,6 +142,21 @@ export default {
         height: 16px;
         margin-bottom: -4px;
         margin-left: 20px;
+        &:hover {
+            animation: rotate 0.5s linear;
+        }
+        &.loading {
+            animation: rotate 0.7s linear infinite;
+        }
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
 </style>

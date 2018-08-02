@@ -130,56 +130,57 @@ export default {
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
-    .account-wrapper{
-        position: relative;
-        box-sizing: border-box;
-        padding: 0 30px 30px 30px;
-        height: 100%;
-        .account-detail{
-            display: flex;
-            padding: 24.5px 22.5px 20.2px;
-            background: #FFF;
-            border: 1px solid #F6F5F5;
-            box-shadow: 0 2px 15px 1px rgba(176,192,237,0.42);
-            border-radius: 8px;
-            .row {
-                flex: 1;
-                &.address {
-                    min-width: 447px;
+.account-wrapper{
+    position: relative;
+    box-sizing: border-box;
+    padding: 0 30px 30px 30px;
+    height: 100%;
+    overflow: auto;
+    .account-detail{
+        display: flex;
+        padding: 24.5px 22.5px 20.2px;
+        background: #FFF;
+        border: 1px solid #F6F5F5;
+        box-shadow: 0 2px 15px 1px rgba(176,192,237,0.42);
+        border-radius: 8px;
+        .row {
+            flex: 1;
+            &.address {
+                min-width: 447px;
+            }
+            .row-title {
+                display: inline-block;
+                width: 100%;
+                font-weight: bold;
+                font-size: 14px;
+                color: #1D2024;
+                line-height: 16px;
+                padding-bottom: 12px;
+                .row-title__text{
+                    float: left;
                 }
-                .row-title {
-                    display: inline-block;
-                    width: 100%;
-                    font-weight: bold;
-                    font-size: 14px;
-                    color: #1D2024;
-                    line-height: 16px;
-                    padding-bottom: 12px;
-                    .row-title__text{
-                        float: left;
-                    }
-                    .row-title__copy{
-                        float: right;
-                        color: #4B74FF;
-                    }
+                .row-title__copy{
+                    float: right;
+                    color: #4B74FF;
                 }
-                .row-content {
-                    color: #8D9BAE;
-                }
-                .__btn_text {
-                    width: 100%;
-                    display: inline-block;
-                    box-sizing: border-box;
-                    background: #F3F6F9;
-                    border: 1px solid #D4DEE7;
-                    border-radius: 2px;
-                    height: 48px;
-                    line-height: 48px;
-                    padding: 0 15px;
-                    opacity: 0.3;
-                    color: #283D4A;
-                }
+            }
+            .row-content {
+                color: #8D9BAE;
+            }
+            .__btn_text {
+                width: 100%;
+                display: inline-block;
+                box-sizing: border-box;
+                background: #F3F6F9;
+                border: 1px solid #D4DEE7;
+                border-radius: 2px;
+                height: 48px;
+                line-height: 48px;
+                padding: 0 15px;
+                opacity: 0.3;
+                color: #283D4A;
             }
         }
     }
+}
 </style>

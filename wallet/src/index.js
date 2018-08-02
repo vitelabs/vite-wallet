@@ -55,9 +55,12 @@ appReady(function () {
         });
         return;
     }
-
     viteWallet.EventEmitter = EventEmitter;
     
+    // After init global vars
+    require('utils/loopBlock.js');
+    require('utils/loopNet.js');
+
     const { System, Net } = viteWallet;
 
     let locale = System.getLocale();

@@ -40,7 +40,7 @@ export default {
         accountList
     },
     mounted() {
-        // this.getAccountList();
+        this.getAccountList();
     },
     data() {
         let activeAccount;

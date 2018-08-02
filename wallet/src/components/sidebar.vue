@@ -9,8 +9,7 @@
         <div :class="{ 
             'icon': true,
             'send': true,
-            'active': title === 'transaction',
-            'send-active': title === 'transaction' && blockStatus === 2 && netStatus
+            'active': title === 'transaction'
         }" @click="goTransaction"></div>
 
         <div class="logout" @click="logout"></div>
@@ -18,8 +17,8 @@
 </template>
 
 <script>
-let loopBlockTimeout = null;
-let loopNetTimeout = null;
+let netEvent = null;
+let blockEvent = null;
 
 export default {
     props: {
@@ -36,14 +35,26 @@ export default {
         };
     },
     mounted() {
-        this.loopBlock();
-        this.loopNet();
+        blockEvent = viteWallet.EventEmitter.on('blockInfo', ({ status }) => {
+            this.handleBlock(status);
+        });
+        netEvent = viteWallet.EventEmitter.on('netStatus', (netStatus) => {
+            this.netStatus = netStatus;
+        });
+
+        this.handleBlock( viteWallet.Block.getSyncInfo().status );
+        this.netStatus = viteWallet.Net.getStatus();
     },
     destroyed() {
-        this.stopLoopBlock();
-        this.stopLoopNet();
+        viteWallet.EventEmitter.off(netEvent);
+        viteWallet.EventEmitter.off(blockEvent);
     },
     methods: {
+        handleBlock(status) {
+            this.blockStatus = status;
+            this.blockStatus === 2 && viteWallet.EventEmitter.off(blockEvent);
+        },
+
         goTransaction() {
             console.log(this.blockStatus);
             console.log(this.netStatus);
@@ -73,44 +84,12 @@ export default {
                 console.warn(err);
                 window.alert(err && err.message ? err.message : 'logout fail');
             });
-        },
-
-        stopLoopBlock() {
-            window.clearTimeout(loopBlockTimeout);
-            loopBlockTimeout = null;
-        },
-        stopLoopNet() {
-            window.clearTimeout(loopNetTimeout);
-            loopNetTimeout = null;
-        },
-
-        loopBlock() {
-            let {
-                status
-            } = viteWallet.Block.getSyncInfo();
-            this.blockStatus = status;
-            if (this.blockStatus === 2) {
-                return;
-            }
-
-            loopBlockTimeout = window.setTimeout(() => {
-                this.stopLoopBlock();
-                this.loopBlock();
-            }, viteWallet.Block.getLoopBlockTime());
-        },
-        loopNet() {
-            this.netStatus = viteWallet.Net.getStatus();
-
-            loopNetTimeout = window.setTimeout(() => {
-                this.stopLoopNet();
-                this.loopNet();
-            }, viteWallet.Net.getLoopNetTime());
         }
     }
 };
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 .sidebar-wrapper {
     position: absolute;
     top: 0;
@@ -140,7 +119,7 @@ export default {
     }
     .send {
         background: url('../assets/imgs/send_icon_default.svg') no-repeat center;
-        &.send-active {
+        &.active {
             background: url('../assets/imgs/send_icon_pressed.svg') no-repeat center;
         }
     }

@@ -1,11 +1,11 @@
 <template>
     <div class="account-head-wrapper">
-        <div class="custom-name __ellipsis">
-            <span v-show="!isShowNameInput">{{ accountName }}</span>
+        <div class="custom-name">
+            <span class="name __ellipsis" v-show="!isShowNameInput">{{ accountName }}</span>
             <img v-show="!isShowNameInput" @click="startRename" class="edit" src="../../assets/imgs/edit_icon.svg"/>            
-            <input v-show="isShowNameInput" type="text" autofocus
+            <input ref="nameInput" v-show="isShowNameInput" type="text" autofocus
                    v-model="editName" :placeholder="accountName"
-                   @input="inputName"/>
+                   @input="inputName" @blur="_rename"/>
         </div>
         <div class="btn-group">
             <backup-account class="btn__small"></backup-account>
@@ -61,6 +61,7 @@ export default {
 
         startRename() {
             this.isShowNameInput = true;
+            this.$refs.nameInput.focus();
         },
         clearInputTime() {
             window.clearTimeout(inputTimeout);
@@ -70,10 +71,17 @@ export default {
             this.clearInputTime();
             inputTimeout = window.setTimeout(()=>{
                 this.clearInputTime();
-                this.rename(this.editName, () => {
-                    this.isShowNameInput = false;
-                });
+                this._rename();
             }, 500);
+        },
+        _rename() {
+            if (!this.editName) {
+                this.isShowNameInput = false;
+                return;
+            }
+            this.rename(this.editName, () => {
+                this.isShowNameInput = false;
+            });
         }
     }
 };
@@ -91,8 +99,13 @@ export default {
         font-size: 24px;
         color: #272727;
         line-height: 84px;
+        .name {
+            display: inline-block;
+            max-width: 400px;
+        }
         .edit {
             width: 20px;
+            margin-bottom: 35px;
         }
         input {
             height: 32px;

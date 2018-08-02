@@ -1,19 +1,13 @@
 <template>
     <div v-show="true" class="trans-list-wrapper">
         <div class="table">
-            <div class="t-header" :class="{
-                'no-data': !transList || !transList.length
-            }">
+            <div class="t-header">
                 <div class="cell-text">{{ $t('transList.tType.title') }}</div>
                 <div class="cell-text">{{ $t('transList.status.title') }}</div>
                 <div class="cell-text">{{ $t('transList.timestamp') }}</div>
                 <div class="cell-text">{{ $t('transList.tAddress') }}</div>
                 <div class="cell-text">{{ $t('transList.sum') }}</div>
             </div>
-            <div class="t-row no-data" v-show="!transList || !transList.length">
-                no data
-            </div>
-
             <div v-for="(item, index) in transList" :key="index"
                  class="t-row" @click="goDetail(item)">
                 <span class="cell-text">
@@ -31,15 +25,22 @@
             </div>
         </div>
 
+        <div class="no-data" v-show="!transList || !transList.length">
+            no data
+        </div>
+
+        <!-- <div class="pagination"> -->
         <div v-show="!!+totalNum" class="pagination">
-            <span @click="fetchTransList(currentPage - 1)"> &lt; </span>
+            <!-- E600 -->
+            <span class="prev" @click="fetchTransList(currentPage - 1)"> &lt; </span>
             <span :class="{
                 'active': currentPage === 0
             }" @click="fetchTransList(0)">1</span>
             <span v-show="totalPage - 1 > 1">{{ pageNumber }}</span>
+            <!-- <span v-show="totalPage > 4">...</span> -->
             <span :class="{
                 'active': currentPage === totalPage - 1
-            }" v-show="totalPage - 1 > 1" @click="fetchTransList(totalPage - 1)">{{ totalPage }}</span>
+            }" v-show="totalPage - 1 > 1" @click="fetchTransList(totalPage - 1)">{{ +totalPage }}</span>
             <span @click="fetchTransList(currentPage + 1)"> &gt; </span>
         </div>
     </div>
@@ -49,7 +50,8 @@
 import date from 'utils/date.js';
 import BigNumber from 'bignumber.js';
 
-const pageCount = 10;
+const MIN_UNIT = new BigNumber('1000000000000000000');
+const pageCount = 6;
 let reTimeout = null;
 let eventChangeLang = null;
 
@@ -144,6 +146,7 @@ export default {
                     }
 
                     let timestamp = item.Timestamp * 1000;
+                    let amount = new BigNumber(item.Amount).dividedBy(MIN_UNIT);
 
                     nowList.push({
                         type: item.FromAddr ? 'receive' : 'send',
@@ -151,7 +154,7 @@ export default {
                         timestamp,
                         date: date(timestamp, this.$i18n.locale),
                         transAddr: item.FromAddr || item.ToAddr,
-                        amount: item.FromAddr ? item.Amount : '-' + item.Amount,
+                        amount: item.FromAddr ? amount : '-' + amount,
                         hash: item.Hash
                     });
                 });
@@ -202,9 +205,6 @@ export default {
             color: #5E6875;
             height: 48px;
             line-height: 48px;
-            &.no-data {
-                text-align: center;
-            }
             &:hover {
                 box-shadow: 0 0px 1px 1px rgba(176, 192, 237, 0.1);
                 background: rgba(176, 192, 237, 0.4);
@@ -223,6 +223,11 @@ export default {
                 }
             }
         }
+    }
+    .no-data {
+        height: 48px;
+        line-height: 48px;
+        text-align: center;
     }
     .pagination {
         height: 75px;

@@ -5,7 +5,7 @@
                  v-for="(account, i) in accountList" :key="i" 
                  @click="clickAccount(account)">
                 <div class="name">{{account.name}}</div>
-                <div class="address">{{account.address}}</div>
+                <div class="address __ellipsis">{{account.address}}</div>
             </div>
         </div>
 
