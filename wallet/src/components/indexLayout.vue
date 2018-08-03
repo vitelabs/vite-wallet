@@ -18,11 +18,10 @@
 
 <script>
 import changeLang from 'components/changeLang';
-import logo from 'components/logo';
 
 export default {
     components: {
-        changeLang, logo
+        changeLang
     }
 };
 </script>

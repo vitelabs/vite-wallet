@@ -8,10 +8,12 @@
                 <div class="cell-text">{{ $t('transList.tAddress') }}</div>
                 <div class="cell-text">{{ $t('transList.sum') }}</div>
             </div>
+
             <div v-for="(item, index) in transList" :key="index"
                  class="t-row" @click="goDetail(item)">
                 <span class="cell-text">
-                    <img class="icon" :src="`../../assets/imgs/${item.type}.svg`"/>
+                    <img v-show="item.type === 'send'" class="icon" src='../../assets/imgs/send.svg'/>
+                    <img v-show="item.type === 'receive'" class="icon" src='../../assets/imgs/receive.svg'/>
                     {{ $t(`transList.tType.${item.type}`) }}
                 </span>
                 <span :class="{
@@ -29,24 +31,13 @@
             no data
         </div>
 
-        <!-- <div class="pagination"> -->
-        <div v-show="!!+totalNum" class="pagination">
-            <!-- E600 -->
-            <span class="prev" @click="fetchTransList(currentPage - 1)"> &lt; </span>
-            <span :class="{
-                'active': currentPage === 0
-            }" @click="fetchTransList(0)">1</span>
-            <span v-show="totalPage - 1 > 1">{{ pageNumber }}</span>
-            <!-- <span v-show="totalPage > 4">...</span> -->
-            <span :class="{
-                'active': currentPage === totalPage - 1
-            }" v-show="totalPage - 1 > 1" @click="fetchTransList(totalPage - 1)">{{ +totalPage }}</span>
-            <span @click="fetchTransList(currentPage + 1)"> &gt; </span>
-        </div>
+        <pagination class="pagination" :currentPage="currentPage + 1" 
+                    :totalPage="totalPage" :toPage="toPage"></pagination>
     </div>
 </template>
 
 <script>
+import pagination from 'components/pagination.vue';
 import date from 'utils/date.js';
 import BigNumber from 'bignumber.js';
 
@@ -56,6 +47,9 @@ let reTimeout = null;
 let eventChangeLang = null;
 
 export default {
+    components: {
+        pagination
+    },
     props: {
         totalNum: {
             type: String,
@@ -64,7 +58,7 @@ export default {
     },
     mounted() {
         this.fetchTransList(0);
-
+        
         eventChangeLang = viteWallet.EventEmitter.on('changeLang', (locale)=>{
             this.updateTransListTime(locale);
         });
@@ -80,7 +74,7 @@ export default {
     computed: {
         totalPage() {
             let totalNum = new BigNumber(this.totalNum);
-            return totalNum.dividedToIntegerBy(pageCount).integerValue();
+            return totalNum.dividedToIntegerBy(pageCount).integerValue().toNumber();
         },
         pageNumber() {
             return `${this.currentPage + 1}/${this.totalPage}`;
@@ -106,6 +100,9 @@ export default {
             window.open('https://test.vite.net/transaction/' + trans.hash);
         },
 
+        toPage(pageNumber) {
+            this.fetchTransList(pageNumber - 1);
+        },
         fetchTransList(pageIndex) {
             if ((pageIndex >= this.totalPage && pageIndex) || pageIndex < 0) {
                 return;
@@ -120,6 +117,7 @@ export default {
             };
 
             console.log('fetch List');
+            console.log(this.totalNum);
             this.currentPage = pageIndex;
             viteWallet.Block.getTXList({
                 address: this.address,
@@ -232,21 +230,6 @@ export default {
     .pagination {
         height: 75px;
         line-height: 75px;
-        text-align: center;
-        span {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            border: 1px solid #C6CBD4;
-            border-radius: 2px;
-            line-height: 24px;
-            font-size: 14px;
-            color: #333;
-            &.active {
-                background: #195BDD;
-                color: #fff;
-            }
-        }
     }
 }
 </style>

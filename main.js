@@ -40,8 +40,8 @@ function onIPCServer (cb) {
 let win;
 function createWindow () {
     win = new BrowserWindow({
-        width: 1080,
-        minWidth: 1080,
+        width: 1200,
+        minWidth: 1210,
         height: 768,
         title: 'VITE WALLET',
         images: true
