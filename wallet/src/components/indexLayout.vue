@@ -1,8 +1,8 @@
 <template>
     <div class="index-layout-wrapper">
         <div class="header">
-            <img class="header-logo" src="../assets/imgs/testnet.svg" />
-            <change-lang class="change-lang"></change-lang>
+            <img class="header-logo __pointer" src="../assets/imgs/testnet.svg" />
+            <change-lang class="change-lang __pointer"></change-lang>
         </div>
         <div class="confirm-wrapper">
             <div class="confirm">

@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-            <div class="btn" :class="{
+            <div class="btn __pointer" :class="{
                 'unuse': amountErr || !isValidAddress
             }" @click="transfer">{{ $t('accDetail.transfer') }}</div>
         </div>

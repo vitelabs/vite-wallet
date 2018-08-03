@@ -6,13 +6,11 @@
             'active': title === 'account'
         }" :to="{ name: 'account', params: { address }}"></router-link>
 
-        <div :class="{ 
-            'icon': true,
-            'send': true,
+        <div class="__pointer icon send" :class="{
             'active': title === 'transaction'
         }" @click="goTransaction"></div>
 
-        <div class="logout" @click="logout"></div>
+        <div class="logout __pointer" @click="logout"></div>
     </div>
 </template>
 

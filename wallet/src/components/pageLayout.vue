@@ -1,12 +1,12 @@
 <template>
     <div class="page-layout-wrapper">
         <div class="head">
-            <div @mouseenter="overLogo"  @mouseleave="leaveLogo" class="logo">
+            <div @mouseenter="overLogo"  @mouseleave="leaveLogo" class="logo __pointer">
                 <img src="../assets/imgs/logo_tastnet.svg" />
                 <test-notice v-show="isShowNotice"></test-notice>
             </div>
-            <sync-block class="sync-block"></sync-block>
-            <change-lang class="change-lang"></change-lang>
+            <sync-block class="sync-block __pointer"></sync-block>
+            <change-lang class="change-lang __pointer"></change-lang>
         </div>
         <div class="page-wrapper">
             <sidebar class="sidebar" :title="title"></sidebar>

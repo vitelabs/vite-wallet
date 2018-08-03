@@ -1,19 +1,20 @@
 <template>
     <div class="account-head-wrapper">
         <div class="custom-name">
-            <span class="name __ellipsis" v-show="!isShowNameInput">{{ accountName }}</span>
-            <img v-show="!isShowNameInput" @click="startRename" class="edit" src="../../assets/imgs/edit_icon.svg"/>            
+            <span class="name __ellipsis" @click="startRename" v-show="!isShowNameInput">{{ accountName }}</span>
+            <img v-show="!isShowNameInput" @click="startRename" 
+                 class="edit __pointer" src="../../assets/imgs/edit_icon.svg"/>            
             <input ref="nameInput" v-show="isShowNameInput" type="text" autofocus
                    v-model="editName" :placeholder="accountName"
                    @input="inputName" @blur="_rename"/>
         </div>
         <div class="btn-group">
-            <backup-account class="btn__small"></backup-account>
-            <div class="btn__small __btn-test" @click="getTestToken">
+            <backup-account class="btn__small __pointer"></backup-account>
+            <div class="btn__small __pointer __btn-test" @click="getTestToken">
                 <span>{{ $t('accDetail.getTestToken') }}</span>
                 <img src="../../assets/imgs/Vite_icon.svg" class="icon" />
             </div>
-            <div @click="goDetail" class="btn__small __btn-detail">
+            <div @click="goDetail" class="btn__small __pointer __btn-detail">
                 {{ $t('accDetail.transDetail') }}
                 <img src="../../assets/imgs/more_icon.svg" class="icon" />
             </div>

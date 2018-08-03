@@ -28,7 +28,7 @@
             <div class="row address">
                 <div class="row-title">
                     <span class="row-title__text">{{ $t('accDetail.address') }}</span>
-                    <span @click="copy" class="row-title__copy">{{ $t('accDetail.copy') }}</span>
+                    <span @click="copy" class="row-title__copy __pointer">{{ $t('accDetail.copy') }}</span>
                 </div>
                 <div class="__btn_text">{{ address }}</div>
             </div>

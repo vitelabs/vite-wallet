@@ -1,6 +1,6 @@
 <template>
     <div class="__index_wrapper login-wrapper">
-        <div class="__btn">
+        <div class="__btn __pointer">
             <div @click="toggleAccountList">
                 <div v-show="activeAccount" class="__btn_input_active">
                     <div class="name __ellipsis">{{activeAccount.name}}</div>
@@ -26,7 +26,7 @@
             <input :placeholder="$t('create.input')" v-model="password" :type="'password'" />
         </div>
 
-        <div class="__btn __btn_all_in" @click="login">{{ $t('btn.login') }}</div>
+        <div class="__btn __pointer __btn_all_in" @click="login">{{ $t('btn.login') }}</div>
 
         <router-link class="__btn_link" :to="{ name: 'importAccount' }">import account</router-link>
     </div>

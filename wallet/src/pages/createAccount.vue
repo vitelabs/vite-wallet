@@ -13,7 +13,7 @@
             <input :placeholder="$t('create.again')" v-model="pass2" :type="'password'" />
         </div>
 
-        <span class="__btn __btn_all_in" @click="createAccount">{{ $t('btn.create') }}</span>
+        <span class="__btn __btn_all_in __pointer" @click="createAccount">{{ $t('btn.create') }}</span>
         <router-link class="__btn_link" :to="{ name: 'login' }">login</router-link>
     </div>
 </template>

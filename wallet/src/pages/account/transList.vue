@@ -10,7 +10,7 @@
             </div>
 
             <div v-for="(item, index) in transList" :key="index"
-                 class="t-row" @click="goDetail(item)">
+                 class="t-row __pointer" @click="goDetail(item)">
                 <span class="cell-text">
                     <img v-show="item.type === 'send'" class="icon" src='../../assets/imgs/send.svg'/>
                     <img v-show="item.type === 'receive'" class="icon" src='../../assets/imgs/receive.svg'/>
