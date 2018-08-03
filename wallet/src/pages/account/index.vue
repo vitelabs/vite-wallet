@@ -41,10 +41,9 @@
 <script>
 import accountHead from './head.vue';
 import transList from './transList.vue';
-import BigNumber from 'bignumber.js';
+import bigNumber from 'utils/bigNumber.js';
 
 let inputTimeout = null;
-const MIN_UNIT = new BigNumber('1000000000000000000');
 
 export default {
     components: {
@@ -94,12 +93,8 @@ export default {
                 let balanceList = [];
                 balanceInfos.forEach(({ Balance, TokenSymbol })=>{
                     console.log(Balance, TokenSymbol);
-
-                    let balance = new BigNumber(Balance).dividedBy(MIN_UNIT);
-                    console.log(balance.toString());
-                    
                     balanceList.push({
-                        balance: balance.decimalPlaces(8).toString(),
+                        balance: bigNumber.amountToBasicString(Balance),
                         tokenSymbol: TokenSymbol
                     });
                 });
@@ -110,17 +105,12 @@ export default {
                 let fundList = [];
                 fundInfos.forEach(({ Balance, TokenSymbol })=>{
                     console.log(Balance, TokenSymbol);
-
-                    let balance = new BigNumber(Balance).dividedBy(MIN_UNIT);
-                    console.log(balance.toString());
-                    
                     fundList.push({
-                        balance: balance.decimalPlaces(8).toString(),
+                        balance: bigNumber.amountToBasicString(Balance),
                         tokenSymbol: TokenSymbol
                     });
                 });
                 this.fundFloat.balanceInfos = fundList;
-
             }).catch((err) => {
                 window.alert(err);
             });
@@ -145,9 +135,22 @@ export default {
         border-radius: 8px;
         .row {
             flex: 1;
-            &.address {
-                min-width: 447px;
+
+            .__balance {
+                font-size: 34px;
+                color: #1D2024;
+                line-height: 34px;
             }
+            .__symbol {
+                position: relative;
+                top: -17px;
+                margin-left: 15px;
+                font-weight: bold;
+                font-size: 14px;
+                color: #3A3C43;
+                line-height: 16px;
+            }
+
             .row-title {
                 display: inline-block;
                 width: 100%;
@@ -168,15 +171,16 @@ export default {
                 color: #8D9BAE;
             }
             .__btn_text {
+                font-size: 12px;
                 width: 100%;
                 display: inline-block;
                 box-sizing: border-box;
                 background: #F3F6F9;
                 border: 1px solid #D4DEE7;
                 border-radius: 2px;
-                height: 48px;
-                line-height: 48px;
-                padding: 0 15px;
+                height: 34px;
+                line-height: 34px;
+                padding: 0 8px;
                 opacity: 0.3;
                 color: #283D4A;
             }

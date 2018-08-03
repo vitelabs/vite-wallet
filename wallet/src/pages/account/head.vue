@@ -13,10 +13,8 @@
                 <span>{{ $t('accDetail.getTestToken') }}</span>
                 <img src="../../assets/imgs/Vite_icon.svg" class="icon" />
             </div>
-            <div class="btn__small __btn-detail">
-                <a :href="'https://test.vite.net/account/' + address" target="_blank">
-                    {{ $t('accDetail.transDetail') }}
-                </a>
+            <div @click="goDetail" class="btn__small __btn-detail">
+                {{ $t('accDetail.transDetail') }}
                 <img src="../../assets/imgs/more_icon.svg" class="icon" />
             </div>
         </div>
@@ -49,6 +47,11 @@ export default {
         };
     },
     methods: {
+        goDetail() {
+            let locale = this.$i18n.locale === 'zh' ? 'zh/' : '';
+            window.open(`https://test.vite.net/${locale}account/${this.address}`);
+        },
+
         getTestToken() {
             viteWallet.TestToken.get(this.address).then((data)=>{
                 console.log(data);
@@ -127,9 +130,6 @@ export default {
             font-size: 14px;
             line-height: 24px;
             color: #fff;
-            a {
-                color: #fff;
-            }
         }
         .icon {
             margin-bottom: -7px;

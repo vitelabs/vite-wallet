@@ -60,19 +60,8 @@
 </template>
 
 <script>
-import BigNumber from 'bignumber.js';
-BigNumber.config({ 
-    FORMAT: {
-        decimalSeparator: '.',
-        groupSeparator: '',
-        groupSize: 0,
-        secondaryGroupSize: 0,
-        fractionGroupSeparator: ' ',
-        fractionGroupSize: 0
-    }
-});
+import bigNumber from 'utils/bigNumber.js';
 
-const MIN_UNIT = new BigNumber('1000000000000000000');
 const TOKEN_ID = 'tti_000000000000000000004cfd';    // vite id
 
 let inAddrTimeout = null;
@@ -126,10 +115,7 @@ export default {
             amountTimeout = setTimeout(async ()=> {
                 amountTimeout = null;
                 let result = /(^(\d+)$)|(^(\d+[.]\d{1,8})$)/g.test(this.amount);
-
-                let amount = new BigNumber(this.amount);
- 
-                if (!result || amount.isEqualTo(0)) {
+                if (!result || bigNumber.isEqual(this.amount, 0)) {
                     this.amountErr = 'amount error';
                     return;
                 }
@@ -148,12 +134,8 @@ export default {
 
                 balanceInfos.forEach(({ Balance, TokenSymbol })=>{
                     console.log(Balance, TokenSymbol);
-
-                    let balance = new BigNumber(Balance).dividedBy(MIN_UNIT);
-                    console.log(balance.toString());
-                    
                     list.push({
-                        balance: balance.decimalPlaces(8).toString(),
+                        balance: bigNumber.amountToBasicString(Balance),
                         tokenSymbol: TokenSymbol
                     });
                 });
@@ -170,7 +152,7 @@ export default {
             }
 
             console.log('transfer amount', this.amount);
-            let amount = new BigNumber(this.amount).multipliedBy(MIN_UNIT).toFormat();
+            let amount = bigNumber.amountToMinString(this.amount);
             console.log(amount);
 
             viteWallet.Block.createTX({
@@ -303,6 +285,21 @@ export default {
             color: #666;
         }
     }
+}
+
+.__balance {
+    font-size: 48px;
+    color: #1D2024;
+    line-height: 48px;
+}
+.__symbol {
+    position: relative;
+    top: -20px;
+    margin-left: 15px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #3A3C43;
+    line-height: 16px;
 }
 
 .title {

@@ -39,9 +39,8 @@
 <script>
 import pagination from 'components/pagination.vue';
 import date from 'utils/date.js';
-import BigNumber from 'bignumber.js';
+import bigNumber from 'utils/bigNumber.js';
 
-const MIN_UNIT = new BigNumber('1000000000000000000');
 const pageCount = 6;
 let reTimeout = null;
 let eventChangeLang = null;
@@ -73,8 +72,7 @@ export default {
     },
     computed: {
         totalPage() {
-            let totalNum = new BigNumber(this.totalNum);
-            return totalNum.dividedToIntegerBy(pageCount).integerValue().toNumber();
+            return bigNumber.dividedToNumber(this.totalNum, pageCount);
         },
         pageNumber() {
             return `${this.currentPage + 1}/${this.totalPage}`;
@@ -97,7 +95,8 @@ export default {
         },
 
         goDetail(trans) {
-            window.open('https://test.vite.net/transaction/' + trans.hash);
+            let locale = this.$i18n.locale === 'zh' ? 'zh/' : '';
+            window.open(`https://test.vite.net/${locale}transaction/${trans.hash}`);
         },
 
         toPage(pageNumber) {
@@ -144,7 +143,7 @@ export default {
                     }
 
                     let timestamp = item.Timestamp * 1000;
-                    let amount = new BigNumber(item.Amount).dividedBy(MIN_UNIT);
+                    let amount = bigNumber.amountToBasicString(item.Amount);
 
                     nowList.push({
                         type: item.FromAddr ? 'receive' : 'send',
