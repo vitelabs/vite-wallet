@@ -5,7 +5,7 @@ const FILE_PATH = global.goFile;
 
 ipcBase.config.appspace = '';
 ipcBase.config.socketRoot = FILE_PATH;
-ipcBase.config.retry = 1000;
+ipcBase.config.retry = 100;
 ipcBase.config.maxRetries = 5;
 ipcBase.config.silent = true;
 
@@ -66,15 +66,12 @@ class ipc {
 
     emitConnected(connectStatus) {
         this.__connectStatus = connectStatus;
-        if (!this.__connectStatus) {
-            return;
-        }
-        this.__connectCB && this.__connectCB();
+        this.__connectCB && this.__connectCB(connectStatus);
     }
 
     onConnected(cb) {
         if (this.__connectStatus === 1) {
-            cb && cb();
+            cb && cb(1);
             return;
         }
         this.__connectCB = cb;

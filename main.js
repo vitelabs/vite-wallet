@@ -16,26 +16,8 @@ let ipcServerFinish = false;
 let ipcServerCb;
 
 const { startIPCServer, stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
-startIPCServer(function() {
-    global.goViteIPC = new ipcGo();
-    global.goViteIPC.onConnected(function () {
-        require( path.join(global.APP_PATH, './walletSrc/middle/index.js') );
-        emitIPCServer();
-    });
-});
 
-function emitIPCServer() {
-    ipcServerFinish = true;
-    ipcServerCb && ipcServerCb();
-}
-
-function onIPCServer (cb) {
-    if (ipcServerFinish) {
-        cb && cb();
-        return;
-    }
-    ipcServerCb = cb;
-}
+connectGoServer(true);
 
 let win;
 function createWindow () {
@@ -93,3 +75,28 @@ app.on('window-all-closed', () => {
 app.on('will-quit', () => {
     // log.save();
 });
+
+function connectGoServer(isStart) {
+    global.goViteIPC = new ipcGo();
+    global.goViteIPC.onConnected(function (connectStatus) {
+        if (!connectStatus) {
+            isStart && startIPCServer(connectGoServer);
+            return;
+        }
+        require( path.join(global.APP_PATH, './walletSrc/middle/index.js') );
+        emitIPCServer();
+    });
+}
+
+function emitIPCServer() {
+    ipcServerFinish = true;
+    ipcServerCb && ipcServerCb();
+}
+
+function onIPCServer (cb) {
+    if (ipcServerFinish) {
+        cb && cb();
+        return;
+    }
+    ipcServerCb = cb;
+}
