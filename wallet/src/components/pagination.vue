@@ -1,8 +1,8 @@
 <template>
     <div v-show="pageList.length" class="pagination-wrapper">
-        <span class="box" :class="{
+        <span class="box prev" :class="{
             'unuse': currentPage <= 1
-        }" @click="_toPage(currentPage - 1)">&lt;</span>
+        }" @click="_toPage(currentPage - 1)"> </span>
 
         <span v-for="(pageNumber, i) in pageList" :key="i"
               @click="_toPage(pageNumber)"
@@ -11,9 +11,9 @@
                   'ellipsis': pageNumber === '...'
         }">{{ pageNumber }}</span>
 
-        <span class="box" :class="{
+        <span class="box next" :class="{
             'unuse': currentPage >= totalPage
-        }"  @click="_toPage(currentPage + 1)">&gt;</span>
+        }"  @click="_toPage(currentPage + 1)"> </span>
     </div>
 </template>
 
@@ -104,24 +104,24 @@ export default {
             background: #195BDD;
             color: #fff;
             border: none;
+            top: -1px;
+            position: relative;
         }
         &.ellipsis {
             border: none;
         }
     }
 }
-// .prev {
-//     &:after {
-//         content: '/E600';
-//         display: inline-block;
-//         width: 100%;
-//         height: 100%;
-//     }
-// }
-// .next {
-//     &:after {
-//         content: '/E604';
-//         display: inline-block;
-//     }
-// }
+.prev, .next {
+    position: relative;
+    top: 7px;
+}
+.prev {
+    background: url('../assets/imgs/left.svg');
+    background-size: 100% 100%;
+}
+.next {
+    background: url('../assets/imgs/right.svg');
+    background-size: 100% 100%;
+}
 </style>

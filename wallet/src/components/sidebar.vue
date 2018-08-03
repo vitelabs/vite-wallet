@@ -63,7 +63,12 @@ export default {
                 return;
             }
 
-            if (!this.blockStatus || !this.netStatus) {
+            if (this.blockStatus !== 2) {
+                window.alert('syncing');
+                return;
+            }
+
+            if (!this.netStatus) {
                 window.alert('no net');
                 return;
             }

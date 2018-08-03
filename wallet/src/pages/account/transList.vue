@@ -18,8 +18,8 @@
                 </span>
                 <span :class="{
                     'cell-text': true,
-                    'pink': item.status === 'unconfirmed',
-                    'blue': item.status !== 'unconfirmed'
+                    'pink': item.status !== 'confirmed',
+                    'blue': item.status === 'confirmed'
                 }">{{ item.status }}</span>
                 <span class="cell-text">{{ item.date }}</span>
                 <span class="cell-text">{{ item.transAddr }}</span>
@@ -167,7 +167,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .trans-list-wrapper {
     position: relative;
     box-sizing: border-box;

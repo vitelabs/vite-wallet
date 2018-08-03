@@ -10,10 +10,10 @@ function showError(win, title) {
 
     dialog.showMessageBox(options, function (index) {
         if (index === 0) {
-            win.reload();
+            win && win.reload();
             return;
         }
-        win.destroy();
+        win && win.destroy();
     });
 }
 

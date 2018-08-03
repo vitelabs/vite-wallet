@@ -5,6 +5,9 @@ import VueI18n from 'vue-i18n';
 import './assets/scss/mixins.scss';
 
 import App from 'pages/index.vue';
+import start from 'pages/start.vue';
+import login from 'pages/login.vue';
+
 import routes from 'routes/index';
 import i18nConfig from 'i18n';
 import EventEmitter from 'utils/eventEmitter.js';
@@ -13,7 +16,6 @@ Vue.use(VueRouter);
 Vue.use(VueI18n);
 
 const i18n = new VueI18n(i18nConfig);
-const router = new VueRouter({ routes });
 
 const appReady = function(cb) {
     let allStop = function () {
@@ -38,7 +40,9 @@ const appReady = function(cb) {
 };
 
 appReady(function () {
+    // WALLET-WEB
     if (!window.viteWallet) {
+        const router = new VueRouter({ routes });
         window.viteWallet = {
             System: {},
             Net: {},
@@ -55,13 +59,15 @@ appReady(function () {
         });
         return;
     }
+
+    // WALLET-CLIENT
     viteWallet.EventEmitter = EventEmitter;
     
     // After init global vars
     require('utils/loopBlock.js');
     require('utils/loopNet.js');
 
-    const { System, Net } = viteWallet;
+    const { System, Net, Account } = viteWallet;
 
     let locale = System.getLocale();
     i18n.locale = locale === 'zh-CN' ? 'zh' : locale;
@@ -73,6 +79,26 @@ appReady(function () {
     window.addEventListener('offline',  updateOnlineStatus);
     updateOnlineStatus();
 
+    let rootRoute = {
+        name: 'index',
+        path: '/'
+    };
+    Account.getList().then((list) => {
+        rootRoute.component = list && list.length ? login : start;
+        routes.push(rootRoute);
+        initVue(routes);
+    }).catch((err)=>{
+        console.warn(err);
+
+        rootRoute.component = start;
+        routes.push(rootRoute);
+        initVue(routes);
+    });
+});
+
+function initVue(routes) {
+    console.log(routes);
+    const router = new VueRouter({ routes });
     new Vue({
         el: '#app',
         components: { App },
@@ -80,4 +106,4 @@ appReady(function () {
         router,
         i18n
     });
-});
+}

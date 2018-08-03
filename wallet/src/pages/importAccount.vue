@@ -57,7 +57,7 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 .__index_wrapper {
     position: relative;
     margin-top: 0;

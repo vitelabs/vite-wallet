@@ -8,7 +8,7 @@ import transaction from 'pages/transaction.vue';
 export default [
     {
         name: 'start',
-        path: '/',
+        path: '/start',
         component: start
     },
     {

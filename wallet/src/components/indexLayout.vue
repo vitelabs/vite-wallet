@@ -26,7 +26,7 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 .index-layout-wrapper {
     width: 100%;
     height: 100%;

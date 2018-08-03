@@ -113,7 +113,7 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 .login-wrapper {
     .__btn {
         position: relative;

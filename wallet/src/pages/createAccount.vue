@@ -88,7 +88,7 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 .__btn {
     margin-bottom: 15px;
 }

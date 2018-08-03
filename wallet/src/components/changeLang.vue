@@ -29,7 +29,7 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 .change-lang-wrapper {
     position: relative;
     font-size: 14px;
