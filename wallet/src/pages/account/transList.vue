@@ -44,6 +44,7 @@ import bigNumber from 'utils/bigNumber.js';
 const pageCount = 6;
 let reTimeout = null;
 let eventChangeLang = null;
+let lastFetchTime = null;
 
 export default {
     components: {
@@ -117,6 +118,10 @@ export default {
 
             console.log('fetch List');
             console.log(this.totalNum);
+
+            let fetchTime = new Date().getTime();
+            lastFetchTime = fetchTime;
+
             this.currentPage = pageIndex;
             viteWallet.Block.getTXList({
                 address: this.address,
@@ -124,8 +129,9 @@ export default {
                 pageNum: pageCount
             }).then((list)=>{
                 console.log(list);
-                // [TODO] request order
-                if (pageIndex !== this.currentPage) {
+ 
+                if (pageIndex !== this.currentPage || 
+                    fetchTime !== lastFetchTime) {
                     console.log('removeList');
                     return;
                 }

@@ -21,13 +21,9 @@ module.exports = {
             return '';
         }
         try {
-            console.log(new BigNumber(num));
-            console.log(new BigNumber(num).dividedBy(minUnit));
-            console.log(new BigNumber(num).dividedBy(minUnit).decimalPlaces(decimalPlaces));
             return num.dividedBy(minUnit).decimalPlaces(decimalPlaces).toString();
         } catch(err) {
-            console.log(num);
-            console.log(err);
+            console.log(`amountToBasicString: ${num}`, err);
             return '';
         }
     },
@@ -39,8 +35,7 @@ module.exports = {
         try {
             return num.multipliedBy(minUnit).toFormat();
         } catch(err) {
-            console.log(num);
-            console.log(err);
+            console.log(`amountToMinString: ${num}`, err);
             return '';
         }
     },

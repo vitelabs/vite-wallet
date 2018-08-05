@@ -159,7 +159,7 @@ export default {
                 selfAddr: this.outAddress, 
                 toAddr: this.inAddress,
                 pass: this.password,
-                tokenId: TOKEN_ID,    // [TODO] fixed viteToken
+                tokenId: TOKEN_ID,    // fixed viteToken
                 amount
             }).then(() => {
                 window.alert('success');

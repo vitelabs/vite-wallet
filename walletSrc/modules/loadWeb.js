@@ -1,6 +1,8 @@
 const { shell, dialog } = require('electron');
 const path = require('path');
 
+const allowHost = ['https://test.vite.net'];
+
 function showError(win, title) {
     const options = {
         type: 'info',
@@ -23,7 +25,7 @@ module.exports = function loadWeb(win) {
 
     win.webContents.once('dom-ready', () => {
         // Account, Net, Block, Keystore, System, Types, TestToken
-        // [TODO] format path
+        // fromPath: app-root
         win.webContents.executeJavaScript(`
             const { remote } = require('electron');
             window.viteWallet = remote.require('./walletSrc/middle/index.js');
@@ -32,10 +34,9 @@ module.exports = function loadWeb(win) {
 
     // Redefine file
     win.webContents.on('new-window', (event, url) => {
-        // [TODO] only vite.net
-        const protocol = require('url').parse(url).protocol;
-        if (protocol === 'http:' || protocol === 'https:') {
-            event.preventDefault();
+        event.preventDefault();
+        let urlRes = require('url').parse(url);
+        if (allowHost.indexOf(`${urlRes.protocol}//${urlRes.host}`) > -1) {
             shell.openExternal(url);
         }
     });
