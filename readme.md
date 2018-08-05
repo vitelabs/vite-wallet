@@ -1,4 +1,4 @@
-# vite-wallet-client
+# vite-wallet
 
 ## Install
 

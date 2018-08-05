@@ -1,4 +1,4 @@
-const { app, Menu } = require('electron');
+const { app, Menu, shell } = require('electron');
 
 module.exports = function(win) {
     let template = [
@@ -34,6 +34,13 @@ module.exports = function(win) {
                     accelerator: 'CmdOrCtrl+Y', 
                     click() {
                         win.webContents.openDevTools();
+                    } 
+                },
+                { 
+                    label: 'log', 
+                    accelerator: 'CmdOrCtrl+L', 
+                    click() {
+                        shell.showItemInFolder(global.APP_DATA_PATH);
                     } 
                 }
             ]

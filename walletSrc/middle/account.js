@@ -84,7 +84,8 @@ class Account {
             let list = [];
 
             data.forEach(address => {
-                isChange = isChange || !this.__checkName(address, false);
+                let change = !this.__checkName(address, false);
+                isChange = isChange || change;
                 list.push({
                     address,
                     name: this.__fileAccountsMap[address]
@@ -127,7 +128,7 @@ class Account {
 
     getLast() {
         if (!this.__lastLoginAccount) {
-            return {};
+            return null;
         }
         this.__checkName(this.__lastLoginAccount);
         return {

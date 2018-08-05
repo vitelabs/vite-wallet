@@ -1,22 +1,20 @@
-// [TODO] app-log test mock-server
+// [TODO] app-log test mock-server deal-crash
 const { app, BrowserWindow, dialog } = require('electron');
 const path = require('path');
-const os = require('os');
 
-global.goFile = path.join(os.homedir(), '/viteisbest/');    // Must be defined in advance
-global.APP_PATH = process.env.NODE_ENV === 'dev' ? path.join(app.getAppPath(), 'app') : app.getAppPath();
+// Path must be defined in advance
+require('./walletSrc/modules/initGlobalPath.js');
 
 const initMenu = require(path.join(global.APP_PATH, '/walletSrc/modules/menus.js'));
 const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/modules/ipcGo.js') );
 const updateAPP = require( path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js') );
 const loadWeb = require( path.join(global.APP_PATH, '/walletSrc/modules/loadWeb.js') );
-// const log = require( path.join(global.APP_PATH, '/walletSrc/utils/log.js') );
+const log = require( path.join(global.APP_PATH, '/walletSrc/utils/log.js') );
 
 let ipcServerFinish = false;
 let ipcServerCb;
 
 const { startIPCServer, stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
-
 connectGoServer(true);
 
 let win;
@@ -74,8 +72,10 @@ app.on('window-all-closed', () => {
     app.quit();
 });
 
-app.on('will-quit', () => {
-    // log.save();
+app.on('will-quit', (e) => {
+    e.preventDefault();
+    log.saveSync();
+    app.exit();
 });
 
 function connectGoServer(isStart) {
