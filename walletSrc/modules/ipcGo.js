@@ -30,13 +30,13 @@ class ipc {
                     this.emitConnected(0);
                 }
             });
-        
+
             // listening disconnect
             ipcBase.of[VITE_WALLET_IPC].on('disconnect', () => {
                 console.log('disconnect');
                 if (!ipcBase.of[VITE_WALLET_IPC] || 
-                    !ipcBase.of[VITE_WALLET_IPC].retriesRemaining || 
-                    ipcBase.of[VITE_WALLET_IPC].retriesRemaining <= 0) {
+                        !ipcBase.of[VITE_WALLET_IPC].retriesRemaining ||
+                        ipcBase.of[VITE_WALLET_IPC].retriesRemaining <= 0) {
                     this.emitConnected(0);
                 }
             });
@@ -75,6 +75,10 @@ class ipc {
             return;
         }
         this.__connectCB = cb;
+    }
+
+    disconnect() {
+        ipcBase.disconnect(VITE_WALLET_IPC);
     }
 }
 

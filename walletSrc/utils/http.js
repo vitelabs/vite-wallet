@@ -40,6 +40,13 @@ function parseReq({
 module.exports = function({
     path, params, method = 'POST', headers = {}, type = 'json'
 }) {
+    if (!global.netStatus) {
+        return Promise.reject({
+            code: -50003,
+            message: 'Client net error'
+        });
+    }
+
     // Request text
     let reqText = parseReq({ params, type, method });
 

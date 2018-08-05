@@ -69,7 +69,9 @@ app.on('gpu-process-crashed', () => {
 });
 
 app.on('window-all-closed', () => {
-    process.platform !== 'darwin' && app.quit();
+    global.goViteIPC.disconnect();
+    stopIPCServer();
+    app.quit();
 });
 
 app.on('will-quit', () => {

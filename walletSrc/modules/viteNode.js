@@ -22,42 +22,47 @@ let subProcess = null;
 
 module.exports = {
     startIPCServer: function(cb) {
-        subProcess = spawn(binPath, {
+        // Be careful: avoid multiple services open
+        stopIPCServer();
+
+        let subPro = spawn(binPath, {
             stdio: ['ignore', 'pipe', 'ignore']
             // stdio: ['ignore', 'pipe', fs.openSync('./server.log', 'w')]
         }, (error) => {
-            if (!error) {
-                return;
-            }
-            console.log('error', error);
+            error && console.log('error', error);
         });
 
-        subProcess.once('error', error => {
+        subPro.once('error', error => {
             console.log('error', error);
         });
         
-        subProcess.stdout.on('data', data => {
+        subPro.stdout.on('data', data => {
             if (data.toString().indexOf('Vite rpc start success!') < 0) {
                 return;
             }
             console.log('start ipc Server');
+            // Start: Assign subPro to subProcess
+            subProcess = subPro;
             cb && cb();
         });
         
-        subProcess.on('close', (code) => { 
+        subPro.on('close', (code) => { 
             console.log(`quit code: ${code}`);
+            // Close: clear subProcess
             subProcess = null;
         });
     },
     
-    stopIPCServer: function() {
-        if (!subProcess) {
-            return;
-        }
-        if (isWindows) {
-            spawn('taskkill /pid ' + subProcess.pid + ' /T /F');
-            return;
-        }
-        subProcess.kill('SIGHUP');
-    }
+    stopIPCServer
 };
+
+function stopIPCServer () {
+    if (!subProcess) {
+        return;
+    }
+    if (isWindows) {
+        spawn('taskkill /pid ' + subProcess.pid + ' /T /F');
+        return;
+    }
+    subProcess.kill('SIGHUP');
+}

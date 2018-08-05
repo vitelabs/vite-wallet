@@ -19,6 +19,7 @@ class Net {
     }
 
     updateFromWeb(status) {
+        global.netStatus = status;
         !status && (this.netStatus = false);
     }
 
