@@ -55,7 +55,6 @@ export default {
 
         getTestToken() {
             viteWallet.TestToken.get(this.address).then((data)=>{
-                console.log(data);
                 window.alert(this.$t('accDetail.hint.token'));
             }).catch((err) => {
                 console.warn(err);
@@ -76,7 +75,7 @@ export default {
             inputTimeout = window.setTimeout(()=>{
                 this.clearInputTime();
                 this._rename();
-            }, 500);
+            }, 1000);
         },
         _rename() {
             if (!this.editName) {
@@ -91,7 +90,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~assets/scss/vars.scss";
 
 .account-head-wrapper {

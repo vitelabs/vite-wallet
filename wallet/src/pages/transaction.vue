@@ -133,7 +133,6 @@ export default {
                 let list = [];
 
                 balanceInfos.forEach(({ Balance, TokenSymbol })=>{
-                    console.log(Balance, TokenSymbol);
                     list.push({
                         balance: bigNumber.amountToBasicString(Balance),
                         tokenSymbol: TokenSymbol
@@ -151,10 +150,7 @@ export default {
                 return;
             }
 
-            console.log('transfer amount', this.amount);
             let amount = bigNumber.amountToMinString(this.amount);
-            console.log(amount);
-
             viteWallet.Block.createTX({
                 selfAddr: this.outAddress, 
                 toAddr: this.inAddress,

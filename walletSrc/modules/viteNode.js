@@ -23,7 +23,6 @@ module.exports = {
     startIPCServer: function(cb) {
         // Be careful: avoid multiple services open
         stopIPCServer();
-        console.log(global.SERVER_LOG_PATH);
 
         let subPro = spawn(binPath, {
             // stdio: ['ignore', 'pipe', 'ignore']

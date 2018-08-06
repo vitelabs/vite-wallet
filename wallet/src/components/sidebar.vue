@@ -54,9 +54,6 @@ export default {
         },
 
         goTransaction() {
-            console.log(this.blockStatus);
-            console.log(this.netStatus);
-
             if (this.$route.name === 'transaction') {
                 return;
             }

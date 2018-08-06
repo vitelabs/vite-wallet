@@ -97,7 +97,6 @@ appReady(function () {
 });
 
 function initVue(routes) {
-    console.log(routes);
     const router = new VueRouter({ routes });
     new Vue({
         el: '#app',

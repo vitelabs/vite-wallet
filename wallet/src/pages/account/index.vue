@@ -150,17 +150,19 @@ export default {
         border-radius: 8px;
         .row {
             flex: 1;
-
+            margin-right: 20px;
+            &:last-child {
+                margin-right: 0;
+            }
             .__balance {
-                font-size: 32px;
+                font-size: 26px;
                 color: #1D2024;
                 line-height: 34px;
                 font-family: $font-H;
             }
             .__symbol {
                 position: relative;
-                top: -17px;
-                margin-left: 10px;
+                top: -20px;
                 font-size: 14px;
                 color: #3A3C43;
                 line-height: 16px;
@@ -173,7 +175,7 @@ export default {
                 font-size: 14px;
                 color: #1D2024;
                 line-height: 16px;
-                padding-bottom: 12px;
+                padding-bottom: 24px;
                 font-family: $font-bold;
                 .row-title__text{
                     float: left;
@@ -194,7 +196,6 @@ export default {
                 background: #F3F6F9;
                 border: 1px solid #D4DEE7;
                 border-radius: 2px;
-                height: 34px;
                 line-height: 34px;
                 padding: 0 8px;
                 opacity: 0.3;
