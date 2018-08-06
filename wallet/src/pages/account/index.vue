@@ -76,7 +76,7 @@ export default {
         rename(name, cb) {
             let result = viteWallet.Account.rename(this.address, name);
             if (!result) {
-                window.alert('fail');
+                window.alert(this.$t('accDetail.hint.rename'));
                 return;
             }
             this.accountName = name;

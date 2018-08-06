@@ -40,7 +40,7 @@ export default {
             if (!this.name || 
                 this.name.match(/(\s+)/g) ||
                 this.name.length > 32) {
-                window.alert('name is illegal');
+                window.alert(this.$t('create.hint.name'));
                 return;
             }
 
@@ -52,7 +52,7 @@ export default {
 
             // Chinese
             if ( /[\u4e00-\u9fa5]|\s+/g.test(this.pass1) ) {
-                window.alert('password error');
+                window.alert(this.$t('hint.pwErr'));
                 return;
             }
             // Full-width
@@ -81,7 +81,7 @@ export default {
                 });
             }).catch((err)=>{
                 console.warn(err);
-                window.alert('create fail');
+                window.alert(this.$t('hint.create'));
             });
         }
     }

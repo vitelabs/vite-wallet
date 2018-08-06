@@ -34,6 +34,7 @@ module.exports = {
         choose:'Choose account',
         hint: {
             long: 'Your input must between 1-32 characters!',
+            name: 'Account name is illegal',
             consistency: 'Please enter the same password!',
             save: 'Your private key stored in {0}，please keep it carefully，your account and password cannot be retrieved at current version!'
         }
@@ -67,6 +68,7 @@ module.exports = {
             wrong: 'Wrong Password!',
             amount: 'Amount must be greater than 0',
             punctuation: 'Punctuations are not allowed!',
+            rename: 'Rename failed',
         }
     },
 
@@ -110,4 +112,9 @@ module.exports = {
         first: 'First',
         last: 'Last',
     },
+    hint:{
+        create: 'Creation failed',
+        logoutErr: 'Logout Error!',
+        pwErr: 'Password Error!',
+    }
 };
