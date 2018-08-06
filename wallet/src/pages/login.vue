@@ -87,7 +87,7 @@ export default {
             }).catch(({ code, message })=>{
                 console.warn(message);
                 if (code === 4001) {
-                    window.alert(this.$t('create.hint.wrong'));
+                    window.alert(this.$t('hint.pwErr'));
                 } else {
                     window.alert(message);
                 }

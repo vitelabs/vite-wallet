@@ -39,6 +39,8 @@ function createWindow () {
 
     initMenu(win);
 
+    // win.webContents.openDevTools();
+
     win.on('close', (event) => {
         dialog.showMessageBox({
             type: 'question',

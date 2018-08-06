@@ -67,7 +67,7 @@ export default {
             }
 
             if (!this.netStatus) {
-                window.alert('no net');
+                window.alert(this.$t('nav.noNet'));
                 return;
             }
 
@@ -85,7 +85,7 @@ export default {
                 });
             }).catch((err) => {
                 console.warn(err);
-                window.alert(err && err.message ? err.message : 'logout fail');
+                window.alert(err && err.message ? err.message : this.$t('hint.logoutErr'));
             });
         }
     }
