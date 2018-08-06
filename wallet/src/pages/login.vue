@@ -40,10 +40,18 @@ export default {
         accountList
     },
     mounted() {
+        window.document.onkeydown = (e) => {
+            e = e || window.event;
+            let code = e.keyCode || e.which;
+            if (!code || code !== 13) {
+                return;
+            }
+            this.login();
+        };
         this.getAccountList();
     },
     destroyed() {
-        viteWallet.System.globalShortcut('return', null);        
+        window.document.onkeydown = null;  
     },
     data() {
         let activeAccount;
