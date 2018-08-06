@@ -40,12 +40,12 @@ export default {
 
             // not empty
             if (!this.pass1) {
-                window.alert('feikong');
+                window.alert(this.$t('hint.nonEmpty'));
             }
 
             // Chinese
             if ( /[\u4e00-\u9fa5]|\s+/g.test(this.pass1) ) {
-                window.alert(this.$t('hint.pwErr'));
+                window.alert(this.$t('create.hint.pwFormat'));
                 return;
             }
             // Full-width

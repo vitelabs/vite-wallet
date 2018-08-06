@@ -36,6 +36,7 @@ module.exports = {
             long: 'Your input must between 1-32 characters!',
             name: 'Account name is illegal',
             consistency: 'Please enter the same password!',
+            pwFormat: 'Wrong password format. The password only supports English, half-width symbols, numbers.',
             save: 'Your private key stored in {0}，please keep it carefully，your account and password cannot be retrieved at current version!'
         }
     },
@@ -116,5 +117,6 @@ module.exports = {
         create: 'Creation failed',
         logoutErr: 'Logout Error!',
         pwErr: 'Password Error!',
+        nonEmpty: 'This content cannot be empty!'
     }
 };

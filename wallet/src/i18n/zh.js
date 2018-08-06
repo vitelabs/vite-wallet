@@ -35,6 +35,7 @@ module.exports = {
             long: '密码限定1至32个字符',
             name: '账户名称不合法',
             consistency: '请输入相同的密码',
+            pwFormat: '密码格式错误，密码仅支持英文、半角符号、数字',
             save: '您的私钥文件保存在 {0} 中，请谨慎保存，当前版本丢失密码账户不可找回'
         }
     },
@@ -115,5 +116,6 @@ module.exports = {
         create: '创建失败',
         logoutErr: '退出有错误',
         pwErr: '密码错误',
+        nonEmpty: '内容不可为空'
     }
 };
