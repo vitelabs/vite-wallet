@@ -6,7 +6,7 @@ const allowHost = ['https://test.vite.net'];
 function showError(win, title) {
     const options = {
         type: 'info',
-        title,
+        message: title,
         buttons: ['reload', 'close']
     };
 
@@ -42,7 +42,7 @@ module.exports = function loadWeb(win) {
     });
 
     win.webContents.on('did-fail-load', () => {
-        showError(win, 'failLoad');
+        // showError(win, 'failLoad');
     });
 
     win.webContents.on('crashed', () => {
