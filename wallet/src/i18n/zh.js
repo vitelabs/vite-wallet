@@ -116,6 +116,7 @@ module.exports = {
         create: '创建失败',
         logoutErr: '退出有错误',
         pwErr: '密码错误',
-        nonEmpty: '内容不可为空'
+        acEmpty: '账号不可为空',
+        pwEmpty: '密码不可为空'
     }
 };

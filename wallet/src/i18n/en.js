@@ -117,6 +117,7 @@ module.exports = {
         create: 'Creation failed',
         logoutErr: 'Logout Error!',
         pwErr: 'Password Error!',
-        nonEmpty: 'This content cannot be empty!'
+        acEmpty: 'Account cannot be empty!',
+        pwEmpty: 'Password cannot be empty!'
     }
 };

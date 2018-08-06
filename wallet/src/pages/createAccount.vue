@@ -30,9 +30,13 @@ export default {
     methods: {
         createAccount() {
             // [NOTICE] order fix
-            // name
-            if (!this.name || 
-                this.name.match(/(\s+)/g) ||
+            // name not empty
+            if (!this.name) {
+                window.alert(this.$t('hint.acEmpty'));
+                return;
+            }
+
+            if (this.name.match(/(\s+)/g) ||
                 this.name.length > 32) {
                 window.alert(this.$t('create.hint.name'));
                 return;
@@ -40,7 +44,8 @@ export default {
 
             // not empty
             if (!this.pass1) {
-                window.alert(this.$t('hint.nonEmpty'));
+                window.alert(this.$t('hint.pwEmpty'));
+                return;
             }
 
             // Chinese
