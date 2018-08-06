@@ -1,8 +1,10 @@
 <template>
     <div class="hover-wrapper">
         <div class="hover-notice">
-            <div class="hover-title">test</div>
-            <div class="hover-content">test:test:test:test:test:test:test:test:test::test</div>
+            <div class="hover-title">{{ $t('test.t') }}</div>
+            <div class="hover-content">{{ $t('test.txt1') }}</div>
+            <div class="hover-content">{{ $t('test.txt2') }}</div>
+            <div class="hover-content">{{ $t('test.v') }}</div>
         </div>
     </div>
 </template>
