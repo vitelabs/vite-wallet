@@ -30,6 +30,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~assets/scss/vars.scss";
+
 .change-lang-wrapper {
     position: relative;
     font-size: 14px;
@@ -39,6 +41,7 @@ export default {
     text-align: right;
     height: 20px;
     line-height: 20px;
+    font-family: $font-bold;
 }
 .lang-list {
     position: absolute;

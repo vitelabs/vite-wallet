@@ -133,6 +133,8 @@ export default {
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
+@import "~assets/scss/vars.scss";
+
 .account-wrapper{
     position: relative;
     box-sizing: border-box;
@@ -153,6 +155,7 @@ export default {
                 font-size: 32px;
                 color: #1D2024;
                 line-height: 34px;
+                font-family: $font-H;
             }
             .__symbol {
                 position: relative;
@@ -161,6 +164,7 @@ export default {
                 font-size: 14px;
                 color: #3A3C43;
                 line-height: 16px;
+                font-family: $font-H-bolder;
             }
 
             .row-title {
@@ -170,6 +174,7 @@ export default {
                 color: #1D2024;
                 line-height: 16px;
                 padding-bottom: 12px;
+                font-family: $font-bold;
                 .row-title__text{
                     float: left;
                 }

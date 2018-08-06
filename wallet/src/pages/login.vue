@@ -139,17 +139,21 @@ export default {
 }
 </style>
 
-<style lang="sass">
+<style lang="scss">
+@import "~assets/scss/vars.scss";
+
 .__btn_input_active {
     border: 1px solid #D4DEE7;
     padding: 7px 40px 7px 15px;
     text-align: left;
     .name {
+        font-family: $font-bold;
         font-size: 14px;
         color: #333333;
         line-height: 20px;
     }
     .address {
+        font-family: $font-normal-b;
         font-size: 12px;
         line-height: 20px;
         color: #333333;
