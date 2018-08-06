@@ -47,6 +47,6 @@ module.exports = {
     dividedToNumber(num1, num2) {
         num1 = new BigNumber(num1);
         num2 = new BigNumber(num2);
-        return num1.dividedToIntegerBy(num2).integerValue().toNumber();
+        return num1.dividedBy(num2).integerValue(BigNumber.ROUND_CEIL).toNumber();
     }
 };

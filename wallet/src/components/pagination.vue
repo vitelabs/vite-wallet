@@ -19,6 +19,7 @@
 
 <script>
 const ellipsis = '...';
+const maxPageNumber = 7;
 
 export default {
     props: {
@@ -30,10 +31,6 @@ export default {
             type: Number,
             default: 0
         },
-        maxPageNumber: {
-            type: Number,
-            default: 7
-        },
         toPage: {
             type: Function,
             default: ()=>{}
@@ -41,29 +38,36 @@ export default {
     },
     computed: {
         pageList() {
-            if (!this.totalPage || !this.currentPage || !this.maxPageNumber) {
+            if (!this.totalPage || !this.currentPage) {
                 return [];
             }
+    
+            const min = 2;
+            const max = this.totalPage - 1;
+            const listNum = maxPageNumber - 3;
 
             let list = [1];
-            let minNumber = this.currentPage - 2;
-            let maxNumber = this.currentPage + 2;
-            if (minNumber <= 1) {
-                maxNumber += (2 - minNumber);
-                minNumber = 2;
+            let minNumber = this.currentPage - listNum / 2;
+            let maxNumber = this.currentPage + listNum / 2 + (listNum % 2 ? 1 : 0);
+
+            minNumber = minNumber < min ? min : minNumber;
+            maxNumber = maxNumber > max ? max : maxNumber;
+
+            if (maxNumber - minNumber !== listNum) {
+                let tempMax = minNumber + listNum;
+                maxNumber = tempMax > max ? max : tempMax;
             }
-            maxNumber = maxNumber > this.totalPage -1 ? this.totalPage -1 : maxNumber;
-            if (maxNumber === this.totalPage -1) {  
-                minNumber = this.currentPage - (this.maxPageNumber - 2 - (this.totalPage - this.currentPage));
+            if (maxNumber - minNumber !== listNum) {
+                let tempMin = maxNumber - listNum;
+                minNumber = tempMin < min ? min : tempMin;
             }
 
             minNumber > 2 && list.push(ellipsis);
-            minNumber < 2 && (minNumber = 2);
             for (let i=minNumber; i<=maxNumber; i++) {
                 list.push(i);
             }
-            maxNumber !== this.totalPage -1 && list.push(ellipsis);
-            list.push(this.totalPage);
+            maxNumber < this.totalPage -1 && list.push(ellipsis);
+            this.totalPage !== 1 && list.push(this.totalPage);
 
             return list;
         }
