@@ -196,7 +196,6 @@ export default {
         .t-header {
             display: table-row;
             color: #1D2024;
-            font-weight: bold;
             height: 48px;
             line-height: 48px;
         }

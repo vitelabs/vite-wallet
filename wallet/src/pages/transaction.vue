@@ -143,8 +143,7 @@ export default {
                 this.balanceInfos = list;
             }).catch((err) => {
                 console.warn(err);
-                // [TODO] --si
-                window.alert(err);
+                window.alert( this.$t('transList.valid.err') );
             });
         },
         transfer() {
@@ -218,7 +217,6 @@ export default {
         }
     }
     .row-t {
-        font-weight: bold;
         font-size: 14px;
         color: #1D2024;
         line-height: 16px;
@@ -227,9 +225,6 @@ export default {
     .row-content {
         display: flex;
         align-items: center;
-    }
-    .__balance {
-        font-weight: bold;
     }
     .__btn_text {
         max-width: 100%;
@@ -297,7 +292,6 @@ export default {
     position: relative;
     top: -20px;
     margin-left: 15px;
-    font-weight: bold;
     font-size: 14px;
     color: #3A3C43;
     line-height: 16px;

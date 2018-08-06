@@ -40,12 +40,7 @@ export default {
             if (!this.name || 
                 this.name.match(/(\s+)/g) ||
                 this.name.length > 32) {
-<<<<<<< HEAD
                 window.alert(this.$t('create.hint.name'));
-=======
-                // [TODO]
-                window.alert('name is illegal');
->>>>>>> 4df8867d0fcaf9529ea19d2a07b6bf428e08004c
                 return;
             }
 
@@ -86,12 +81,7 @@ export default {
                 });
             }).catch((err)=>{
                 console.warn(err);
-<<<<<<< HEAD
                 window.alert(this.$t('hint.create'));
-=======
-                // [TODO]
-                window.alert('create fail');
->>>>>>> 4df8867d0fcaf9529ea19d2a07b6bf428e08004c
             });
         }
     }

@@ -145,7 +145,6 @@ export default {
     padding: 7px 40px 7px 15px;
     text-align: left;
     .name {
-        font-weight: bold;
         font-size: 14px;
         color: #333333;
         line-height: 20px;

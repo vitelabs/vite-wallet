@@ -123,8 +123,8 @@ export default {
                 this.fundFloat.balanceInfos = this.formatAmountList(fundFloat.balanceInfos);    // deal with fundinfo
                 reFetch();
             }).catch((err) => {
-                // [TODO] --si
-                window.alert(err);
+                console.warn(err);
+                window.alert(this.$t('transList.valid.err'));
                 reFetch();
             });
         }
@@ -158,7 +158,6 @@ export default {
                 position: relative;
                 top: -17px;
                 margin-left: 10px;
-                font-weight: bold;
                 font-size: 14px;
                 color: #3A3C43;
                 line-height: 16px;
@@ -167,7 +166,6 @@ export default {
             .row-title {
                 display: inline-block;
                 width: 100%;
-                font-weight: bold;
                 font-size: 14px;
                 color: #1D2024;
                 line-height: 16px;
