@@ -79,10 +79,6 @@ appReady(function () {
     window.addEventListener('offline',  updateOnlineStatus);
     updateOnlineStatus();
 
-    viteWallet.EventEmitter.on('changeLang', (locale)=>{
-        System.setLocale(locale);
-    });
-
     let rootRoute = {
         name: 'index',
         path: '/'
