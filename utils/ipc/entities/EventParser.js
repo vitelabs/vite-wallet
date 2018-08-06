@@ -19,7 +19,14 @@ class Parser{
         data = data.split('\n');
         let result = [];
         data.forEach(ele => {
-            ele && result.push(JSON.parse(ele));
+            if (!ele) {
+                return;
+            }
+            try {
+                result.push( JSON.parse(ele) );
+            } catch (error) {
+                console.log(error);
+            }
         });
         data = null;
         return result;

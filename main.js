@@ -39,8 +39,6 @@ function createWindow () {
 
     initMenu(win);
 
-    // win.webContents.openDevTools();
-
     win.on('close', (event) => {
         dialog.showMessageBox({
             type: 'question',
@@ -64,8 +62,7 @@ function createWindow () {
 app.on('ready', createWindow);
 
 app.on('gpu-process-crashed', () => {
-    // event.preventDefault()
-    // callback('username', 'secret')
+    log.add('gpu-process-crashed');
 });
 
 app.on('window-all-closed', () => {
@@ -75,9 +72,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('will-quit', () => {
-    // e.preventDefault();
     log.saveSync();
-    app.exit();
 });
 
 function connectGoServer(isStart) {

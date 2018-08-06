@@ -3,14 +3,14 @@
         <span class="status-text" v-show="statusText">
             {{ statusText ? $t(`nav.${statusText}`) : '' }}
         </span>
-        <span v-show="statusText !== 'sync' && statusText !== 'netWeak'">{{ blockPercent }}</span>
+        <span v-show="statusText !== 'sync' && statusText !== 'noNet'">{{ blockPercent }}</span>
 
         <img src="../assets/imgs/sync_icon.svg"
              v-show="statusText !== 'firstDone'" 
              @click="reloadBlock"
              :class="{
                  'icon': true,
-                 'loading': reloading || statusText === 'netWeak'
+                 'loading': reloading || statusText === 'noNet'
         }"/>
         <img src="../assets/imgs/done_icon.svg" class="icon" v-show="statusText === 'firstDone'" />
     </div>
@@ -72,7 +72,7 @@ export default {
     },
     methods: {
         reloadBlock() {
-            if (this.reloading || this.statusText === 'netWeak') {
+            if (this.reloading || this.statusText === 'noNet') {
                 return;
             }
 
@@ -88,7 +88,7 @@ export default {
 
         updateStatusText(oldVal, clientNet = true) {
             if (!clientNet) {
-                this.statusText = 'netWeak';
+                this.statusText = 'noNet';
                 return;
             }
 
@@ -103,7 +103,7 @@ export default {
             }
 
             if (!this.netStatus) {
-                this.statusText = 'netWeak';
+                this.statusText = 'noNet';
                 return;
             }
 

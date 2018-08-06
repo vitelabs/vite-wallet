@@ -6,21 +6,32 @@ const path = require('path');
 
 const validityPeriod = 1000 * 60 * 60 * 24;     // Valid for 1 day
 const LOG_DATE_PATH = path.join(global.LOG_PATH, 'log_date');
+let BASE_INFO = {
+    appVersion: app.getVersion(),
+    appName: app.getName(),
+    appMetrics: app.getAppMetrics(),
+    chromeVersion: process.versions.chrome,
+    v8Version: process.versions.v8,
+    nodeVersion: process.versions.node,
+    platform: os.platform(),
+    isWindows
+};
 
 module.exports = {
     saveSync() {
         updateLog();
-        writeServerLogSync();
+        addLogSync(global.SERVER_LOG_PATH, getBaseInfo());  // append app-base-info to server-log
+        addLogSync(global.CLIENT_LOG_PATH, getBaseInfo());  // append app-base-info to client-log
     },
-    add() {
-        
+    add(message) {
+        let msg = `[${getNowDate()}] ${JSON.stringify(message)}`;
+        addLogSync(global.CLIENT_LOG_PATH, msg);  // append app-base-info to client-log
     }
 };
 
 function updateLog() {
     let nowDate = new Date().getTime();
 
-    !fs.existsSync(global.LOG_PATH) && fs.mkdirSync(global.LOG_PATH);
     if ( !fs.existsSync(LOG_DATE_PATH) ) {
         fs.writeFileSync(LOG_DATE_PATH, nowDate, 'utf8');
         return;
@@ -55,27 +66,28 @@ function deleteAll(dirPath) {
 }
 
 function getBaseInfo() {
-    return {
-        nowDate: new Date().getTime(),
-        appVersion: app.getVersion(),
-        appName: app.getName(),
-        appMetrics: app.getAppMetrics(),
-        netStatus: global.netStatus,
-        chromeVersion: process.versions.chrome,
-        v8Version: process.versions.v8,
-        nodeVersion: process.versions.node,
-        platform: os.platform(),
-        isWindows
-    };
+    BASE_INFO.nowDate = getNowDate();
+    BASE_INFO.netStatus = global.netStatus;
+    return `\n\n[${getNowDate()}] ${JSON.stringify( BASE_INFO )}`;
 }
 
-function writeServerLogSync() {
-    let nowDate = new Date().getTime();
-    let nowLog = path.join(global.LOG_PATH, `/server_${nowDate}.log`);
+function addLogSync(path, msg) {
+    if (!fs.existsSync(path)) {
+        msg = `[${getNowDate(global.APP_START_TIME)}] start \n${msg}`; 
+        fs.writeFileSync(path, msg, 'utf8');
+        return;
+    }
 
-    let serverLog = fs.readFileSync(global.SERVER_LOG_PATH);
-    let baseInfo = getBaseInfo();
+    try {
+        fs.appendFileSync(path, msg, 'utf8');
+    } catch(err) {
+        console.log(err);
+    }
+}
 
-    fs.writeFileSync(nowLog, `${serverLog}\n\n${JSON.stringify(baseInfo)}`, 'utf8');
-    fs.unlinkSync(global.SERVER_LOG_PATH);
+function getNowDate(time) {
+    let date = time ? new Date(time) : new Date();
+    let yearFormat = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+    let hourFormat = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    return `${yearFormat} ${hourFormat}`;
 }

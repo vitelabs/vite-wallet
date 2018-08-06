@@ -40,7 +40,7 @@ module.exports = function(win) {
                     label: 'log', 
                     accelerator: 'CmdOrCtrl+L', 
                     click() {
-                        shell.showItemInFolder(global.APP_DATA_PATH);
+                        shell.showItemInFolder(global.LOG_PATH);
                     } 
                 }
             ]
