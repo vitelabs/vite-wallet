@@ -138,11 +138,11 @@ export default {
 
                 list.forEach(item => {
                     let confirms = item.ConfirmedTimes;
-                    let status = 'unconfirmed';
+                    let status = this.$t('transList.status.unconfirmed');
                     if (confirms && confirms <= 50) {
-                        status = `confirms(${confirms})`;
+                        status = `this.$t('transList.status.confirms') (${confirms})`;
                     } else if (confirms && confirms > 50) {
-                        status = 'confirmed';
+                        status = this.$t('transList.status.confirmed');
                     }
 
                     let timestamp = item.Timestamp * 1000;

@@ -59,7 +59,7 @@ export default {
                 window.alert(this.$t('accDetail.hint.token'));
             }).catch((err) => {
                 console.warn(err);
-                window.alert('get test-token fail');
+                window.alert(this.$t('accDetail.hint.tErr'));
             });
         },
 

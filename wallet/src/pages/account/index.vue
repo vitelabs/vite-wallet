@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="row-title">
                     {{ $t('accDetail.fundFloat') }}
-                    <span class="row-content">（{{ fundFloat.len || 0 }} wait for）</span>
+                    <span class="row-content">（{{ fundFloat.len || 0 }} {{$t('accDetail.pend')}})</span>
                 </div>
 
                 <span v-show="!fundFloat.balanceInfos || !fundFloat.balanceInfos.length"

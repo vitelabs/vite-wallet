@@ -62,7 +62,7 @@ export default {
             }
 
             if (this.blockStatus !== 2) {
-                window.alert('syncing');
+                window.alert(this.$t('nav.sync'));
                 return;
             }
 

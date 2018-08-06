@@ -4,6 +4,7 @@ package-lock.json
 dist
 .eslintcache
 .idea
+.vscode
 viteGoServer_MAC
 viteGoServer_WIN
 viteGoServer_WIN.exe

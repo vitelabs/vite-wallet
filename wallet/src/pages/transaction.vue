@@ -23,7 +23,7 @@
                         <input v-model="inAddress" />
                     </span>
                     <span v-show="!isValidAddress" class="err">
-                        <img class="icon" src="../assets/imgs/error_icon.svg"/>address illegal
+                        <img class="icon" src="../assets/imgs/error_icon.svg"/> {{ $t('transList.valid.addr')}}
                     </span>
                 </div>
             </div>
@@ -116,7 +116,7 @@ export default {
                 amountTimeout = null;
                 let result = /(^(\d+)$)|(^(\d+[.]\d{1,8})$)/g.test(this.amount);
                 if (!result || bigNumber.isEqual(this.amount, 0)) {
-                    this.amountErr = 'amount error';
+                    this.amountErr = this.$t('transList.valid.amt');
                     return;
                 }
 
@@ -162,7 +162,7 @@ export default {
                 tokenId: TOKEN_ID,    // fixed viteToken
                 amount
             }).then(() => {
-                window.alert('success');
+                window.alert(this.$t('transList.valid.succ'));
 
                 this.$router.push({
                     name: 'account',
@@ -174,14 +174,14 @@ export default {
                 console.warn(err);
 
                 if (err && err.code && err.code === 4001) {
-                    this.passwordErr = err.message || 'password error';
+                    this.passwordErr = err.message || this.$t('transList.valid.pswd');
                     return;
                 } else if (err && err.code && err.code === 5001) {
-                    this.amountErr = err.message || 'amount error';
+                    this.amountErr = err.message || this.$t('transList.valid.amt');
                     return;
                 }
 
-                window.alert(err && err.message? err.message : 'error');
+                window.alert(err && err.message? err.message : this.$t('transList.valid.err'));
             });
         }
     }
