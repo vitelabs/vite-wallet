@@ -28,25 +28,12 @@ export default {
         };
     },
     methods: {
-        trim(str) {
-            return str.replace(/(^\s*)|(\s*$)/g, ''); 
-        },
         createAccount() {
-            this.name = this.trim(this.name);
-            this.pass1 = this.trim(this.pass1);
-            this.pass2 = this.trim(this.pass2);
-
             // name
             if (!this.name || 
                 this.name.match(/(\s+)/g) ||
                 this.name.length > 32) {
                 window.alert(this.$t('create.hint.name'));
-                return;
-            }
-
-            // length limit
-            if (!this.pass1 || this.pass1.length < 1 || this.pass1.length > 32) {
-                window.alert(this.$t('create.hint.long'));
                 return;
             }
 
@@ -60,6 +47,12 @@ export default {
             //     window.alert('password error');
             //     return;
             // }
+
+            // length limit
+            if (!this.pass1 || this.pass1.length < 1 || this.pass1.length > 32) {
+                window.alert(this.$t('create.hint.long'));
+                return;
+            }
 
             // same password
             if (!this.pass2 || this.pass1 !== this.pass2) {

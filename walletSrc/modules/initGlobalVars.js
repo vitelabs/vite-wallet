@@ -7,9 +7,6 @@ const $i18n = require('../i18n/index.js');
 
 global.APP_START_TIME = new Date().getTime();
 global.$i18n = function(key) {
-    console.log(global.userLocale);
-    console.log($i18n[global.userLocale]);
-    console.log(key);
     return $i18n[global.userLocale] ? $i18n[global.userLocale][key] || key : key;
 };
 
