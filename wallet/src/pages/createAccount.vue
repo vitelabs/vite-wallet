@@ -30,21 +30,22 @@ export default {
     methods: {
         createAccount() {
             // [NOTICE] order fix
-            // name
-            if (!this.name || 
-                this.name.match(/(\s+)/g) ||
+
+            if (!this.name) {
+                window.alert(this.$t('hint.nonEmpty'));
+                return;
+            }
+            if (this.name.match(/(\s+)/g) ||
                 this.name.length > 32) {
                 window.alert(this.$t('create.hint.name'));
                 return;
             }
 
-            // not empty
-            if (!this.pass1) {
-                window.alert(this.$t('hint.nonEmpty'));
+            if (!this.pass1) {  // not empty
+                window.alert(this.$t('create.input'));
             }
 
-            // Chinese
-            if ( /[\u4e00-\u9fa5]|\s+/g.test(this.pass1) ) {
+            if ( /[\u4e00-\u9fa5]|\s+/g.test(this.pass1) ) {    // Chinese
                 window.alert(this.$t('create.hint.pwFormat'));
                 return;
             }
@@ -54,20 +55,22 @@ export default {
             //     return;
             // }
 
-            // length limit
-            if (this.pass1.length < 1 || this.pass1.length > 32) {
+            if (this.pass1.length < 1 || this.pass1.length > 32) { // length limit
                 window.alert(this.$t('create.hint.long'));
                 return;
             }
 
-            // same password
-            if (!this.pass2 || this.pass1 !== this.pass2) {
-                window.alert(this.$t('create.hint.consistency'));
+            if (!this.pass2) { // not empty
+                window.alert(this.$t('create.hint.again'));
                 return;
             }
 
-            // ok
-            this.fetchCreateAccount();
+            if (this.pass1 !== this.pass2) { // same password
+                window.alert(this.$t('create.hint.consistency'));
+                return;
+            }
+            
+            this.fetchCreateAccount();  // ok
         },
         fetchCreateAccount() {
             viteWallet.Account.create(this.name, this.pass1).then((address)=>{
