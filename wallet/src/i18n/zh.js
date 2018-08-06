@@ -49,7 +49,7 @@ module.exports = {
         getTestToken: '获取测试用代币',
         transDetail: '查看账户更多交易详情',
         name: '账户名称',
-        address: '账户地址',
+        address: '我的地址',
         balance: '账户余额',
         fundFloat: '在途资金',
         pend: '笔交易待确认',

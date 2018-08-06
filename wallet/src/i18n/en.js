@@ -38,7 +38,7 @@ module.exports = {
         }
     },
     dragDrop: {
-        text: 'Drag and drop your account file into text area',
+        text: 'Drag and drop files there',
         err1: 'Imported illegal file!',
         err2: 'Only one file can be imported!',
     },
@@ -50,7 +50,7 @@ module.exports = {
         getTestToken: 'Get Test Tokens',
         transDetail: 'More transaction details',
         name: 'Account Name',
-        address: 'Account Address',
+        address: 'My Address',
         balance: 'Balance',
         fundFloat: 'Fund in Float',
         pend: 'Pending',

@@ -42,9 +42,9 @@ function createWindow () {
     win.on('close', (event) => {
         dialog.showMessageBox({
             type: 'question',
-            buttons: ['no', 'yessss'],
+            buttons: ['Cancel', 'Yes'],
             title: 'close',
-            message: 'sure?',
+            message: 'Quit Vite wallet?',
             cancelId: 1
         }, (id) => {
             id === 1 && win.destroy();

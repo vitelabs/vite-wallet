@@ -32,7 +32,7 @@ export default {
                 try {
                     let data = await viteWallet.Keystore.importFile(f.path, f.name);
                     if (!data) {
-                        this.errMsg = this.$t('dragDrop.err2');
+                        this.errMsg = this.$t('dragDrop.err1');
                         return;
                     }
    
@@ -44,7 +44,7 @@ export default {
                         }
                     });
                 } catch(err) {
-                    this.errMsg = err && err.message ? err.message : this.$t('dragDrop.err2');
+                    this.errMsg = err && err.message ? err.message : this.$t('dragDrop.err1');
                 }
             }
         });
