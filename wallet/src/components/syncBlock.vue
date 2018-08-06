@@ -78,7 +78,9 @@ export default {
 
             this.reloading = true;
             viteWallet.Block.reloadSyncInfo().then((data) => {
-                this.reloading = false;
+                setTimeout(()=>{
+                    this.reloading = false;
+                }, 200);
                 this.syncData(data);
             }).catch((err)=>{
                 this.reloading = false;
@@ -142,9 +144,6 @@ export default {
         height: 16px;
         margin-bottom: -4px;
         margin-left: 20px;
-        &:hover {
-            animation: rotate 0.5s linear;
-        }
         &.loading {
             animation: rotate 0.7s linear infinite;
         }
