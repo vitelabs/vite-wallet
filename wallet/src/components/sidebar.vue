@@ -67,6 +67,7 @@ export default {
             }
 
             if (!this.netStatus) {
+                // [TODO]
                 window.alert('no net');
                 return;
             }

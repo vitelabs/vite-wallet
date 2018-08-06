@@ -1,6 +1,8 @@
 <template>
     <div class="__index_wrapper import-account-wrapper">
-        <div class="msg" v-show="errMsg" >{{ errMsg }}</div>
+        <div class="msg" v-show="errMsg" >{{
+            errMsg === 'dragDrop.err2' || errMsg === 'dragDrop.err1' ? $t(errMsg) : errMsg
+        }}</div>
         <div ref="fileArea" class="file-drag">{{ $t('dragDrop.text') }}</div>
         <router-link class="__btn_link" :to="{ name: 'login' }">{{ $t('btn.login') }}</router-link>
     </div>
@@ -24,7 +26,7 @@ export default {
             }
 
             if (e.dataTransfer.files.length > 1) {
-                this.errMsg = this.$t('dragDrop.err2');
+                this.errMsg = 'dragDrop.err2';
                 return;
             }
             
@@ -32,7 +34,7 @@ export default {
                 try {
                     let data = await viteWallet.Keystore.importFile(f.path, f.name);
                     if (!data) {
-                        this.errMsg = this.$t('dragDrop.err1');
+                        this.errMsg = 'dragDrop.err1';
                         return;
                     }
    
@@ -44,7 +46,7 @@ export default {
                         }
                     });
                 } catch(err) {
-                    this.errMsg = err && err.message ? err.message : this.$t('dragDrop.err1');
+                    this.errMsg = err && err.message ? err.message : 'dragDrop.err1';
                 }
             }
         });

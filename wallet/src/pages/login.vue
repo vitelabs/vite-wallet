@@ -87,6 +87,7 @@ export default {
             }).catch(({ code, message })=>{
                 console.warn(message);
                 if (code === 4001) {
+                    // [TODO]
                     window.alert(this.$t('create.hint.wrong'));
                 } else {
                     window.alert(message);

@@ -76,7 +76,8 @@ export default {
         rename(name, cb) {
             let result = viteWallet.Account.rename(this.address, name);
             if (!result) {
-                window.alert('fail');
+                // [TODO]
+                window.alert('rename fail');
                 return;
             }
             this.accountName = name;
@@ -123,6 +124,7 @@ export default {
                 this.fundFloat.balanceInfos = this.formatAmountList(fundFloat.balanceInfos);    // deal with fundinfo
                 reFetch();
             }).catch((err) => {
+                // [TODO] --si
                 window.alert(err);
                 reFetch();
             });
