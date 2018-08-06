@@ -10,6 +10,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import "~assets/scss/vars.scss";
+
     .hover-wrapper {
         position: absolute;
         top: 0;
@@ -27,6 +29,7 @@
         box-shadow: 0 6px 36px 0 rgba(176,192,237,0.04);
         border-radius: 8px;
         .hover-title {
+            font-family: $font-bold;
             text-align: left;
             font-size: 16px;
             line-height: 16px;
