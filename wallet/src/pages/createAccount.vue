@@ -29,12 +29,18 @@ export default {
     },
     methods: {
         createAccount() {
+            // [NOTICE] order fix
             // name
             if (!this.name || 
                 this.name.match(/(\s+)/g) ||
                 this.name.length > 32) {
                 window.alert(this.$t('create.hint.name'));
                 return;
+            }
+
+            // not empty
+            if (!this.pass1) {
+                window.alert('feikong');
             }
 
             // Chinese
@@ -49,7 +55,7 @@ export default {
             // }
 
             // length limit
-            if (!this.pass1 || this.pass1.length < 1 || this.pass1.length > 32) {
+            if (this.pass1.length < 1 || this.pass1.length > 32) {
                 window.alert(this.$t('create.hint.long'));
                 return;
             }
