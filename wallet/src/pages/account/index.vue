@@ -44,6 +44,8 @@ import transList from './transList.vue';
 import bigNumber from 'utils/bigNumber.js';
 
 let inputTimeout = null;
+let fetchAccountTimeout = null;
+let lastFetchTime = null;
 
 export default {
     components: {
@@ -64,6 +66,7 @@ export default {
     destroyed() {
         window.clearTimeout(inputTimeout);
         inputTimeout = null;
+        this.clearAccountTimeout();
     },
     methods: {
         copy() {
@@ -80,39 +83,48 @@ export default {
             cb && cb();
         },
 
+        formatAmountList(balanceList) {
+            balanceList = balanceList || [];
+            let list = [];
+            balanceList.forEach(({ Balance, TokenSymbol })=>{
+                list.push({
+                    balance: bigNumber.amountToBasicString(Balance),
+                    tokenSymbol: TokenSymbol
+                });
+            });
+            return list;
+        },
+        clearAccountTimeout() {
+            window.clearTimeout(fetchAccountTimeout);
+            fetchAccountTimeout = null;
+        },
         fetchAccount() {
+            let reFetch = () => {
+                fetchAccountTimeout = window.setTimeout(()=>{
+                    this.clearAccountTimeout();
+                    this.fetchAccount();
+                }, viteWallet.Block.getLoopBlockTime());
+            };
+
+            let nowFetchTime = new Date().getTime();
+            lastFetchTime = nowFetchTime;
+
             viteWallet.Account.get(this.address).then(({
                 name, balanceInfos, fundFloat, blockHeight
             }) => {
+                if (lastFetchTime !== nowFetchTime) {
+                    return;
+                }
+
                 this.accountName = name;
                 this.fundFloat = fundFloat;
                 this.blockHeight = blockHeight;
-
-                // deal with balanceinfo
-                balanceInfos = balanceInfos || [];
-                let balanceList = [];
-                balanceInfos.forEach(({ Balance, TokenSymbol })=>{
-                    console.log(Balance, TokenSymbol);
-                    balanceList.push({
-                        balance: bigNumber.amountToBasicString(Balance),
-                        tokenSymbol: TokenSymbol
-                    });
-                });
-                this.balanceInfos = balanceList;
-
-                // deal with fundinfo
-                let fundInfos = fundFloat.balanceInfos || [];
-                let fundList = [];
-                fundInfos.forEach(({ Balance, TokenSymbol })=>{
-                    console.log(Balance, TokenSymbol);
-                    fundList.push({
-                        balance: bigNumber.amountToBasicString(Balance),
-                        tokenSymbol: TokenSymbol
-                    });
-                });
-                this.fundFloat.balanceInfos = fundList;
+                this.balanceInfos = this.formatAmountList(balanceInfos);    // deal with balanceinfo
+                this.fundFloat.balanceInfos = this.formatAmountList(fundFloat.balanceInfos);    // deal with fundinfo
+                reFetch();
             }).catch((err) => {
                 window.alert(err);
+                reFetch();
             });
         }
     }
@@ -137,14 +149,14 @@ export default {
             flex: 1;
 
             .__balance {
-                font-size: 34px;
+                font-size: 32px;
                 color: #1D2024;
                 line-height: 34px;
             }
             .__symbol {
                 position: relative;
                 top: -17px;
-                margin-left: 15px;
+                margin-left: 10px;
                 font-weight: bold;
                 font-size: 14px;
                 color: #3A3C43;

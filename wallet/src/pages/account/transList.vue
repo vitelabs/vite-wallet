@@ -80,8 +80,7 @@ export default {
         }
     },
     destroyed() {
-        window.clearTimeout(reTimeout);
-        reTimeout = null;
+        this.clearReTimeout();
         viteWallet.EventEmitter.off(eventChangeLang);
     },
     methods: {
@@ -103,6 +102,11 @@ export default {
         toPage(pageNumber) {
             this.fetchTransList(pageNumber - 1);
         },
+
+        clearReTimeout() {
+            window.clearTimeout(reTimeout);
+            reTimeout = null;
+        },
         fetchTransList(pageIndex) {
             if ((pageIndex >= this.totalPage && pageIndex) || pageIndex < 0) {
                 return;
@@ -110,14 +114,10 @@ export default {
 
             let reFetch = () => {
                 reTimeout = window.setTimeout(() => {
-                    window.clearTimeout(reTimeout);
-                    reTimeout = null;
+                    this.clearReTimeout();
                     this.fetchTransList(this.currentPage);
-                }, 5000);
+                }, viteWallet.Block.getLoopBlockTime());
             };
-
-            console.log('fetch List');
-            console.log(this.totalNum);
 
             let fetchTime = new Date().getTime();
             lastFetchTime = fetchTime;
@@ -128,11 +128,8 @@ export default {
                 pageIndex: this.currentPage,
                 pageNum: pageCount
             }).then((list)=>{
-                console.log(list);
- 
                 if (pageIndex !== this.currentPage || 
                     fetchTime !== lastFetchTime) {
-                    console.log('removeList');
                     return;
                 }
 

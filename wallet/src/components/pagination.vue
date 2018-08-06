@@ -49,15 +49,16 @@ export default {
             let minNumber = this.currentPage - 2;
             let maxNumber = this.currentPage + 2;
             if (minNumber <= 1) {
-                maxNumber += 2 - minNumber;
+                maxNumber += (2 - minNumber);
                 minNumber = 2;
             }
             maxNumber = maxNumber > this.totalPage -1 ? this.totalPage -1 : maxNumber;
-            if (maxNumber === this.totalPage -1) {
+            if (maxNumber === this.totalPage -1) {  
                 minNumber = this.currentPage - (this.maxPageNumber - 2 - (this.totalPage - this.currentPage));
             }
 
             minNumber > 2 && list.push(ellipsis);
+            minNumber < 2 && (minNumber = 2);
             for (let i=minNumber; i<=maxNumber; i++) {
                 list.push(i);
             }
@@ -114,7 +115,7 @@ export default {
 }
 .prev, .next {
     position: relative;
-    top: 7px;
+    top: 6px;
 }
 .prev {
     background: url('../assets/imgs/left.svg');
