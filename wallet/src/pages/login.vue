@@ -42,6 +42,9 @@ export default {
     mounted() {
         this.getAccountList();
     },
+    destroyed() {
+        viteWallet.System.globalShortcut('return', null);        
+    },
     data() {
         let activeAccount;
         if (this.$route.params.address) {
@@ -80,6 +83,7 @@ export default {
 
             let address = this.activeAccount.address;
             viteWallet.Account.unLock(address, this.password).then(()=>{
+                this.password = '';
                 this.$router.push({
                     name: 'account',
                     params: { address }

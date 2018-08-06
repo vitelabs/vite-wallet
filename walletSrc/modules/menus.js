@@ -1,6 +1,6 @@
 const { app, Menu, shell } = require('electron');
 
-module.exports = function(win) {
+module.exports = function() {
     let template = [
         {
             label: 'ViteWallet',
@@ -33,7 +33,7 @@ module.exports = function(win) {
                     label: 'devtool', 
                     accelerator: 'CmdOrCtrl+Y', 
                     click() {
-                        win.webContents.openDevTools();
+                        global.WALLET_WIN.webContents.openDevTools();
                     } 
                 },
                 { 

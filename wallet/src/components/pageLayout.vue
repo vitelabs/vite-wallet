@@ -66,7 +66,6 @@ export default {
     text-align: center;
     padding: 0 20px;
     .logo {
-        display: inline-block;
         float: left;
         margin-top: 10px;
         img {
@@ -78,7 +77,6 @@ export default {
         line-height: 60px;
     }
     .change-lang {
-        display: inline-block;
         float: right;
         top: 20px;
     }

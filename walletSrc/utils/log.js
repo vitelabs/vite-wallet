@@ -17,6 +17,8 @@ let BASE_INFO = {
     isWindows
 };
 
+let logDate = null;
+
 module.exports = {
     saveSync() {
         updateLog();
@@ -33,15 +35,16 @@ function updateLog() {
     let nowDate = new Date().getTime();
 
     if ( !fs.existsSync(LOG_DATE_PATH) ) {
+        logDate = nowDate;
         fs.writeFileSync(LOG_DATE_PATH, nowDate, 'utf8');
         return;
     }
 
-    let logDate = fs.readFileSync(LOG_DATE_PATH);
+    logDate = logDate || fs.readFileSync(LOG_DATE_PATH);
     if (logDate && (nowDate - logDate) < validityPeriod) {
         return;
     }
-        
+    
     deleteAll(global.LOG_PATH);
     fs.mkdirSync(global.LOG_PATH);
     fs.writeFileSync(LOG_DATE_PATH, nowDate, 'utf8');
@@ -72,6 +75,8 @@ function getBaseInfo() {
 }
 
 function addLogSync(path, msg) {
+    updateLog();
+
     if (!fs.existsSync(path)) {
         msg = `[${getNowDate(global.APP_START_TIME)}] start \n${msg}`; 
         fs.writeFileSync(path, msg, 'utf8');

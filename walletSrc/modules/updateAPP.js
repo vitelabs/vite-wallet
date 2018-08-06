@@ -2,7 +2,7 @@ const { shell, dialog } = require('electron');
 const version = require('../version.json');
 const request = require('../utils/http.js');
 
-module.exports = function(win) {
+module.exports = function() {
     request({
         path: '/api/walletapp/version',
         params: {
@@ -13,8 +13,8 @@ module.exports = function(win) {
     }).then(({
         codeName, appUrl, message, isForce
     })=>{
-        if (!isForce || !win || win.isDestroyed()) {
-            win = null;
+        if (!isForce || !global.WALLET_WIN || global.WALLET_WIN.isDestroyed()) {
+            global.WALLET_WIN = null;
             return;
         }
     

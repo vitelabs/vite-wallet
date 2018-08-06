@@ -3,7 +3,7 @@ const path = require('path');
 
 const allowHost = ['https://test.vite.net'];
 
-function showError(win, title) {
+function showError(title) {
     const options = {
         type: 'info',
         message: title,
@@ -12,28 +12,28 @@ function showError(win, title) {
 
     dialog.showMessageBox(options, function (index) {
         if (index === 0) {
-            win && win.reload();
+            global.WALLET_WIN && global.WALLET_WIN.reload();
             return;
         }
-        win && win.destroy();
+        global.WALLET_WIN && global.WALLET_WIN.destroy();
     });
 }
 
-module.exports = function loadWeb(win) {
+module.exports = function loadWeb() {
     // Load file
-    win.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
+    global.WALLET_WIN.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
 
-    win.webContents.once('dom-ready', () => {
+    global.WALLET_WIN.webContents.once('dom-ready', () => {
         // Account, Net, Block, Keystore, System, Types, TestToken
         // fromPath: app-root
-        win.webContents.executeJavaScript(`
+        global.WALLET_WIN.webContents.executeJavaScript(`
             const { remote } = require('electron');
             window.viteWallet = remote.require('./walletSrc/middle/index.js');
         `);
     });
 
     // Redefine file
-    win.webContents.on('new-window', (event, url) => {
+    global.WALLET_WIN.webContents.on('new-window', (event, url) => {
         event.preventDefault();
         let urlRes = require('url').parse(url);
         if (allowHost.indexOf(`${urlRes.protocol}//${urlRes.host}`) > -1) {
@@ -41,11 +41,11 @@ module.exports = function loadWeb(win) {
         }
     });
 
-    win.webContents.on('did-fail-load', () => {
-        // showError(win, 'failLoad');
+    global.WALLET_WIN.webContents.on('did-fail-load', () => {
+
     });
 
-    win.webContents.on('crashed', () => {
-        showError(win, 'crashed');
+    global.WALLET_WIN.webContents.on('crashed', () => {
+        showError('crashed');
     });
 };

@@ -6,7 +6,7 @@
                  class="edit __pointer" src="../../assets/imgs/edit_icon.svg"/>            
             <input ref="nameInput" v-show="isShowNameInput" type="text" autofocus
                    v-model="editName" :placeholder="accountName"
-                   @input="inputName" @blur="_rename"/>
+                   @blur="_rename"/>
         </div>
         <div class="btn-group">
             <backup-account class="btn__small __pointer"></backup-account>
@@ -24,7 +24,7 @@
 
 <script>
 import backupAccount from 'components/backupAccount.vue';
-let inputTimeout = null;
+import Vue from 'vue';
 
 export default {
     components: {
@@ -64,18 +64,9 @@ export default {
 
         startRename() {
             this.isShowNameInput = true;
-            this.$refs.nameInput.focus();
-        },
-        clearInputTime() {
-            window.clearTimeout(inputTimeout);
-            inputTimeout = null;
-        },
-        inputName() {
-            this.clearInputTime();
-            inputTimeout = window.setTimeout(()=>{
-                this.clearInputTime();
-                this._rename();
-            }, 1000);
+            Vue.nextTick(()=>{
+                this.$refs.nameInput.focus();
+            });
         },
         _rename() {
             if (!this.editName) {

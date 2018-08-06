@@ -17,9 +17,9 @@ let ipcServerCb;
 const { startIPCServer, stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
 connectGoServer(true);
 
-let win;
+global.WALLET_WIN = null;
 function createWindow () {
-    win = new BrowserWindow({
+    global.WALLET_WIN = new BrowserWindow({
         width: 1200,
         minWidth: 1210,
         height: 768,
@@ -27,20 +27,20 @@ function createWindow () {
         images: true
     });
 
-    updateAPP(win);
+    updateAPP();
 
     // Loading first
-    win.loadURL(
+    global.WALLET_WIN.loadURL(
         'data:text/html,<div class="lds-ripple"><div></div><div></div></div><style>body{background: #f1f1f1;height:100vh;margin: 0;padding: 0;display: flex;justify-content: center;align-items: center;}.lds-ripple{display:inline-block;position:relative;width:64px;height:64px;}.lds-ripple div{position: absolute;border: 4px solid #4169E1;opacity: 1;border-radius: 50%;animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;}.lds-ripple div:nth-child(2) {animation-delay: -0.5s;}@keyframes lds-ripple {0% {top: 28px;left: 28px;width: 0;height: 0;opacity: 1;}100% {top: -1px;left: -1px;width: 58px;height: 58px;opacity: 0;}}</style>'
     );
     onIPCServer(()=>{
-        loadWeb(win);
+        loadWeb();
     });
 
     global.userLocale = app.getLocale();
-    initMenu(win);
+    initMenu();
 
-    win.on('close', (event) => {
+    global.WALLET_WIN.on('close', (event) => {
         dialog.showMessageBox({
             type: 'question',
             buttons: [global.$i18n('cancel'), global.$i18n('yes')],
@@ -48,13 +48,17 @@ function createWindow () {
             message: global.$i18n('quitWallet'),
             cancelId: 1
         }, (id) => {
-            id === 1 && win.destroy();
+            if (id !== 1) {
+                return;
+            }
+            global.WALLET_WIN.destroy();
+            global.WALLET_WIN = null;
         });
         event.preventDefault();
     });
 
-    win.on('closed', () => {
-        win = null;
+    global.WALLET_WIN.on('closed', () => {
+        global.WALLET_WIN = null;
         stopIPCServer();
         app.quit();
     });

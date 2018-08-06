@@ -18,7 +18,7 @@ class System {
 
     log(msg) {
         add(msg);
-    }
+    }    
 }
 
 module.exports = System;
