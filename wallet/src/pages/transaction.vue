@@ -143,8 +143,7 @@ export default {
                 this.balanceInfos = list;
             }).catch((err) => {
                 console.warn(err);
-                // [TODO] --si
-                window.alert(err);
+                window.alert( this.$t('transList.valid.err') );
             });
         },
         transfer() {
@@ -190,6 +189,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~assets/scss/vars.scss";
+
 .transaction-wrapper {
     position: relative;
     box-sizing: border-box;
@@ -218,18 +219,15 @@ export default {
         }
     }
     .row-t {
-        font-weight: bold;
         font-size: 14px;
         color: #1D2024;
         line-height: 16px;
         padding-bottom: 12px;
+        font-family: $font-bold;
     }
     .row-content {
         display: flex;
         align-items: center;
-    }
-    .__balance {
-        font-weight: bold;
     }
     .__btn_text {
         max-width: 100%;
@@ -281,6 +279,7 @@ export default {
         font-size: 14px;
         color: #FFFFFF;
         margin-top: 30px;
+        font-family: $font-bold;
         &.unuse {
             background: #efefef;
             color: #666;
@@ -292,15 +291,16 @@ export default {
     font-size: 48px;
     color: #1D2024;
     line-height: 48px;
+    font-family: $font-H;
 }
 .__symbol {
     position: relative;
     top: -20px;
     margin-left: 15px;
-    font-weight: bold;
     font-size: 14px;
     color: #3A3C43;
     line-height: 16px;
+    font-family: $font-H-bolder;
 }
 
 .title {
@@ -310,5 +310,6 @@ export default {
     font-size: 24px;
     color: #272727;
     line-height: 32px;
+    font-family: $font-bold;
 }
 </style>

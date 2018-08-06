@@ -74,8 +74,8 @@ app.on('window-all-closed', () => {
     app.quit();
 });
 
-app.on('will-quit', (e) => {
-    e.preventDefault();
+app.on('will-quit', () => {
+    // e.preventDefault();
     log.saveSync();
     app.exit();
 });

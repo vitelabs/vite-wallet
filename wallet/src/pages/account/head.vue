@@ -91,7 +91,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~assets/scss/vars.scss";
 
 .account-head-wrapper {
@@ -122,6 +122,7 @@ export default {
     .btn-group {
         display: flex;
         align-items: center;
+        font-family: $font-normal-b;
         .btn__small {
             margin-left: 17px;
             padding: 4px 4px 4px 16px;

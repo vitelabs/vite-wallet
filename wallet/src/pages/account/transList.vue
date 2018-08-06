@@ -171,6 +171,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~assets/scss/vars.scss";
+
 .trans-list-wrapper {
     position: relative;
     box-sizing: border-box;
@@ -196,9 +198,9 @@ export default {
         .t-header {
             display: table-row;
             color: #1D2024;
-            font-weight: bold;
             height: 48px;
             line-height: 48px;
+            font-family: $font-bold;
         }
         .t-row {
             display: table-row;
@@ -210,9 +212,11 @@ export default {
                 background: rgba(176, 192, 237, 0.4);
             }
             .pink {
+                font-family: $font-bold;
                 color: #EA60AC;
             }
             .blue {
+                font-family: $font-bold;
                 color: #195ADD;
             }
             .cell-text {
