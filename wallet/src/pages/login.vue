@@ -7,7 +7,7 @@
                     <div class="address __ellipsis">{{activeAccount.address}}</div>
                 </div>
 
-                <div v-show="!activeAccount" class="__btn_input">choose account</div>
+                <div v-show="!activeAccount" class="__btn_input">{{ $t('create.choose') }}</div>
 
                 <span :class="{ 
                     'slide': true,
@@ -87,7 +87,7 @@ export default {
             }).catch(({ code, message })=>{
                 console.warn(message);
                 if (code === 4001) {
-                    window.alert('password wrong');
+                    window.alert(this.$t('create.hint.wrong'));
                 } else {
                     window.alert(message);
                 }

@@ -30,6 +30,7 @@ module.exports = {
     create: {
         input: '请输入密码',
         again: '请再次输入密码',
+        choose:'选择账户',
         hint: {
             long: '密码限定1至32个字符',
             consistency: '请输入相同的密码',

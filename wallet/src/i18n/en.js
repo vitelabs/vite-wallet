@@ -31,6 +31,7 @@ module.exports = {
     create: {
         input: 'Please input password',
         again: 'Please input password again!',
+        choose:'Choose account',
         hint: {
             long: 'Your input must between 1-32 characters!',
             consistency: 'Please enter the same password!',
