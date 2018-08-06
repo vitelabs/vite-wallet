@@ -7,7 +7,7 @@ function showError(win, title) {
     const options = {
         type: 'info',
         message: title,
-        buttons: ['reload', 'close']
+        buttons: [global.$i18n('reload'), global.$i18n('close')]
     };
 
     dialog.showMessageBox(options, function (index) {

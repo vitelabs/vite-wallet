@@ -8,6 +8,10 @@ class System {
         clipboard.writeText(text);
     }
 
+    setLocale(locale) {
+        global.userLocale = locale;
+    }
+
     getLocale() {
         return app.getLocale();
     }

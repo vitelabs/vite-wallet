@@ -3,7 +3,7 @@ const { app, BrowserWindow, dialog } = require('electron');
 const path = require('path');
 
 // Path must be defined in advance
-require('./walletSrc/modules/initGlobalPath.js');
+require('./walletSrc/modules/initGlobalVars.js');
 
 const initMenu = require(path.join(global.APP_PATH, '/walletSrc/modules/menus.js'));
 const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/modules/ipcGo.js') );
@@ -37,14 +37,15 @@ function createWindow () {
         loadWeb(win);
     });
 
+    global.userLocale = app.getLocale();
     initMenu(win);
 
     win.on('close', (event) => {
         dialog.showMessageBox({
             type: 'question',
-            buttons: ['Cancel', 'Yes'],
-            title: 'close',
-            message: 'Quit Vite wallet?',
+            buttons: [global.$i18n('cancel'), global.$i18n('yes')],
+            title: global.$i18n('close'),
+            message: global.$i18n('quitWallet'),
             cancelId: 1
         }, (id) => {
             id === 1 && win.destroy();
