@@ -40,12 +40,7 @@ export default {
             if (!this.name || 
                 this.name.match(/(\s+)/g) ||
                 this.name.length > 32) {
-<<<<<<< HEAD
                 window.alert(this.$t('create.hint.name'));
-=======
-                // [TODO]
-                window.alert('name is illegal');
->>>>>>> 4df8867d0fcaf9529ea19d2a07b6bf428e08004c
                 return;
             }
 
