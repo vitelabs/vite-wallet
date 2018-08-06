@@ -123,6 +123,7 @@ export default {
                 this.fundFloat.balanceInfos = this.formatAmountList(fundFloat.balanceInfos);    // deal with fundinfo
                 reFetch();
             }).catch((err) => {
+                // [TODO] --si
                 window.alert(err);
                 reFetch();
             });

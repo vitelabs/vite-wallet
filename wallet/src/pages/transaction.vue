@@ -143,6 +143,7 @@ export default {
                 this.balanceInfos = list;
             }).catch((err) => {
                 console.warn(err);
+                // [TODO] --si
                 window.alert(err);
             });
         },

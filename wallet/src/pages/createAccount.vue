@@ -14,7 +14,7 @@
         </div>
 
         <span class="__btn __btn_all_in __pointer" @click="createAccount">{{ $t('btn.create') }}</span>
-        <router-link class="__btn_link" :to="{ name: 'login' }">login</router-link>
+        <router-link class="__btn_link" :to="{ name: 'login' }">{{ $t('btn.login') }}</router-link>
     </div>
 </template>
 
@@ -40,12 +40,17 @@ export default {
             if (!this.name || 
                 this.name.match(/(\s+)/g) ||
                 this.name.length > 32) {
+<<<<<<< HEAD
                 window.alert(this.$t('create.hint.name'));
+=======
+                // [TODO]
+                window.alert('name is illegal');
+>>>>>>> 4df8867d0fcaf9529ea19d2a07b6bf428e08004c
                 return;
             }
 
             // length limit
-            if (!this.pass1 || this.pass1.length < 8 || this.pass1.length > 32) {
+            if (!this.pass1 || this.pass1.length < 1 || this.pass1.length > 32) {
                 window.alert(this.$t('create.hint.long'));
                 return;
             }
@@ -81,7 +86,12 @@ export default {
                 });
             }).catch((err)=>{
                 console.warn(err);
+<<<<<<< HEAD
                 window.alert(this.$t('hint.create'));
+=======
+                // [TODO]
+                window.alert('create fail');
+>>>>>>> 4df8867d0fcaf9529ea19d2a07b6bf428e08004c
             });
         }
     }
