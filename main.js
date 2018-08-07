@@ -35,10 +35,10 @@ function createWindow () {
     );
     onIPCServer(()=>{
         loadWeb();
+        initMenu();
     });
 
     global.userLocale = app.getLocale();
-    initMenu();
 
     global.WALLET_WIN.on('close', (event) => {
         dialog.showMessageBox({

@@ -1,12 +1,12 @@
 <template>
     <div class="sync-block-wrapper">
-        <span class="status-text" v-show="statusText">
+        <span class="status-text" v-show="statusText !== 'sync'">
             {{ statusText ? $t(`nav.${statusText}`) : '' }}
         </span>
         <span v-show="statusText !== 'sync' && statusText !== 'noNet'">{{ blockPercent }}</span>
 
         <img src="../assets/imgs/sync_icon.svg"
-             v-show="statusText !== 'firstDone'" 
+             v-show="statusText !== 'firstDone' && statusText !== 'sync'" 
              @click="reloadBlock"
              :class="{
                  'icon': true,
