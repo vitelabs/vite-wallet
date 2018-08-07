@@ -32,14 +32,17 @@ export default {
             // [NOTICE] order fix
             // name not empty
             if (!this.name) {
-                window.alert(this.$t('hint.acEmpty'));
+                window.alert(this.$t('create.hint.nameInput'));
                 return;
             }
 
-
-            if (this.name.match(/(\s+)/g) ||
-                this.name.length > 32) {
+            if ( !/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/g.test(this.name) ) {
                 window.alert(this.$t('create.hint.name'));
+                return;
+            }
+
+            if (this.name.length > 32) {
+                window.alert(this.$t('create.hint.nameLong'));
                 return;
             }
 

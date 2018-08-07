@@ -31,9 +31,6 @@ module.exports = {
             error && console.log('error', error);
         });
 
-        // [NOTICE] avoid missing 'Vite rpc start success!' causes the service to fail to close
-        subProcess = subProcess || subPro;
-
         subPro.once('error', error => {
             console.log('error', error);
         });

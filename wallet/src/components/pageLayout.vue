@@ -2,8 +2,8 @@
     <div class="page-layout-wrapper">
         <div class="head">
             <div @mouseenter="overLogo"  @mouseleave="leaveLogo" class="logo __pointer">
-                <img src="../assets/imgs/logo_tastnet.svg" />
-                <test-notice v-show="isShowNotice"></test-notice>
+                <img src="../assets/imgs/ViteLogo.svg" />
+                <test-notice class="notice" :class="{'hide': !isShowNotice}"></test-notice>
             </div>
             <sync-block class="sync-block __pointer"></sync-block>
             <change-lang class="change-lang __pointer"></change-lang>
@@ -67,9 +67,19 @@ export default {
     padding: 0 20px;
     .logo {
         float: left;
-        margin-top: 10px;
+        margin-top: 12px;
         img {
-            width: 58.5px;
+            width: 79.5px;
+        }
+        .notice {
+            transition: all 0.5s ease-in-out;
+            opacity: 1;
+            &.hide {
+                width: 0;
+                height: 0;
+                opacity: 0;
+                overflow: hidden;
+            }
         }
     }
     .sync-block {

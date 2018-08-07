@@ -26,9 +26,10 @@
                 </div>
             </div>
             <div class="row address">
-                <div class="row-title">
+                <div class="row-title __center">
                     <span class="row-title__text">{{ $t('accDetail.address') }}</span>
                     <span @click="copy" class="row-title__copy __pointer">{{ $t('accDetail.copy') }}</span>
+                    <span class="copy-success" :class="{'show': copySuccess}">{{ $t('accDetail.hint.copy') }}</span>
                 </div>
                 <div class="__btn_text">{{ address }}</div>
             </div>
@@ -60,7 +61,8 @@ export default {
             accountName: '',
             balanceInfos: [],
             fundFloat: {},
-            blockHeight: '0'
+            blockHeight: '0',
+            copySuccess: false
         };
     },
     destroyed() {
@@ -71,6 +73,10 @@ export default {
     methods: {
         copy() {
             viteWallet.System.clipboardWrite(this.address);
+            this.copySuccess = true;
+            setTimeout(()=>{
+                this.copySuccess = false;
+            }, 500);
         },
 
         rename(name, cb) {
@@ -170,6 +176,7 @@ export default {
             }
 
             .row-title {
+                position: relative;
                 display: inline-block;
                 width: 100%;
                 font-size: 14px;
@@ -177,12 +184,43 @@ export default {
                 line-height: 16px;
                 padding-bottom: 24px;
                 font-family: $font-bold;
+                &.__center {
+                    text-align: center;
+                }
                 .row-title__text{
                     float: left;
                 }
                 .row-title__copy{
                     float: right;
                     color: #4B74FF;
+                }
+                .copy-success {
+                    transition: all 0.3s ease-in-out;
+                    position: absolute;
+                    bottom: 3px;
+                    background: #5B638D;
+                    box-sizing: border-box;
+                    border: 1px solid #979797;
+                    border-radius: 6px;
+                    font-size: 12px;
+                    line-height: 12px;
+                    color: #FFFFFF;
+                    padding: 6px;
+                    opacity: 0;
+                    font-family: $font-normal;
+                    &.show {
+                        opacity: 1;
+                    }
+                    &:after {
+                        content: ' ';
+                        display: inline-block;
+                        border: 6px solid transparent;
+                        border-top: 6px solid #5B638D;
+                        position: absolute;
+                        bottom: -12px;
+                        left: 50%;
+                        margin-left: -6px;
+                    }
                 }
             }
             .row-content {

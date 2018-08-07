@@ -9,7 +9,7 @@ module.exports = {
             imported: '导入账户',
             backup: '备份账户',
         },
-        sync: '节点同步中',
+        sync: '钱包初始化中，暂时无法发送交易',
         noNet: '未检测到网络',
         firstDone: '初始化已完成',
         firstDoing: '初始化中'
@@ -32,8 +32,10 @@ module.exports = {
         again: '请再次输入密码',
         choose:'选择账户',
         hint: {
+            nameInput: '请输入账户名称',
+            nameLong: '账户不得超出32个字符',
             long: '密码限定1至32个字符',
-            name: '账户名称不合法',
+            name: '用户名仅支持中英文、数字和下划线',
             consistency: '请输入相同的密码',
             pwFormat: '密码格式错误，密码仅支持英文、半角符号、数字',
             save: '您的私钥文件保存在 {0} 中，请谨慎保存，当前版本丢失密码账户不可找回'
@@ -49,7 +51,7 @@ module.exports = {
     accDetail: {
         title: '账户详情',
         transfer: '转账',
-        getTestToken: '获取测试用代币',
+        getTestToken: '获取测试代币',
         transDetail: '查看账户更多交易详情',
         name: '账户名称',
         address: '我的地址',
@@ -62,13 +64,14 @@ module.exports = {
         sum: '金额',
         password: '密码',
         hint: {
-            token: '您获得了100测试代币',
+            token: '系统向您的账户转入100测试代币，请注意接收',
             tErr: '获取测试代币失败！',
             low: '账户余额不足',
             wrong: '密码错误',
             amount: '金额必须大于0',
             punctuation: '不可以出现标点符号',
             rename: '重命名失败',
+            copy: '复制成功'
         }
     },
 

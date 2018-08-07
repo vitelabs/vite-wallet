@@ -53,7 +53,7 @@
             </div>
 
             <div class="btn __pointer" :class="{
-                'unuse': amountErr || !isValidAddress
+                'unuse': amountErr || !isValidAddress || loading
             }" @click="transfer">{{ $t('accDetail.transfer') }}</div>
         </div>
     </div>
@@ -81,7 +81,9 @@ export default {
 
             isValidAddress: true,
             amountErr: '',
-            passwordErr: ''
+            passwordErr: '',
+
+            loading: false
         };
     },
     watch: {
@@ -146,10 +148,11 @@ export default {
             });
         },
         transfer() {
-            if (this.amountErr || !this.isValidAddress) {
+            if (this.loading || this.amountErr || !this.isValidAddress) {
                 return;
             }
 
+            this.loading = true;
             let amount = bigNumber.amountToMinString(this.amount);
             viteWallet.Block.createTX({
                 selfAddr: this.outAddress, 
@@ -158,6 +161,7 @@ export default {
                 tokenId: TOKEN_ID,    // fixed viteToken
                 amount
             }).then(() => {
+                this.loading = false;
                 window.alert(this.$t('transList.valid.succ'));
 
                 this.$router.push({
@@ -168,12 +172,13 @@ export default {
                 });
             }).catch((err) => {
                 console.warn(err);
+                this.loading = false;
 
                 if (err && err.code && err.code === 4001) {
-                    this.passwordErr = err.message || this.$t('transList.valid.pswd');
+                    this.passwordErr = this.$t('transList.valid.pswd');
                     return;
                 } else if (err && err.code && err.code === 5001) {
-                    this.amountErr = err.message || this.$t('transList.valid.amt');
+                    this.amountErr = this.$t('transList.valid.amt');
                     return;
                 }
 

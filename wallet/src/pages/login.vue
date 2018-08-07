@@ -85,7 +85,7 @@ export default {
 
         login() {
             if (!this.password) {
-                window.alert(this.$t('create.hint.long'));
+                window.alert(this.$t('create.input'));
                 return;
             }
 
