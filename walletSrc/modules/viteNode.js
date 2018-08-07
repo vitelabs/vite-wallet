@@ -21,7 +21,7 @@ let subProcess = null;
 
 module.exports = {
     startIPCServer: function(cb) {
-        console.log('start');
+        console.log('startIPCServer');
         // Be careful: avoid multiple services open
         stopIPCServer();
 
@@ -58,7 +58,7 @@ module.exports = {
 };
 
 function stopIPCServer () {
-    console.log(subProcess);
+    console.log(`subProcess: ${!!subProcess}`);
     if (!subProcess) {
         return;
     }
