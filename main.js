@@ -71,7 +71,6 @@ app.on('gpu-process-crashed', () => {
 });
 
 app.on('window-all-closed', () => {
-    // global.goViteIPC.disconnect();
     stopIPCServer();
     app.quit();
 });
