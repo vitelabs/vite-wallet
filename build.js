@@ -76,7 +76,10 @@ function copyIcon() {
 
 function writePackage() {
     let packageFile = require('./package.json');
-    packageFile.main = 'main.js';   
+    let version = require('./walletSrc/version.json');
+    packageFile.main = 'main.js';
+    packageFile.version = version.version + '-' + version.clientCode++;
+    fs.writeFileSync('./walletSrc/version.json', JSON.stringify(version), 'utf8');
     let build = require('./electron.build.json');
     packageFile.build = build;
     fs.writeFileSync('./app/package.json', JSON.stringify(packageFile), 'utf8');
