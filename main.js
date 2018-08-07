@@ -37,10 +37,10 @@ function createWindow () {
     );
     onIPCServer(()=>{
         loadWeb();
+        initMenu();
     });
 
     global.userLocale = app.getLocale();
-    initMenu();
 
     global.WALLET_WIN.on('close', (event) => {
         dialog.showMessageBox({
@@ -73,7 +73,6 @@ app.on('gpu-process-crashed', () => {
 });
 
 app.on('window-all-closed', () => {
-    global.goViteIPC.disconnect();
     stopIPCServer();
     app.quit();
 });

@@ -54,6 +54,9 @@ class ipc {
             ],
             types: [
                 'IsValidHexAddress', 'IsValidHexTokenTypeId'
+            ],
+            common: [
+                'LogDir'
             ]
         };
         for (let namespace in apiList) {

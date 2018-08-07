@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const LOG_DATE_PATH = path.join(global.LOG_PATH, 'log_date');   // save LogTime
-const validityPeriod = 1000 * 60;     // Valid for 1 day
+const validityPeriod = 1000 * 60 * 60 * 24 * 5;     // Valid for 5 days
 
 let BASE_INFO = {
     appVersion: app.getVersion(),
@@ -43,7 +43,6 @@ module.exports = {
 // base
 function clearLog() {
     logTime = new Date().getTime();
-    console.log('clearDIR');
     clearDIR(global.LOG_PATH);
     fs.writeFileSync(LOG_DATE_PATH, logTime, 'utf8');
     formatFileName('server');
@@ -60,10 +59,7 @@ function saveSync() {
         info: 'APP quit'
     });  // append app-quit-info to client-log
 
-    console.log(logTime);
-    console.log(new Date().getTime());
     if ((new Date().getTime() - logTime) >= validityPeriod)  {
-        console.log('clear');
         clearLog();
         return;
     }
@@ -102,7 +98,7 @@ function startLogTimeout() {
         addLog({ info: 'Start from clear'});
         addLog({ info: BASE_INFO });
         startLogTimeout();
-    }, validityPeriod -(new Date().getTime() - logTime));
+    }, validityPeriod);
 }
 
 function syncLogTime() {
@@ -128,7 +124,6 @@ function syncLogTime() {
 }
 
 function clearDIR(dirPath) {
-    console.log(dirPath);
     if (!fs.existsSync(dirPath)) {
         return;
     }
@@ -159,13 +154,10 @@ function formatFileName(type) {
     let filename = `${type}.${formatDate}.log`;
     let oldPath = type === 'server' ? global.SERVER_LOG_PATH : global.CLIENT_LOG_PATH;
     let newPath = path.join(global.LOG_PATH, filename);
-    console.log('rename');
-    console.log(newPath);
-    console.log(oldPath);
     try {
         fs.renameSync(oldPath, newPath);
     } catch(err) {
-        console.log(err);
+        // console.log(err);
     }
 }
 
@@ -211,27 +203,3 @@ function logSync(path, logInfo) {
         console.log(err);
     }
 }
-
-
-// function deleteDIR(dirPath) {
-//     if (!fs.existsSync(dirPath)) {
-//         return;
-//     }
-
-//     let files = fs.readdirSync(dirPath) || [];
-//     files.forEach(function (file) {
-//         let curPath = path.join(dirPath, file);
-//         if ( fs.statSync(curPath).isDirectory() ) { // recurse
-//             deleteDIR(curPath);
-//             return;
-//         }
-
-//         if (curPath === global.SERVER_LOG_PATH || curPath === global.CLIENT_LOG_PATH) {
-//             return;
-//         }
-
-//         fs.unlinkSync(curPath);
-//     });
-
-//     dirPath !== global.LOG_PATH && fs.rmdirSync(dirPath);
-// }

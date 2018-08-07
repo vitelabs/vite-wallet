@@ -31,6 +31,8 @@ module.exports = {
     writeAccountFile(namesMap, nameCount, lastLoginAccount) {
         fs.writeFile(accountNameFile, JSON.stringify({
             namesMap, nameCount, lastLoginAccount
-        }), 'utf8');
+        }), 'utf8', (err)=>{
+            err && console.log(err);
+        });
     }
 };

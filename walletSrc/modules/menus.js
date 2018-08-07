@@ -1,6 +1,13 @@
 const { app, Menu, shell } = require('electron');
 
 module.exports = function() {
+    let serverLogPath = null;
+    global.goViteIPC['common.LogDir']().then((data)=>{
+        serverLogPath = data;
+    }).catch((err)=>{
+        console.log(err);
+    });
+
     let template = [
         {
             label: 'ViteWallet',
@@ -42,9 +49,16 @@ module.exports = function() {
                     click() {
                         shell.showItemInFolder(global.LOG_PATH);
                     } 
+                },
+                { 
+                    label: 'serverLog', 
+                    accelerator: 'CmdOrCtrl+P', 
+                    click() {
+                        shell.showItemInFolder(serverLogPath);
+                    } 
                 }
             ]
         }
     ];
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+    Menu.setApplicationMenu( Menu.buildFromTemplate(template) );
 };
