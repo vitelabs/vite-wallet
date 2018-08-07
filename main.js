@@ -9,7 +9,9 @@ const initMenu = require(path.join(global.APP_PATH, '/walletSrc/modules/menus.js
 const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/modules/ipcGo.js') );
 const updateAPP = require( path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js') );
 const loadWeb = require( path.join(global.APP_PATH, '/walletSrc/modules/loadWeb.js') );
-const log = require( path.join(global.APP_PATH, '/walletSrc/utils/log.js') );
+
+global.netStatus = -1;
+global.walletLog = require( path.join(global.APP_PATH, '/walletSrc/utils/log.js') );
 
 let ipcServerFinish = false;
 let ipcServerCb;
@@ -67,17 +69,13 @@ function createWindow () {
 app.on('ready', createWindow);
 
 app.on('gpu-process-crashed', () => {
-    log.add('gpu-process-crashed');
+    // global.walletLog.info('gpu-process-crashed');
 });
 
 app.on('window-all-closed', () => {
     global.goViteIPC.disconnect();
     stopIPCServer();
     app.quit();
-});
-
-app.on('will-quit', () => {
-    log.saveSync();
 });
 
 function connectGoServer(isStart) {

@@ -3,7 +3,7 @@ const querystring = require('querystring');
 
 const protocol = 'https:';
 const hostname = 'test.vite.net';
-const TIMEOUT = 45000;
+const TIMEOUT = 10000;
 
 function setHeader({
     request, headers = {}, type = 'json'

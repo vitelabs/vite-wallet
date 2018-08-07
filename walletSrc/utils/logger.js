@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const LOG_DATE_PATH = path.join(global.LOG_PATH, 'log_date');   // save LogTime
-const validityPeriod = 1000 * 60;     // Valid for 1 day
+const validityPeriod = 1000 * 60 * 60 * 24 * 7;     // Valid for 1 day
 
 let BASE_INFO = {
     appVersion: app.getVersion(),
@@ -23,27 +23,25 @@ let logTime = syncLogTime();
 // init
 startLogTimeout();
 addLog({ info: 'APP start' });
-addLog({ info: BASE_INFO });
 app.on('will-quit', saveSync);
 
 module.exports = {
-    info(info, isSync = true) {
-        addLog({ info, isSync });
+    info(info) {
+        addLog({ info });
     },
-    warn(info, isSync = true) {
+    warn(info) {
         console.warn(info);
-        addLog({ info, level: 1, isSync });
+        addLog({ info, level: 1 });
     },
-    error(info, isSync = true) {
+    error(info) {
         console.error(new Error(info));
-        addLog({ info, level: 2, isSync });
+        addLog({ info, level: 2 });
     }
 };
 
 // base
 function clearLog() {
     logTime = new Date().getTime();
-    console.log('clearDIR');
     clearDIR(global.LOG_PATH);
     fs.writeFileSync(LOG_DATE_PATH, logTime, 'utf8');
     formatFileName('server');
@@ -53,17 +51,10 @@ function clearLog() {
 function saveSync() {
     addLog({
         path: global.SERVER_LOG_PATH,
-        info: BASE_INFO
+        info: getBaseInfo()
     });  // append app-base-info to server-log
 
-    addLog({
-        info: 'APP quit'
-    });  // append app-quit-info to client-log
-
-    console.log(logTime);
-    console.log(new Date().getTime());
     if ((new Date().getTime() - logTime) >= validityPeriod)  {
-        console.log('clear');
         clearLog();
         return;
     }
@@ -74,7 +65,7 @@ function saveSync() {
 
 function addLog({
     path = global.CLIENT_LOG_PATH, 
-    isSync = true, 
+    isSync = false, 
     level = 0,
     info, 
 }) {
@@ -85,7 +76,6 @@ function addLog({
         return;
     }
 
-    // [NOTICE] file must be exist
     logSync(path, logInfo);
 }
 
@@ -97,12 +87,11 @@ function clearLogTimeout() {
 
 function startLogTimeout() {
     clearLogTimeout();
+
     logTimeout = setTimeout(() => {
         clearLog();
-        addLog({ info: 'Start from clear'});
-        addLog({ info: BASE_INFO });
         startLogTimeout();
-    }, validityPeriod -(new Date().getTime() - logTime));
+    }, validityPeriod - logTime);
 }
 
 function syncLogTime() {
@@ -128,28 +117,24 @@ function syncLogTime() {
 }
 
 function clearDIR(dirPath) {
-    console.log(dirPath);
     if (!fs.existsSync(dirPath)) {
         return;
     }
-    try {
-        let files = fs.readdirSync(dirPath) || [];
-        files.forEach(function (file) {
-            let curPath = path.join(dirPath, file);
-            if ( fs.statSync(curPath).isDirectory() ) { // recurse
-                fs.rmdirSync(curPath);
-                return;
-            }
-    
-            if (curPath === global.SERVER_LOG_PATH || curPath === global.CLIENT_LOG_PATH) {
-                return;
-            }
-    
-            fs.unlinkSync(curPath);
-        });
-    } catch(err) {
-        console.error(err);
-    }
+
+    let files = fs.readdirSync(dirPath) || [];
+    files.forEach(function (file) {
+        let curPath = path.join(dirPath, file);
+        if ( fs.statSync(curPath).isDirectory() ) { // recurse
+            fs.rmdirSync(curPath);
+            return;
+        }
+
+        if (curPath === global.SERVER_LOG_PATH || curPath === global.CLIENT_LOG_PATH) {
+            return;
+        }
+
+        fs.unlinkSync(curPath);
+    });
 }
 
 function formatFileName(type) {
@@ -157,16 +142,14 @@ function formatFileName(type) {
     let formatDate = `${time.getFullYear()}_${time.getMonth()+1}_${time.getDate()}` + 
                     `_${time.getHours()}_${time.getMinutes()}_${time.getSeconds()}`;
     let filename = `${type}.${formatDate}.log`;
-    let oldPath = type === 'server' ? global.SERVER_LOG_PATH : global.CLIENT_LOG_PATH;
-    let newPath = path.join(global.LOG_PATH, filename);
-    console.log('rename');
-    console.log(newPath);
-    console.log(oldPath);
-    try {
-        fs.renameSync(oldPath, newPath);
-    } catch(err) {
-        console.log(err);
-    }
+    let path = type === 'server' ? global.SERVER_LOG_PATH : global.CLIENT_LOG_PATH;
+    let rePath = path.join(global.LOG_PATH, filename);
+    fs.renameSync(path, rePath);
+}
+
+function getBaseInfo() {
+    BASE_INFO.netStatus = global.netStatus;
+    return BASE_INFO;
 }
 
 function formatDate(time) {
@@ -179,8 +162,7 @@ function formatDate(time) {
 function getLogInfo(info, level=0) {
     let levelText = ['INFO', 'WARNING', 'ERROR'][level];
     let nowDate = formatDate();
-    let netStatus = global.netStatus;
-    return `[${levelText}] ${nowDate} | netStatus(${netStatus}): ${JSON.stringify(info)}\n`;
+    return `[${levelText}] ${nowDate}: ${JSON.stringify(info)}`;
 }
 
 function log(path, logInfo) {
@@ -211,27 +193,3 @@ function logSync(path, logInfo) {
         console.log(err);
     }
 }
-
-
-// function deleteDIR(dirPath) {
-//     if (!fs.existsSync(dirPath)) {
-//         return;
-//     }
-
-//     let files = fs.readdirSync(dirPath) || [];
-//     files.forEach(function (file) {
-//         let curPath = path.join(dirPath, file);
-//         if ( fs.statSync(curPath).isDirectory() ) { // recurse
-//             deleteDIR(curPath);
-//             return;
-//         }
-
-//         if (curPath === global.SERVER_LOG_PATH || curPath === global.CLIENT_LOG_PATH) {
-//             return;
-//         }
-
-//         fs.unlinkSync(curPath);
-//     });
-
-//     dirPath !== global.LOG_PATH && fs.rmdirSync(dirPath);
-// }

@@ -21,11 +21,10 @@ let subProcess = null;
 
 module.exports = {
     startIPCServer: function(cb) {
-        // Be careful: avoid multiple services open
+        // [NOTICE] avoid multiple services open
         stopIPCServer();
 
         let subPro = spawn(binPath, {
-            // stdio: ['ignore', 'pipe', 'ignore']
             stdio: ['ignore', 'pipe', fs.openSync(global.SERVER_LOG_PATH, 'w')]
         }, (error) => {
             error && console.log('error', error);
