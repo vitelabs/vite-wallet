@@ -21,6 +21,7 @@ let subProcess = null;
 
 module.exports = {
     startIPCServer: function(cb) {
+        console.log('start');
         // Be careful: avoid multiple services open
         stopIPCServer();
 
@@ -36,6 +37,7 @@ module.exports = {
         });
         
         subPro.stdout.on('data', data => {
+            console.log(data.toString());
             if (data.toString().indexOf('Vite rpc start success!') < 0) {
                 return;
             }
@@ -56,6 +58,7 @@ module.exports = {
 };
 
 function stopIPCServer () {
+    console.log(subProcess);
     if (!subProcess) {
         return;
     }
