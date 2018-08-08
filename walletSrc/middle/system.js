@@ -2,7 +2,9 @@ const { clipboard, app } = require('electron');
 const { add } = require('../utils/log.js');
 
 class System {
-    constructor() {}
+    constructor() {
+        this.walletLog = global.walletLog;
+    }
 
     clipboardWrite(text) {
         clipboard.writeText(text);
@@ -21,7 +23,7 @@ class System {
 
     log(msg) {
         add(msg);
-    }    
+    }
 }
 
 module.exports = System;

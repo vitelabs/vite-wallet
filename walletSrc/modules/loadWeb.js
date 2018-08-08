@@ -29,6 +29,9 @@ module.exports = function loadWeb() {
         global.WALLET_WIN.webContents.executeJavaScript(`
             const { remote } = require('electron');
             window.viteWallet = remote.require('./walletSrc/middle/index.js');
+            window.viteWallet.System.walletLog.info({
+                userAgent: window.navigator.userAgent
+            });
         `);
     });
 
