@@ -40,7 +40,7 @@ module.exports = function() {
                     label: 'devtool', 
                     accelerator: 'CmdOrCtrl+Y', 
                     click() {
-                        global.WALLET_WIN.webContents.openDevTools();
+                        global.WALLET_WIN && global.WALLET_WIN.webContents.openDevTools();
                     } 
                 },
                 { 

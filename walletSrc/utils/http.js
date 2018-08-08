@@ -111,7 +111,7 @@ module.exports = function({
                         });
                     }
 
-                    res(data);
+                    res(data || null);
                 } catch(err) {
                     return httpRej({
                         code: -50001,

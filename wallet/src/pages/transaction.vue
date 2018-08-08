@@ -178,7 +178,7 @@ export default {
                     this.passwordErr = this.$t('transList.valid.pswd');
                     return;
                 } else if (err && err.code && err.code === 5001) {
-                    this.amountErr = this.$t('transList.valid.amt');
+                    this.amountErr = this.$t('transList.valid.bal');
                     return;
                 }
 

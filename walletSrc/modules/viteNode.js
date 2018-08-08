@@ -27,7 +27,7 @@ module.exports = {
         stopIPCServer();
 
         let subPro = spawn(binPath, {
-            stdio: ['ignore', 'pipe', fs.openSync(global.SERVER_LOG_PATH, 'w')]
+            stdio: [fs.openSync(global.SERVER_LOG_PATH, 'w'), 'pipe', fs.openSync(global.SERVER_LOG_PATH, 'w')]
         }, (error) => {
             error && console.log('error', error);
             global.walletLog.error({

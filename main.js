@@ -29,13 +29,12 @@ function createWindow () {
         images: true
     });
 
-    updateAPP();
-
     // Loading first
     global.WALLET_WIN.loadURL(
         'data:text/html,<div class="lds-ripple"><div></div><div></div></div><style>body{background: #f1f1f1;height:100vh;margin: 0;padding: 0;display: flex;justify-content: center;align-items: center;}.lds-ripple{display:inline-block;position:relative;width:64px;height:64px;}.lds-ripple div{position: absolute;border: 4px solid #4169E1;opacity: 1;border-radius: 50%;animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;}.lds-ripple div:nth-child(2) {animation-delay: -0.5s;}@keyframes lds-ripple {0% {top: 28px;left: 28px;width: 0;height: 0;opacity: 1;}100% {top: -1px;left: -1px;width: 58px;height: 58px;opacity: 0;}}</style>'
     );
     onIPCServer(()=>{
+        updateAPP();    // [TODO] symple deal with go-server (ensure opening && ensure closing)
         loadWeb();
         initMenu();
     });
@@ -43,23 +42,23 @@ function createWindow () {
     global.userLocale = app.getLocale();
     global.walletLog.info(`locale-${global.userLocale}`);
 
-    global.WALLET_WIN.on('close', (event) => {
-        dialog.showMessageBox({
+    global.WALLET_WIN && global.WALLET_WIN.on('close', (event) => {
+        dialog.showMessageBox(global.WALLET_WIN, {
             type: 'question',
             buttons: [global.$i18n('cancel'), global.$i18n('yes')],
             title: global.$i18n('close'),
             message: global.$i18n('quitWallet'),
-            cancelId: 1
+            defaultId: 0
         }, (id) => {
             if (id !== 1) {
                 return;
             }
-            global.WALLET_WIN.destroy();
+            global.WALLET_WIN && global.WALLET_WIN.destroy();
         });
         event.preventDefault();
     });
 
-    global.WALLET_WIN.on('closed', () => {
+    global.WALLET_WIN && global.WALLET_WIN.on('closed', () => {
         global.WALLET_WIN = null;
         stopIPCServer();
         app.quit();
@@ -71,11 +70,6 @@ app.on('ready', createWindow);
 app.on('gpu-process-crashed', () => {
     global.walletLog.info('gpu-process-crashed', false);
 });
-
-// app.on('window-all-closed', () => {
-//     stopIPCServer();
-//     app.quit();
-// });
 
 function connectGoServer(isStart) {
     global.goViteIPC = new ipcGo();

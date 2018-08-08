@@ -10,7 +10,7 @@ function showError(title) {
         buttons: [global.$i18n('reload'), global.$i18n('close')]
     };
 
-    dialog.showMessageBox(options, function (index) {
+    global.WALLET_WIN && dialog.showMessageBox(global.WALLET_WIN, options, function (index) {
         if (index === 0) {
             global.WALLET_WIN && global.WALLET_WIN.reload();
             return;
@@ -20,13 +20,17 @@ function showError(title) {
 }
 
 module.exports = function loadWeb() {
+    if (!global.WALLET_WIN) {
+        return;
+    }
+
     // Load file
     global.WALLET_WIN.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
 
     global.WALLET_WIN.webContents.once('dom-ready', () => {
-        // Account, Net, Block, Keystore, System, Types, TestToken
         // fromPath: app-root
-        global.WALLET_WIN.webContents.executeJavaScript(`
+        // Account, Net, Block, Keystore, System, Types, TestToken
+        global.WALLET_WIN && global.WALLET_WIN.webContents.executeJavaScript(`
             const { remote } = require('electron');
             window.viteWallet = remote.require('./walletSrc/middle/index.js');
             window.viteWallet.System.walletLog.info({
