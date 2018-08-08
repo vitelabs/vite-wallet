@@ -5,6 +5,12 @@ body {
   margin: 0px;
   font-family: $font-normal;
 }
+
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0;
+}
+
 ul {
     margin: 0;
     padding: 0;
