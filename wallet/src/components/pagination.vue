@@ -1,5 +1,5 @@
 <template>
-    <div v-show="pageList.length" class="pagination-wrapper">
+    <div v-show="pageList.length" class="pagination-wrapper __pointer">
         <span class="box prev" :class="{
             'unuse': currentPage <= 1
         }" @click="_toPage(currentPage - 1)"> </span>
@@ -114,6 +114,7 @@ export default {
         }
         &.ellipsis {
             border: none;
+            cursor: default;
         }
     }
 }
