@@ -173,7 +173,7 @@ function getLogInfo(info, level=0) {
     let nowDate = formatDate();
     let netStatus = global.netStatus;
     let userLocale = global.userLocale;
-    return `[${levelText}] ${nowDate} | netStatus(${netStatus} | locale(${userLocale})): ${JSON.stringify(info)}\n`;
+    return `[${levelText}] ${nowDate} | netStatus(${netStatus} | locale(${userLocale})): ${JSON.stringify(info)}\r\n`;
 }
 
 function log(path, logInfo) {

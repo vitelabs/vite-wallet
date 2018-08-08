@@ -50,7 +50,7 @@ module.exports = {
                 return;
             }
 
-            global.walletLog.error('ipc server is openning', false);
+            global.walletLog.info('ipc server is openning', false);
             console.log('start ipc Server');
             // Start: Assign subPro to subProcess
             subProcess = subPro;

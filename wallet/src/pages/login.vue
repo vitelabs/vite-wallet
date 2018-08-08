@@ -16,7 +16,7 @@
                 }"></span>
             </div>
             
-            <account-list class="account-list" v-show="isShowAccountList" 
+            <account-list v-show="isShowAccountList" 
                           :accountList="accountList"
                           :clickAccount="chooseAccount"></account-list>
         </div>

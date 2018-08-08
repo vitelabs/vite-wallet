@@ -52,6 +52,7 @@ export default {
         background: #fff;
         border: 1px solid #D4DEE7;
         border-top: none;
+        color: #195ADD;
         .icon {
             width: 16px;
             height: 16px;

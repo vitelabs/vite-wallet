@@ -14,14 +14,13 @@ module.exports = function() {
         codeName, appUrl, message, isForce
     })=>{
         if (!isForce || !global.WALLET_WIN || global.WALLET_WIN.isDestroyed()) {
-            global.WALLET_WIN = null;
             return;
         }
     
         dialog.showMessageBox({
             type: 'info',
             title: `${codeName} update`,
-            message: `${message}`,
+            message: message || global.$i18n('updateAPP'),
             buttons: ['no thanks', 'download'],
         }, (id) => {
             id === 1 && shell.openExternal(appUrl);
