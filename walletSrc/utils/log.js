@@ -14,7 +14,9 @@ let BASE_INFO = {
     chromeVersion: process.versions.chrome,
     v8Version: process.versions.v8,
     nodeVersion: process.versions.node,
+    electronVersion: process.versions.electron,
     platform: os.platform(),
+    release: os.release(),
     isWindows
 };
 let logTimeout = null;
