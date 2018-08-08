@@ -68,7 +68,7 @@ export default {
             }
 
             if (!this.pass2) { // not empty
-                window.alert(this.$t('create.hint.again'));
+                window.alert(this.$t('create.again'));
                 return;
             }
 
