@@ -41,6 +41,7 @@ function createWindow () {
     });
 
     global.userLocale = app.getLocale();
+    global.walletLog.info(`locale-${global.userLocale}`);
 
     global.WALLET_WIN.on('close', (event) => {
         dialog.showMessageBox({
@@ -54,7 +55,6 @@ function createWindow () {
                 return;
             }
             global.WALLET_WIN.destroy();
-            global.WALLET_WIN = null;
         });
         event.preventDefault();
     });
@@ -69,13 +69,13 @@ function createWindow () {
 app.on('ready', createWindow);
 
 app.on('gpu-process-crashed', () => {
-    // global.walletLog.info('gpu-process-crashed');
+    global.walletLog.info('gpu-process-crashed', false);
 });
 
-app.on('window-all-closed', () => {
-    stopIPCServer();
-    app.quit();
-});
+// app.on('window-all-closed', () => {
+//     stopIPCServer();
+//     app.quit();
+// });
 
 function connectGoServer(isStart) {
     global.goViteIPC = new ipcGo();

@@ -41,11 +41,8 @@ module.exports = function loadWeb() {
         }
     });
 
-    global.WALLET_WIN.webContents.on('did-fail-load', () => {
-
-    });
-
     global.WALLET_WIN.webContents.on('crashed', () => {
         showError('crashed');
+        global.walletLog.info('crashed', false);
     });
 };

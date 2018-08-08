@@ -31,11 +31,11 @@ module.exports = {
         addLog({ info, isSync });
     },
     warn(info, isSync = true) {
-        console.warn(info);
+        // console.warn(info);
         addLog({ info, level: 1, isSync });
     },
     error(info, isSync = true) {
-        console.error(new Error(info));
+        // console.error(new Error(info));
         addLog({ info, level: 2, isSync });
     }
 };
@@ -172,7 +172,8 @@ function getLogInfo(info, level=0) {
     let levelText = ['INFO', 'WARNING', 'ERROR'][level];
     let nowDate = formatDate();
     let netStatus = global.netStatus;
-    return `[${levelText}] ${nowDate} | netStatus(${netStatus}): ${JSON.stringify(info)}\n`;
+    let userLocale = global.userLocale;
+    return `[${levelText}] ${nowDate} | netStatus(${netStatus} | locale(${userLocale})): ${JSON.stringify(info)}\n`;
 }
 
 function log(path, logInfo) {

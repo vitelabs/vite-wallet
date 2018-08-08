@@ -9,6 +9,9 @@ class System {
     }
 
     setLocale(locale) {
+        if (global.userLocale !== locale) {
+            global.walletLog.info(`locale-${locale}`);
+        }
         global.userLocale = locale;
     }
 

@@ -6,9 +6,20 @@ class Net {
         this.__startLoopNet();
     }
 
+    __setGlobalStatus(data) {
+        if (global.netStatus !== data) {
+            global.walletLog.info({
+                info: 'netStatus change',
+                netStatus: data
+            });
+        }
+        global.netStatus = data;
+    }
+
     __startLoopNet() {
         global.goViteIPC['p2p.NetworkAvailable']().then((data)=>{
             this.netStatus = data;
+            this.__setGlobalStatus(data ? 'netOK' : 'netFail');
         }).catch(()=>{ });
 
         let loopTimeout = setTimeout(()=>{
@@ -19,7 +30,11 @@ class Net {
     }
 
     updateFromWeb(status) {
-        global.netStatus = status;
+        let text = status ? 'clientNetOK' : 'clientNetFail';
+        if (global.netStatus === 'netFail' && status) {
+            text = 'netFail';
+        }
+        this.__setGlobalStatus(text);
         !status && (this.netStatus = false);
     }
 

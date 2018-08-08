@@ -21,6 +21,7 @@ let subProcess = null;
 
 module.exports = {
     startIPCServer: function(cb) {
+        global.walletLog.info('start open ipc server', false);
         console.log('startIPCServer');
         // [NOTICE] avoid multiple services open
         stopIPCServer();
@@ -29,10 +30,18 @@ module.exports = {
             stdio: ['ignore', 'pipe', fs.openSync(global.SERVER_LOG_PATH, 'w')]
         }, (error) => {
             error && console.log('error', error);
+            global.walletLog.error({
+                info: 'open ipc server error',
+                error
+            }, false);
         });
 
         subPro.once('error', error => {
             console.log('error', error);
+            global.walletLog.error({
+                info: 'ipc server error',
+                error
+            }, false);
         });
         
         subPro.stdout.on('data', data => {
@@ -40,6 +49,8 @@ module.exports = {
             if (data.toString().indexOf('Vite rpc start success!') < 0) {
                 return;
             }
+
+            global.walletLog.error('ipc server is openning', false);
             console.log('start ipc Server');
             // Start: Assign subPro to subProcess
             subProcess = subPro;
@@ -48,6 +59,10 @@ module.exports = {
         
         subPro.on('close', (code) => { 
             console.log(`quit code: ${code}`);
+            global.walletLog.info({
+                info: 'ipc server quit',
+                code
+            });
             // Close: clear subProcess
             subProcess = null;
         });
@@ -58,9 +73,16 @@ module.exports = {
 
 function stopIPCServer () {
     console.log(`subProcess: ${!!subProcess}`);
+    global.walletLog.info({
+        info: 'stop ipc server ?',
+        subProcess: !!subProcess
+    });
+
     if (!subProcess) {
         return;
     }
+
+    global.walletLog.info('stop ipc server');
     if (isWindows) {
         spawn('taskkill /pid ' + subProcess.pid + ' /T /F');
         return;
