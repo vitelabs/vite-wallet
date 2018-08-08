@@ -96,7 +96,6 @@ export default {
     bottom: 0;
     width: 100%;
     background: #fff;
-    border: 1px solid #F5F4F5;
     box-shadow: 0 2px 40px 1px rgba(221,229,252,0.50);
     .icon {
         display: inline-block;
