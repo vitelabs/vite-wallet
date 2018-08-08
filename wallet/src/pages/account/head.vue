@@ -55,6 +55,7 @@ export default {
 
         getTestToken() {
             viteWallet.TestToken.get(this.address).then((data)=>{
+                console.log(data);
                 window.alert(this.$t('accDetail.hint.token'));
             }).catch((err) => {
                 console.warn(err);
@@ -62,20 +63,44 @@ export default {
             });
         },
 
+        clearEditName() {
+            this.isShowNameInput = false;
+            this.editName = '';
+            window.document.onkeydown = null;
+        },
         startRename() {
             this.isShowNameInput = true;
             Vue.nextTick(()=>{
+                window.document.onkeydown = (e) => {
+                    e = e || window.event;
+                    let code = e.keyCode || e.which;
+                    if (!code || code !== 13) {
+                        return;
+                    }
+                    this._rename();
+                };
                 this.$refs.nameInput.focus();
             });
         },
         _rename() {
             if (!this.editName) {
-                this.isShowNameInput = false;
+                this.clearEditName();
                 return;
             }
-            this.rename(this.editName, () => {
-                this.isShowNameInput = false;
-            });
+
+            if ( !/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/g.test(this.editName) ) {
+                window.alert(this.$t('create.hint.name'));
+                this.clearEditName();
+                return;
+            }
+
+            if (this.editName.length > 32) {
+                window.alert(this.$t('create.hint.nameLong'));
+                this.clearEditName();
+                return;
+            }
+
+            this.rename(this.editName, this.clearEditName);
         }
     }
 };

@@ -45,7 +45,6 @@ export default {
             width: 70.5px;
         }
         .change-lang {
-            display: inline-block;
             float: right;
         }
     }

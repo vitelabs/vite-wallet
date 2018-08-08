@@ -267,6 +267,9 @@ export default {
         }
         &.active {
             opacity: 1;
+            input {
+                opacity: 1;
+            }
         }
     }
     .btn {
