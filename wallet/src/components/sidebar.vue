@@ -105,9 +105,9 @@ export default {
         &.active:before {
             content: '';
             display: inline-block;
-            width: 6px;
+            width: 4.5px;
             height: 40px;
-            background-image: linear-gradient(-90deg, #1B3BD8 0%, #176CE0 31%, #0B92E7 49%, #0BB6EB 71%, #00E0F2 100%);
+            background-image: linear-gradient(-90deg, #1B3BD8 100%, #176CE0 100%, #0B92E7 100%, #0BB6EB 100%, #00E0F2 100%);
         }
     }
     .home {
