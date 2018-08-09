@@ -7,6 +7,13 @@ class i18n {
         this.messages = config.messages;
     }
 
+    setLocale(locale) {
+        if (locale !== this.locale) {
+            global.walletLog.info(`locale-${locale}`);
+        }
+        this.locale = locale;
+    }
+
     t (key) {
         let currentLocale = this.messages[this.locale];
         let defaultLocale = this.messages[this.fallbackLocale];

@@ -10,11 +10,8 @@ class System {
         clipboard.writeText(text);
     }
 
-    setLocale(locale) {
-        if (global.$i18n.locale !== locale) {
-            global.walletLog.info(`locale-${locale}`);
-        }
-        global.$i18n.locale = locale;
+    setLocale (locale) {
+        global.$i18n.setLocale(locale);
     }
 
     getLocale() {
