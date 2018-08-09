@@ -1,5 +1,6 @@
 const { shell, dialog } = require('electron');
 const path = require('path');
+require('~app/modules/electron-ga');
 
 const allowHost = ['https://test.vite.net'];
 
@@ -35,6 +36,12 @@ module.exports = function loadWeb() {
             window.viteWallet = remote.require('./walletSrc/middle/index.js');
             window.viteWallet.System.walletLog.info({
                 userAgent: window.navigator.userAgent
+            });
+
+            const { Analytics } = require('../modules/electron-ga');
+            const analytics = new Analytics('UA-123680072-1');
+            analytics.send('pageview', {
+                'client': 'ok'
             });
         `);
     });

@@ -36,6 +36,7 @@
         "pre-commit": "^1.2.2"
     },
     "dependencies": {
-        "cross-spawn": "^6.0.5"
+        "cross-spawn": "^6.0.5",
+        "electron-ga": "^1.0.6"
     }
 }
