@@ -4,6 +4,9 @@
             {{ statusText ? $t(`nav.${statusText}`) : '' }}
         </span>
         <span v-show="statusText !== 'sync' && statusText !== 'noNet'">{{ blockPercent }}</span>
+        <span v-show="statusText === 'sync'">
+            {{ $t(`nav.blockHeight`) + ': ' + blockHeight }}
+        </span>
 
         <img src="../assets/imgs/sync_icon.svg"
              v-show="statusText !== 'firstDone' && statusText !== 'sync'" 
@@ -19,6 +22,7 @@
 <script>
 let netEvent = null;
 let blockEvent = null;
+let heightTimeout = null;
 
 export default {
     data() {
@@ -28,7 +32,9 @@ export default {
             status: null,
             statusText: '',
             netStatus: false,
-            reloading: false
+            reloading: false,
+
+            blockHeight: ''
         };
     },
     mounted() {
@@ -48,10 +54,13 @@ export default {
         window.addEventListener('online',  ()=>{
             this.updateStatusText(null, true);
         });
+
+        this.startBlockHeight();
     },
     destroyed() {
         viteWallet.EventEmitter.off(netEvent);
         viteWallet.EventEmitter.off(blockEvent);
+        this.stopBlockHeight();
     },
     computed: {
         blockPercent() {
@@ -85,6 +94,27 @@ export default {
             }).catch((err)=>{
                 this.reloading = false;
                 console.warn(err);
+            });
+        },
+
+        stopBlockHeight() {
+            window.clearTimeout(heightTimeout);
+            heightTimeout = null;
+        },
+        startBlockHeight() {
+            let reGet = () => {
+                heightTimeout = setTimeout(()=>{
+                    this.stopBlockHeight();
+                    this.startBlockHeight();
+                }, 2000);
+            };
+
+            viteWallet.Block.getBlockHeight().then((data) => {
+                this.blockHeight = data;
+                reGet();
+            }).catch((err)=>{
+                console.warn(err);
+                reGet();
             });
         },
 

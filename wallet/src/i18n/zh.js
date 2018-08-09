@@ -12,7 +12,8 @@ module.exports = {
         sync: '钱包初始化中，暂时无法发送交易',
         noNet: '未检测到网络',
         firstDone: '初始化已完成',
-        firstDoing: '初始化中'
+        firstDoing: '初始化中',
+        blockHeight: '快照块高度'
     },
     test: {
         t: '预览版',

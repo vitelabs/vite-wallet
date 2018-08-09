@@ -13,7 +13,8 @@ module.exports = {
         sync: 'Wallet initializing, transactions cannot be made temporarily.',
         noNet: 'No network detected!',
         firstDone: 'Init Done',
-        firstDoing: 'Initializing'
+        firstDoing: 'Initializing',
+        blockHeight: 'Snapshot Block Height'
     },
     test:{
         t: 'Preview Version',
