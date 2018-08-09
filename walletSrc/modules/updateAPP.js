@@ -30,7 +30,7 @@ module.exports = function() {
         dialog.showMessageBox(global.WALLET_WIN, {
             type: 'info',
             title: `${codeName} update`,
-            message: message || global.$i18n('updateAPP'),
+            message: message || global.$t('updateAPP'),
             buttons,
             defaultId: 0
         }, (id) => {

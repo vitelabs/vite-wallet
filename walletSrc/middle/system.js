@@ -11,10 +11,10 @@ class System {
     }
 
     setLocale(locale) {
-        if (global.userLocale !== locale) {
+        if (global.$i18n.locale !== locale) {
             global.walletLog.info(`locale-${locale}`);
         }
-        global.userLocale = locale;
+        global.$i18n.locale = locale;
     }
 
     getLocale() {

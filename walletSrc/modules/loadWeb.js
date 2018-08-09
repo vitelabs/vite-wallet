@@ -1,4 +1,4 @@
-const { shell, dialog } = require('electron');
+const { shell, dialog, app } = require('electron');
 const path = require('path');
 
 const allowHost = ['https://test.vite.net'];
@@ -7,15 +7,12 @@ function showError(title) {
     const options = {
         type: 'info',
         message: title,
-        buttons: [global.$i18n('reload'), global.$i18n('close')]
+        buttons: [global.$t('reload'), global.$t('close')]
     };
 
     global.WALLET_WIN && dialog.showMessageBox(global.WALLET_WIN, options, function (index) {
-        if (index === 0) {
-            global.WALLET_WIN && global.WALLET_WIN.reload();
-            return;
-        }
-        global.WALLET_WIN && global.WALLET_WIN.destroy();
+        (index === 0) && app.relaunch();
+        app.exit(0);
     });
 }
 

@@ -2,24 +2,32 @@
 const { app, BrowserWindow, dialog } = require('electron');
 const path = require('path');
 
-// Path must be defined in advance
-require('./walletSrc/modules/initGlobalVars.js');
+require('./walletSrc/modules/initGlobalVars.js');   // Global vars must be defined in advance
 
 const initMenu = require(path.join(global.APP_PATH, '/walletSrc/modules/menus.js'));
 const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/modules/ipcGo.js') );
 const updateAPP = require( path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js') );
 const loadWeb = require( path.join(global.APP_PATH, '/walletSrc/modules/loadWeb.js') );
-
-global.netStatus = -1;
-global.walletLog = require( path.join(global.APP_PATH, '/walletSrc/utils/log.js') );
+const { startIPCServer, stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
 
 let ipcServerFinish = false;
 let ipcServerCb;
 
-const { startIPCServer, stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
 connectGoServer(true);
 
-global.WALLET_WIN = null;
+// Single app instance
+const isSecondInstance = app.makeSingleInstance(() => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (!global.WALLET_WIN) {
+        return;
+    }
+
+    global.WALLET_WIN.isMinimized() && global.WALLET_WIN.restore();
+    global.WALLET_WIN.focus();
+});
+
+isSecondInstance && app.quit();
+
 function createWindow () {
     global.WALLET_WIN = new BrowserWindow({
         width: 1200,
@@ -39,15 +47,15 @@ function createWindow () {
         initMenu();
     });
 
-    global.userLocale = app.getLocale();
-    global.walletLog.info(`locale-${global.userLocale}`);
+    global.$i18n.locale = app.getLocale();
+    global.walletLog.info(`locale-${global.$i18n.locale}`);
 
     global.WALLET_WIN && global.WALLET_WIN.on('close', (event) => {
         dialog.showMessageBox(global.WALLET_WIN, {
             type: 'question',
-            buttons: [global.$i18n('cancel'), global.$i18n('yes')],
-            title: global.$i18n('close'),
-            message: global.$i18n('quitWallet'),
+            buttons: [global.$t('cancel'), global.$t('yes')],
+            title: global.$t('close'),
+            message: global.$t('quitWallet'),
             defaultId: 0
         }, (id) => {
             if (id !== 1) {

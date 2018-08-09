@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const accountNameFile = path.join(global.APP_DATA_PATH, 'viteWallet_AccountName');
+
+// Compatible with accountNameFile. -- oldVersion 0.0.1
+const oldAccountNameFile = path.join(global.APP_DATA_PATH, 'viteWallet_AccountName');
+const accountNameFile = path.join(global.USER_DATA_PATH, 'viteWallet_AccountName');
+fs.existsSync(oldAccountNameFile) && fs.renameSync(oldAccountNameFile, accountNameFile);    
 
 module.exports = {
     readAccountFileSync() {
