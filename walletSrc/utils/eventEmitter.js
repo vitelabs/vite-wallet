@@ -26,11 +26,7 @@ let eventEmitter = {
             }
         }
 
-        if (i === eventList.length) {
-            return;
-        }
-
-        eventList = eventList.splice(i, 1);
+        (i !== eventList.length) && eventList.splice(i, 1);
     }
 };
 
