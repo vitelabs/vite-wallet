@@ -34,4 +34,3 @@ const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/utils/ipcGo.js') )
 global.goViteIPC = new ipcGo();
 
 global.viteEventEmitter = require( path.join(global.APP_PATH, '/walletSrc/utils/eventEmitter.js') );
-console.log(global.viteEventEmitter);

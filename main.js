@@ -12,13 +12,14 @@ let serverStatus = -1;
 let appStatus = -1;
 
 let serverStautsEvent = global.viteEventEmitter.on('serverStatus', function(status) {
-    console.log(status);
+    serverStatus = status;
     setReadyStatus({
         appStatus,
         serverStatus: status
     });
 });
 let appStautsEvent = global.viteEventEmitter.on('appStatus', function(status) {
+    appStatus = status;
     setReadyStatus({
         serverStatus,
         appStatus: status
