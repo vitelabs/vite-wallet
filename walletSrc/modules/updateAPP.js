@@ -7,42 +7,42 @@ let serverStatus = -1;
 let waitForQuit = false;
 
 module.exports = function() {
-    // serverStautsEvent = global.viteEventEmitter.on('serverStatus', function(status) {
-    //     serverStatus = status;
-    //     serverStatus === 1 && waitForQuit && quit();
-    // });
+    serverStautsEvent = global.viteEventEmitter.on('serverStatus', function(status) {
+        serverStatus = status;
+        serverStatus === 1 && waitForQuit && quit();
+    });
     requestUpdate();
 };
 
 function requestUpdate() {
-    showDialog({});
-    // request({
-    //     path: '/api/walletapp/version',
-    //     params: {
-    //         code: version.code,
-    //         channel: version.channel
-    //     },
-    //     method: 'GET'
-    // }).then((data)=>{
-    //     // APP has quit
-    //     if (!data || !global.WALLET_WIN || global.WALLET_WIN.isDestroyed()) {
-    //         return;
-    //     }
+    // showDialog({});
+    request({
+        path: '/api/walletapp/version',
+        params: {
+            code: version.code,
+            channel: version.channel
+        },
+        method: 'GET'
+    }).then((data)=>{
+        // APP has quit
+        if (!data || !global.WALLET_WIN || global.WALLET_WIN.isDestroyed()) {
+            return;
+        }
 
-    //     let {
-    //         code, channel
-    //     } = data;
+        let {
+            code, channel
+        } = data;
 
-    //     let isUpdate = code > +version.code && channel === version.channel;
-    //     if (!isUpdate) {
-    //         return;
-    //     }
+        let isUpdate = code > +version.code && channel === version.channel;
+        if (!isUpdate) {
+            return;
+        }
 
-    //     showDialog(data);
-    // }).catch((err)=>{
-    //     global.viteEventEmitter.off(serverStautsEvent);
-    //     console.log(err);
-    // });
+        showDialog(data);
+    }).catch((err)=>{
+        global.viteEventEmitter.off(serverStautsEvent);
+        console.log(err);
+    });
 }
 
 function showDialog({
