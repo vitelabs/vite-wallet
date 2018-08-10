@@ -28,3 +28,7 @@ global.$t = global.$i18n.t.bind(global.$i18n);
 
 // Init dialog
 global.dialog = require('../dialog.js');
+
+// Init ipc
+const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/utils/ipcGo.js') );
+global.goViteIPC = new ipcGo();

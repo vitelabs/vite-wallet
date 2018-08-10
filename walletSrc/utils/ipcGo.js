@@ -15,6 +15,32 @@ class ipc {
     constructor() {
         this.__connectStatus = -1;
 
+        const apiList = {
+            wallet: [
+                'ListAddress', 'NewAddress', 'Status', 'UnLock', 'Lock', 'ReloadAndFixAddressFile', 'IsMayValidKeystoreFile', 'GetDataDir'
+            ],
+            ledger: [
+                'CreateTxWithPassphrase', 'GetBlocksByAccAddr', 'GetUnconfirmedBlocksByAccAddr', 'GetAccountByAccAddr', 'GetUnconfirmedInfo', 'GetInitSyncInfo'
+            ],
+            p2p: [
+                'NetworkAvailable'
+            ],
+            types: [
+                'IsValidHexAddress', 'IsValidHexTokenTypeId'
+            ],
+            common: [
+                'LogDir'
+            ]
+        };
+        for (let namespace in apiList) {
+            apiList[namespace].forEach((func) => {
+                let apiName = `${namespace}.${func}`;
+                this[apiName] = netToIPC.bind(this, apiName);
+            });
+        }
+    }
+
+    connectTo() {
         ipcBase.connectTo(VITE_WALLET_IPC, () => {
             // listening connect
             ipcBase.of[VITE_WALLET_IPC].on('connect', () => {
@@ -41,30 +67,6 @@ class ipc {
                 }
             });
         });
-
-        const apiList = {
-            wallet: [
-                'ListAddress', 'NewAddress', 'Status', 'UnLock', 'Lock', 'ReloadAndFixAddressFile', 'IsMayValidKeystoreFile', 'GetDataDir'
-            ],
-            ledger: [
-                'CreateTxWithPassphrase', 'GetBlocksByAccAddr', 'GetUnconfirmedBlocksByAccAddr', 'GetAccountByAccAddr', 'GetUnconfirmedInfo', 'GetInitSyncInfo'
-            ],
-            p2p: [
-                'NetworkAvailable'
-            ],
-            types: [
-                'IsValidHexAddress', 'IsValidHexTokenTypeId'
-            ],
-            common: [
-                'LogDir'
-            ]
-        };
-        for (let namespace in apiList) {
-            apiList[namespace].forEach((func) => {
-                let apiName = `${namespace}.${func}`;
-                this[apiName] = netToIPC.bind(this, apiName);
-            });
-        }
     }
 
     emitConnected(connectStatus) {

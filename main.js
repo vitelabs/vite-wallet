@@ -4,7 +4,6 @@ const path = require('path');
 
 require('./walletSrc/modules/init/initGlobalVars.js');   // Global vars must be defined in advance
 
-const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/modules/ipcGo.js') );
 const updateAPP = require( path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js') );
 const { startIPCServer, stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
 
@@ -50,7 +49,7 @@ initAPP(function createWindow () {
 });
 
 function connectGoServer(isStart) {
-    global.goViteIPC = new ipcGo();
+    global.goViteIPC.connectTo();
     global.goViteIPC.onConnected(function (connectStatus) {
         if (!connectStatus) {
             isStart && startIPCServer(connectGoServer);
