@@ -53,7 +53,7 @@
             </div>
 
             <div class="btn __pointer" :class="{
-                'unuse': amountErr || !isValidAddress || loading
+                'unuse': loading || amountErr || !isValidAddress || passwordErr
             }" @click="transfer">{{ $t('accDetail.transfer') }}</div>
         </div>
     </div>
@@ -108,7 +108,8 @@ export default {
             }, 500);
         },
         password: function() {
-            this.passwordErr = '';
+            this.password && (this.passwordErr = '');
+            !this.password && (this.passwordErr = this.$t('transList.valid.pswd'));
         },
         amount: function() {
             clearTimeout(amountTimeout);
@@ -116,7 +117,7 @@ export default {
 
             amountTimeout = setTimeout(async ()=> {
                 amountTimeout = null;
-                let result = /(^(\d+)$)|(^(\d+[.]\d{1,8})$)/g.test(this.amount);
+                let result = this.testAmount();
                 if (!result || bigNumber.isEqual(this.amount, 0)) {
                     this.amountErr = this.$t('transList.valid.amt');
                     return;
@@ -127,6 +128,10 @@ export default {
         }
     },
     methods: {
+        testAmount() {
+            return /(^(\d+)$)|(^(\d+[.]\d{1,8})$)/g.test(this.amount);
+        },
+
         fetchAccount() {
             viteWallet.Account.get(this.outAddress).then(({
                 balanceInfos
@@ -148,7 +153,17 @@ export default {
             });
         },
         transfer() {
-            if (this.loading || this.amountErr || !this.isValidAddress) {
+            if (!this.inAddress) {
+                this.isValidAddress = false;
+            }
+            if (!this.testAmount()) {
+                this.amountErr = this.$t('transList.valid.amt');
+            }
+            if (!this.password) {
+                this.passwordErr = this.$t('transList.valid.pswd');
+            }
+
+            if (this.loading || this.amountErr || !this.isValidAddress || this.passwordErr) {
                 return;
             }
 

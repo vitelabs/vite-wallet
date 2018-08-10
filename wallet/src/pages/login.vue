@@ -23,7 +23,7 @@
 
         <div class="__btn __btn_input" 
              :class="{ 'active': !!password }">
-            <input :placeholder="$t('create.input')" v-model="password" :type="'password'" />
+            <input :placeholder="$t('create.input')" autofocus v-model="password" :type="'password'" />
         </div>
 
         <div class="__btn __pointer __btn_all_in" @click="login">{{ $t('btn.login') }}</div>
