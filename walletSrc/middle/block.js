@@ -89,6 +89,10 @@ class Block {
         return loopBlockTime;
     }
 
+    getBlockHeight() {
+        return global.goViteIPC['ledger.GetSnapshotChainHeight']();
+    }
+
     createTX({
         selfAddr, toAddr, pass, tokenId, amount
     }) {

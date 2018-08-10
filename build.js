@@ -79,6 +79,7 @@ function writePackage() {
     let version = require('./walletSrc/version.json');
     packageFile.main = 'main.js';
     packageFile.version = version.version + '-' + version.clientCode++;
+    // packageFile.version = version.version;
     fs.writeFileSync('./walletSrc/version.json', JSON.stringify(version), 'utf8');
     let build = require('./electron.build.json');
     packageFile.build = build;
