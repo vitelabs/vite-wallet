@@ -12,7 +12,9 @@ global.$i18n = function(key) {
 global.GO_FILE = path.join(os.homedir(), '/viteisbest/');   // ipc path
 global.APP_PATH = process.env.NODE_ENV === 'dev' ? path.join(app.getAppPath(), 'app') : app.getAppPath();   // app-root
 global.APP_DATA_PATH = path.join(app.getPath('appData'), '/viteWallet/');   // app data path
-global.LOG_PATH = path.join(global.APP_DATA_PATH, '/log');
+
+global.USER_DATA_PATH = app.getPath('userData');
+global.LOG_PATH = path.join(global.USER_DATA_PATH, '/log');
 global.SERVER_LOG_PATH = path.join(global.LOG_PATH, '/server.log'); // server log path
 global.CLIENT_LOG_PATH = path.join(global.LOG_PATH, '/client.log'); // client log path
 

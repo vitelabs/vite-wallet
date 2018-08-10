@@ -34,7 +34,7 @@ export default {
             netStatus: false,
             reloading: false,
 
-            blockHeight: ''
+            blockHeight: '0'
         };
     },
     mounted() {
