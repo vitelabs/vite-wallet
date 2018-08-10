@@ -21,7 +21,7 @@ module.exports = {
             return '';
         }
         try {
-            return num.dividedBy(minUnit).decimalPlaces(decimalPlaces).toString();
+            return num.dividedBy(minUnit).decimalPlaces(decimalPlaces).toFormat();
         } catch(err) {
             console.log(`amountToBasicString: ${num}`, err);
             return '';
