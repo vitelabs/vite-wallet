@@ -45,12 +45,11 @@ module.exports = {
         });
         
         subPro.stdout.on('data', data => {
-            console.log(data.toString());
+            global.walletLog.info(data.toString(), false);
             if (data.toString().indexOf('Vite rpc start success!') < 0) {
                 return;
             }
 
-            global.walletLog.info('ipc server is openning', false);
             console.log('start ipc Server');
             // Start: Assign subPro to subProcess
             subProcess = subPro;

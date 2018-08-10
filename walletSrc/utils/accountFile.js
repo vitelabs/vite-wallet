@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-
-const accountNameFile = path.join(global.USER_DATA_PATH, 'viteWallet_AccountName');  
+const accountNameFile = path.join(global.USER_DATA_PATH, 'viteWallet_AccountName');
 
 module.exports = {
     readAccountFileSync() {
