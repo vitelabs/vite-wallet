@@ -1,6 +1,9 @@
 let eventList = [];
 
-let eventEmitter = {
+let isEmit = false;
+let offEvents = [];
+
+module.exports = {
     on: function(name, cb) {
         let event = {
             name,
@@ -9,25 +12,39 @@ let eventEmitter = {
         eventList.push(event);
         return event;
     },
-    emit: function(name, data) {
-        eventList.forEach((event) => {
-            event.name === name && event.cb && event.cb(data);
+    emit: function(name, ...args) {
+        // [NOTICE] multi-Progress call
+        isEmit = true;
+        eventList.forEach((event)=>{
+            event.name === name && event.cb && event.cb(...args);
         });
+        isEmit = false;
+
+        while (offEvents.length) {
+            off(offEvents[0]);
+            offEvents.shift();
+        }
     },
     off: function(event) {
-        if (!event) {
+        if (isEmit) {
+            offEvents.push(event);
             return;
         }
-
-        let i;
-        for (i = 0; i<eventList.length; i++) {
-            if (event === eventList[i]) {
-                break;
-            }
-        }
-
-        (i !== eventList.length) && eventList.splice(i, 1);
+        off(event);
     }
 };
 
-module.exports = eventEmitter;
+function off(event) {
+    if (!event) {
+        return;
+    }
+
+    let i;
+    for (i = 0; i<eventList.length; i++) {
+        if (event === eventList[i]) {
+            break;
+        }
+    }
+
+    i !== eventList.length && eventList.splice(i, 1);
+}

@@ -181,7 +181,9 @@ function getLogInfo(info, level=0) {
 function log(path, logInfo) {
     fs.access(path, fs.constants.F_OK | fs.constants.W_OK, (err) => {
         if (!err) { // exist && writable
-            fs.appendFile(path, logInfo, 'utf8');
+            fs.appendFile(path, logInfo, 'utf8', (err)=>{
+                err && console.log(err);
+            });
             return;
         }
         
@@ -191,7 +193,9 @@ function log(path, logInfo) {
         }
 
         // does not exist
-        fs.writeFile(path, logInfo, 'utf8');
+        fs.writeFile(path, logInfo, 'utf8', (err)=>{
+            err && console.log(err);
+        });
     });
 }
 

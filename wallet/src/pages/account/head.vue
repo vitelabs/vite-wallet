@@ -55,7 +55,6 @@ export default {
 
         getTestToken() {
             viteWallet.TestToken.get(this.address).then((data)=>{
-                console.log(data);
                 window.alert(this.$t('accDetail.hint.token'));
             }).catch((err) => {
                 console.warn(err);

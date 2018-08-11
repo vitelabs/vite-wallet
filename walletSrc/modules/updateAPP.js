@@ -11,11 +11,17 @@ module.exports = function() {
         serverStatus = status;
         serverStatus === 1 && waitForQuit && quit();
     });
-    requestUpdate();
+
+    // The net module can be used after the APP is ready.
+    let appEvent = null;
+    global.viteEventEmitter.on('appReady', function() {
+        global.viteEventEmitter.off(appEvent);
+        console.log('statsdsdsdsdsd');
+        requestUpdate();
+    });
 };
 
 function requestUpdate() {
-    // showDialog({});
     request({
         path: '/api/walletapp/version',
         params: {
@@ -46,7 +52,7 @@ function requestUpdate() {
 }
 
 function showDialog({
-    codeName = '', appUrl = 'https://vite.test.net', message= 'sdsdsds', isForce= true
+    codeName = '', appUrl, message, isForce
 }) {
     let buttons = ['download'];
     !isForce && buttons.push('no thanks');
@@ -67,7 +73,7 @@ function showDialog({
             return;
         }
 
-        // Go-server has started, so waiting for it to finish.
+        // Go-server has started to start, so wait for it to start and close it.
         if (serverStatus === 0) {
             waitForQuit = true;
             return;

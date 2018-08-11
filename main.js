@@ -1,4 +1,4 @@
-// [TODO] app-log test mock-server deal-crash
+// [TODO] app-log test mock-server deal-crash Server-process-guard
 const path = require('path');
 
 require('./walletSrc/modules/init/initGlobalVars.js');   // Global vars must be defined in advance
@@ -7,38 +7,31 @@ const initServer = require(path.join(global.APP_PATH, '/walletSrc/modules/init/i
 const initAPP = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initAPP.js'));
 const initWEB = require( path.join(global.APP_PATH, '/walletSrc/modules/init/initWEB.js') );
 const initMenu = require(path.join(global.APP_PATH, '/walletSrc/modules/menus.js'));
+const updateAPP = require( path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js') );
 
-let serverStatus = -1;
-let appStatus = -1;
+let ipcReady = false;
+let appReady = false;
 
-let serverStautsEvent = global.viteEventEmitter.on('serverStatus', function(status) {
-    serverStatus = status;
-    setReadyStatus({
-        appStatus,
-        serverStatus: status
-    });
+let ipcEvent = global.viteEventEmitter.on('ipcReady', function() {
+    ipcReady = true;
+    setReadyStatus({ appReady, ipcReady });
 });
-let appStautsEvent = global.viteEventEmitter.on('appStatus', function(status) {
-    appStatus = status;
-    setReadyStatus({
-        serverStatus,
-        appStatus: status
-    });
+let appEvent = global.viteEventEmitter.on('appReady', function() {
+    appReady = true;
+    setReadyStatus({ ipcReady, appReady });
 });
 
-// Needs nothing
+updateAPP();
 initServer();
-
-// Needs status: go-server
 initAPP();
 
 function setReadyStatus({
-    serverStatus, appStatus
+    ipcReady, appReady
 }) {
-    serverStatus === 1 && global.viteEventEmitter.off(serverStautsEvent);
-    appStatus === 1 && global.viteEventEmitter.off(appStautsEvent);
+    ipcReady && global.viteEventEmitter.off(ipcEvent);
+    appReady && global.viteEventEmitter.off(appEvent);
 
-    if (serverStatus !== 1 || appStatus !== 1) {
+    if (!ipcReady || !appReady) {
         return;
     }
     
