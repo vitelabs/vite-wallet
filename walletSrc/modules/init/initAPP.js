@@ -2,18 +2,6 @@ const path = require('path');
 const { app, BrowserWindow } = require('electron');
 const { stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
 
-// Single app instance
-const isSecondInstance = app.makeSingleInstance(() => {
-    // Someone tried to run a second instance, we should focus our window.
-    if (!global.WALLET_WIN) {
-        return;
-    }
-
-    global.WALLET_WIN.isMinimized() && global.WALLET_WIN.restore();
-    global.WALLET_WIN.focus();
-});
-isSecondInstance && app.quit();
-
 module.exports = function () {
     app.on('gpu-process-crashed', () => {
         global.dialog.crash('gpu-process-crashed');

@@ -3,41 +3,37 @@ const spawn = require('~app/modules/cross-spawn');
 const fs = require('fs');
 const path = require('path');
 
-let binPath = '';
-if (!isWindows) {
+let serverName = isWindows ? '/viteGoServer.exe' : '/viteGoServer';
+let oldPath = path.join(global.APP_PATH, serverName);
+let binPath = path.join(global.APP_DATA_PATH, serverName);
+
+try {
     // [NOTICE] MAC: this file is read-only under the dmg, so move to /appData
-    binPath = path.join(global.APP_DATA_PATH, '/viteGoServer');
-    fs.writeFileSync(binPath, fs.readFileSync(path.join(global.APP_PATH, '/viteGoServer')));
-    try {
-        fs.chmodSync(binPath, 0o777);
-    } catch(err) {
-        console.log(err);
-    }
-} else {
-    binPath = path.join(global.APP_PATH, '/viteGoServer.exe');
+    fs.existsSync(oldPath) && fs.renameSync(oldPath, binPath);
+    !isWindows && fs.chmodSync(binPath, 0o777);
+} catch(err) {
+    console.log(err);
 }
 
 let subProcess = null;
 
 module.exports = {
     startIPCServer: function(cb) {
-        global.walletLog.info('start open ipc server', false);
-        console.log('startIPCServer');
         // [NOTICE] avoid multiple services open
         stopIPCServer();
+
+        global.walletLog.info('start open ipc server', false);
 
         let subPro = spawn(binPath, {
             stdio: [fs.openSync(global.SERVER_LOG_PATH, 'w'), 'pipe', fs.openSync(global.SERVER_LOG_PATH, 'w')]
         }, (error) => {
-            error && console.log('error', error);
-            global.walletLog.error({
+            error && global.walletLog.error({
                 info: 'open ipc server error',
                 error
             }, false);
         });
 
         subPro.once('error', error => {
-            console.log('error', error);
             global.walletLog.error({
                 info: 'ipc server error',
                 error
@@ -45,19 +41,17 @@ module.exports = {
         });
         
         subPro.stdout.on('data', data => {
-            // global.walletLog.info(data.toString(), false);
+            global.walletLog.info(data.toString(), false);
+
             if (data.toString().indexOf('Vite rpc start success!') < 0) {
                 return;
             }
 
-            console.log('start ipc Server: ok');
-            // Start: Assign subPro to subProcess
             subProcess = subPro;
             cb && cb();
         });
         
         subPro.on('close', (code) => { 
-            console.log(`quit code: ${code}`);
             global.walletLog.info({
                 info: 'ipc server quit',
                 code
@@ -71,7 +65,6 @@ module.exports = {
 };
 
 function stopIPCServer () {
-    console.log(`subProcess: ${!!subProcess}`);
     global.walletLog.info({
         info: 'stop ipc server ?',
         subProcess: !!subProcess

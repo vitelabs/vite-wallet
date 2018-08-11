@@ -16,7 +16,6 @@ module.exports = function() {
     let appEvent = null;
     global.viteEventEmitter.on('appReady', function() {
         global.viteEventEmitter.off(appEvent);
-        console.log('statsdsdsdsdsd');
         requestUpdate();
     });
 };
