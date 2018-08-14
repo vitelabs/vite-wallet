@@ -111,7 +111,7 @@ export default {
 
 .account-head-wrapper {
     display: flex;
-    margin: 0 6px;
+    margin: 0 36px;
     height: 84px;
     .custom-name {
         flex: 1;

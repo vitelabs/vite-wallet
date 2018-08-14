@@ -1,5 +1,5 @@
 <template>
-    <div v-show="true" class="trans-list-wrapper">
+    <div v-show="true" class="trans-list">
         <div class="table">
             <div class="t-header">
                 <div class="cell-text">{{ $t('transList.tType.title') }}</div>
@@ -18,9 +18,10 @@
                 </span>
                 <span :class="{
                     'cell-text': true,
-                    'pink': item.status !== 'confirmed',
-                    'blue': item.status === 'confirmed'
-                }">{{ item.status }}</span>
+                    'green': item.status === 'confirmed',
+                    'pink': item.status === 'unconfirmed',
+                    'blue': item.status === 'confirmes'
+                }">{{ $t(`transList.status.${item.status}`) + `${item.status === 'confirms' ? item.confirms : ''}` }}</span>
                 <span class="cell-text">{{ item.date }}</span>
                 <span class="cell-text">{{ item.transAddr }}</span>
                 <span class="cell-text">{{ item.amount }}</span>
@@ -41,7 +42,7 @@ import pagination from 'components/pagination.vue';
 import date from 'utils/date.js';
 import bigNumber from 'utils/bigNumber.js';
 
-const pageCount = 6;
+const pageCount = 20;
 let reTimeout = null;
 let eventChangeLang = null;
 let lastFetchTime = null;
@@ -138,12 +139,14 @@ export default {
 
                 list.forEach(item => {
                     let confirms = item.ConfirmedTimes;
-                    let status = this.$t('transList.status.unconfirmed');
+
+                    let status = 'unconfirmed';
                     if (confirms && confirms > 0 && confirms <= 50) {
-                        status = `${this.$t('transList.status.confirms')} (${confirms})`;
+                        status = 'confirms';
                     } else if (confirms && confirms > 50) {
-                        status = this.$t('transList.status.confirmed');
+                        status = 'confirmed';
                     }
+                    status = item.Status === 2 ? 'confirmed' : status;
 
                     let timestamp = item.Timestamp * 1000;
                     let amount = bigNumber.amountToBasicString(item.Amount);
@@ -151,6 +154,7 @@ export default {
                     nowList.push({
                         type: item.FromAddr ? 'receive' : 'send',
                         status,
+                        confirms: `(${confirms})`,
                         timestamp,
                         date: date(timestamp, this.$i18n.locale),
                         transAddr: item.FromAddr || item.ToAddr,
@@ -173,14 +177,14 @@ export default {
 <style lang="scss" scoped>
 @import "~assets/scss/vars.scss";
 
-.trans-list-wrapper {
+.trans-list {
     position: relative;
     box-sizing: border-box;
-    margin-top: 30px;
     background: #FFF;
-    border: 1px solid #F6F5F5;
     box-shadow: 0 2px 15px 1px rgba(176, 192, 237, 0.42);
     border-radius: 8px;
+    max-height: 100%;
+    overflow: auto;
     .table{
         display: table;
         width: 100%;
@@ -209,7 +213,7 @@ export default {
             line-height: 48px;
             &:hover {
                 box-shadow: 0 0px 1px 1px rgba(176, 192, 237, 0.1);
-                background: rgba(176, 192, 237, 0.4);
+                background: rgba(88,145,255,.13);
             }
             .pink {
                 font-family: $font-bold;
@@ -217,7 +221,11 @@ export default {
             }
             .blue {
                 font-family: $font-bold;
-                color: #195ADD;
+                color: #409EFF;
+            }
+            .green {
+                font-family: $font-bold;
+                color: #67C23A;
             }
             .cell-text {
                 border-bottom: 1px solid #f3f6f9;
