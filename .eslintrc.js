@@ -29,6 +29,7 @@ module.exports = {
         "semi": ["error", "always"],
         "no-console": "off",
         "no-useless-escape": "off",
-        "vue/html-indent": ["error", 4]
+        "vue/html-indent": ["error", 4],
+        'no-debugger': 1,
     }
 };

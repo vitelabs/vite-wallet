@@ -110,6 +110,7 @@ module.exports = {
         cancel: 'Cancel',
         login: 'Login',
         imported: 'Import Account',
+        back: 'Go Back'
     },
     paging: {
         pre: 'Prev',

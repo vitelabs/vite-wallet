@@ -4,7 +4,7 @@
             errMsg === 'dragDrop.err2' || errMsg === 'dragDrop.err1' ? $t(errMsg) : errMsg
         }}</div>
         <div ref="fileArea" class="file-drag">{{ $t('dragDrop.text') }}</div>
-        <router-link class="__btn_link" :to="{ name: 'login' }">{{ $t('btn.login') }}</router-link>
+        <span class="__btn_link" @click="goWhere" >{{ $t(`btn.${btn}`) }}</span>
     </div>
 </template>
 
@@ -13,7 +13,8 @@ export default {
     data() {
         return {
             files: [],
-            errMsg: ''
+            errMsg: '',
+            btn: this.$route.params.from === 'start' ? 'back' : 'login'
         };
     },
     mounted() {
@@ -55,6 +56,17 @@ export default {
             e.preventDefault();
             e.stopPropagation();
         });
+    },
+    methods: {
+        goWhere() {
+            if (this.btn === 'back') {
+                this.$router.go(-1);
+                return;
+            }
+            this.$router.push({
+                name: 'login'
+            });
+        }
     }
 };
 </script>

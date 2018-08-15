@@ -9,7 +9,9 @@
             </div>
         </div>
 
-        <router-link class="add-acc" :to="{ name: 'createAccount' }">
+        <router-link class="add-acc" :to="{ 
+            name: 'createAccount', params: { from: 'login' }
+        }"> 
             <img class="icon" src="../assets/imgs/add_icon.svg"/>add account
         </router-link>
     </div>

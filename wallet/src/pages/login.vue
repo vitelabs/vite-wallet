@@ -28,7 +28,10 @@
 
         <div class="__btn __pointer __btn_all_in" @click="login">{{ $t('btn.login') }}</div>
 
-        <router-link class="__btn_link" :to="{ name: 'importAccount' }">{{ $t('btn.imported') }}</router-link>
+        <router-link class="__btn_link" :to="{ 
+            name: 'importAccount',
+            params: { from: 'login' }
+        }">{{ $t('btn.imported') }}</router-link>
     </div>
 </template>
 
