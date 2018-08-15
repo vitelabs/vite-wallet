@@ -19,8 +19,10 @@
             <div class="row">
                 <div class="row-t">{{ $t('accDetail.inAddress') }}</div>
                 <div class="row-content">
-                    <span class="__btn_text __ellipsis __input" :class="{ 'active': !!inAddress }">
-                        <input v-model="inAddress" />
+                    <span class="__btn_text __ellipsis __input" :class="{
+                        'active': inputItem === 'inAddr'
+                    }">
+                        <input @focus="inputFocus('inAddr')" v-model="inAddress" />
                     </span>
                     <span v-show="!isValidAddress" class="err">
                         <img class="icon" src="../assets/imgs/error_icon.svg"/> {{ $t('transList.valid.addr')}}
@@ -31,8 +33,10 @@
             <div class="row">
                 <div class="row-t">{{ $t('accDetail.sum') }}</div>
                 <div class="row-content">
-                    <span class="__btn_text __ellipsis __input" :class="{ 'active': !!amount }">
-                        <input class="amount" v-model="amount" />VITE
+                    <span class="__btn_text __ellipsis __input" :class="{ 
+                        'active': inputItem === 'amount'
+                    }">
+                        <input @focus="inputFocus('amount')" class="amount" v-model="amount" />VITE
                     </span>
                     <span v-show="amountErr" class="err">
                         <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ amountErr }}
@@ -43,8 +47,10 @@
             <div class="row">
                 <div class="row-t">{{ $t('accDetail.password') }}</div>
                 <div class="row-content">
-                    <span class="__btn_text __ellipsis __input" :class="{ 'active': !!password }">
-                        <input v-model="password" type="password" />
+                    <span class="__btn_text __ellipsis __input" :class="{ 
+                        'active': inputItem === 'pass' 
+                    }">
+                        <input @focus="inputFocus('pass')" v-model="password" type="password" />
                     </span>
                     <span v-show="passwordErr" class="err">
                         <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ passwordErr }}
@@ -83,6 +89,7 @@ export default {
             amountErr: '',
             passwordErr: '',
 
+            inputItem: '',
             loading: false
         };
     },
@@ -128,6 +135,9 @@ export default {
         }
     },
     methods: {
+        inputFocus(text) {
+            this.inputItem = text;
+        },
         testAmount() {
             return /(^(\d+)$)|(^(\d+[.]\d{1,8})$)/g.test(this.amount);
         },
