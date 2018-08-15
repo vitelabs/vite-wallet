@@ -23,8 +23,12 @@ module.exports = {
     startIPCServer: function(cb) {
         global.walletLog.info('start open ipc server', false);
         console.log('startIPCServer');
+
         // [NOTICE] avoid multiple services open
-        stopIPCServer();
+        if (subProcess) {
+            cb && cb();
+            return;
+        }
 
         let subPro = spawn(binPath, {
             stdio: [fs.openSync(global.SERVER_LOG_PATH, 'w'), 'pipe', fs.openSync(global.SERVER_LOG_PATH, 'w')]
