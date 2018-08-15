@@ -19,7 +19,7 @@
                 <span class="cell-text status" :class="{
                     'green': item.status === 'confirmed',
                     'pink': item.status === 'unconfirmed',
-                    'blue': item.status === 'confirmes'
+                    'blue': item.status === 'confirms'
                 }">{{ $t(`transList.status.${item.status}`) + `${item.status === 'confirms' ? item.confirms : ''}` }}</span>
                 <span class="cell-text time">{{ item.date }}</span>
                 <span class="cell-text address">{{ item.transAddr }}</span>

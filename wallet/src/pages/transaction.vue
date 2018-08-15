@@ -20,7 +20,7 @@
                 <div class="row-t">{{ $t('accDetail.inAddress') }}</div>
                 <div class="row-content">
                     <span class="__btn_text __ellipsis __input" :class="{
-                        'active': inputItem === 'inAddr'
+                        'active': inputItem === 'inAddr' || !!inAddress
                     }">
                         <input @focus="inputFocus('inAddr')" v-model="inAddress" />
                     </span>
@@ -34,7 +34,7 @@
                 <div class="row-t">{{ $t('accDetail.sum') }}</div>
                 <div class="row-content">
                     <span class="__btn_text __ellipsis __input" :class="{ 
-                        'active': inputItem === 'amount'
+                        'active': inputItem === 'amount' || !!amount
                     }">
                         <input @focus="inputFocus('amount')" class="amount" v-model="amount" />VITE
                     </span>
@@ -48,7 +48,7 @@
                 <div class="row-t">{{ $t('accDetail.password') }}</div>
                 <div class="row-content">
                     <span class="__btn_text __ellipsis __input" :class="{ 
-                        'active': inputItem === 'pass' 
+                        'active': inputItem === 'pass' || !!password
                     }">
                         <input @focus="inputFocus('pass')" v-model="password" type="password" />
                     </span>
