@@ -6,7 +6,7 @@ const path = require('path');
 let binPath = '';
 if (!isWindows) {
     // [NOTICE] MAC: this file is read-only under the dmg, so move to /appData
-    binPath = path.join(global.APP_DATA_PATH, '/viteGoServer');
+    binPath = path.join(global.USER_DATA_PATH, '/viteGoServer');
     fs.writeFileSync(binPath, fs.readFileSync(path.join(global.APP_PATH, '/viteGoServer')));
     try {
         fs.chmodSync(binPath, 0o777);

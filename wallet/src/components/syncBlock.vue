@@ -3,7 +3,9 @@
         <span class="status-text" v-show="statusText !== 'sync'">
             {{ statusText ? $t(`nav.${statusText}`) : '' }}
         </span>
-        <span v-show="statusText !== 'sync' && statusText !== 'noNet'">{{ blockPercent }}</span>
+        <span v-show="statusText !== 'sync' && statusText !== 'noNet'">{{
+            `${currentHeight} / ${targetHeight}`
+        }}</span>
         <span v-show="statusText === 'sync'">
             {{ $t(`nav.blockHeight`) + ': ' + blockHeight }}
         </span>
@@ -61,17 +63,6 @@ export default {
         viteWallet.EventEmitter.off(netEvent);
         viteWallet.EventEmitter.off(blockEvent);
         this.stopBlockHeight();
-    },
-    computed: {
-        blockPercent() {
-            if (!this.status || !this.currentHeight || !this.targetHeight) {
-                return '---';
-            }
-            if (this.status === 2) {
-                return '100%';
-            }
-            return parseInt(this.currentHeight / this.targetHeight * 100) + '%';
-        }
     },
     watch: {
         status: function(val, oldVal) {
