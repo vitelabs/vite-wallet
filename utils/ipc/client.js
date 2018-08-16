@@ -4,7 +4,7 @@ const net = require('net');
 const eventParser = require('./EventParser.js');
 
 class Client extends Events{
-    constructor(config){
+    constructor (config) {
         super();
 
         this.Client = Client;
@@ -16,11 +16,10 @@ class Client extends Events{
 
         this.retriesRemaining = config.maxRetries || 0;
         this.explicitlyDisconnected = false;
-        this.ipcBuffer = '';
     }
 }
 
-function emit(data){
+function emit (data) {
     let message = eventParser.format(data);
     this.socket.write(message);
 }
@@ -33,6 +32,8 @@ function connect () {
     //init client object for scope persistance especially inside of socket events.
     let client = this;
     let clientPath = client.path;
+    let ipcBuffer = '';
+
 
     if (process.platform ==='win32' && !client.id.startsWith('\\\\.\\pipe\\')){
         clientPath = clientPath.replace(/^\//, '');
@@ -44,7 +45,7 @@ function connect () {
         path: clientPath
     });
 
-    client.socket.setEncoding('utf-8');
+    client.socket.setEncoding(this.config.encoding);
 
     client.socket.on('error', function (err) {
         client.publish('error', err);
@@ -77,14 +78,12 @@ function connect () {
 
     client.socket.on('data', function (data) {
         if (data.slice(-1) !== eventParser.delimiter || data.indexOf(eventParser.delimiter) === -1) {
-            this.ipcBuffer += data;
+            ipcBuffer += data;
             return;
         }
 
-        if (this.ipcBuffer) {
-            data = this.ipcBuffer + data;
-        }
-        this.ipcBuffer='';
+        data = ipcBuffer + data;
+        ipcBuffer = '';
 
         data = eventParser.parse(data);
         data.forEach((ele) => {

@@ -4,11 +4,11 @@ class IPC{
     constructor(){
         this.of = {};
         this.config = {
-            appspace: 'app.',
-            socketRoot: '/tmp/',
+            appspace: '',
             retry: 500,
             maxRetries: Infinity,
-            stopRetrying: false
+            stopRetrying: false,
+            encoding: 'utf-8'
         };
     }
 
@@ -27,18 +27,9 @@ class IPC{
         delete this.of[id];
     }
 
-    connectTo (id,path,callback) {
-        if(!id){
+    connectTo (id, callback) {
+        if (!id) {
             return;
-        }
-    
-        if (typeof path == 'function') {
-            callback = path;
-            path = false;
-        }
-    
-        if (!path) {
-            path = this.config.socketRoot + this.config.appspace + id;
         }
     
         if (this.of[id]) {
@@ -51,7 +42,7 @@ class IPC{
     
         this.of[id] = new Client(this.config);
         this.of[id].id = id;
-        this.of[id].path = path;
+        this.of[id].path = this.config.appspace + id;
     
         this.of[id].connect();
     
