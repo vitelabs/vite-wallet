@@ -1,12 +1,12 @@
-class Parser{
-    constructor () {
-        this.delimiter = '\n';
-    }
+const delimiter = '\n';
+
+module.exports = {
+    delimiter,
 
     format (message) {
         message = JSON.stringify(message);
         return message;
-    }
+    },
 
     parse (data) {
         data = data.split(this.delimiter);
@@ -24,6 +24,4 @@ class Parser{
         data = null;
         return result;
     }
-}
-
-module.exports = Parser;
+};

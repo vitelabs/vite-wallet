@@ -1,6 +1,6 @@
 {
     "appId": "com.electron.vite.wallet",
-    "productName": "vite-wallet",
+    "productName": "Vite Wallet",
     "buildDependenciesFromSource": true,
     "asar": false,
     "mac": {

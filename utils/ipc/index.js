@@ -1,23 +1,15 @@
-const Defaults = require('./entities/Defaults.js'),
-    Client = require('./dao/client.js');
+const Client = require('./client.js');
 
 class IPC{
     constructor(){
-        Object.defineProperties(
-            this,
-            {
-                config      : {
-                    enumerable: true,
-                    writable: true,
-                    value: new Defaults
-                },
-                of          : {
-                    enumerable: true,
-                    writable: true,
-                    value: {}
-                }
-            }
-        );
+        this.of = {};
+        this.config = {
+            appspace: 'app.',
+            socketRoot: '/tmp/',
+            retry: 500,
+            maxRetries: Infinity,
+            stopRetrying: false
+        };
     }
 
     disconnect (id) {

@@ -104,7 +104,7 @@ function netToIPC(methodName, arg) {
 
     let payload = jsonrpcPayload(methodName, arg);
     // console.log('fetch', payload);
-    ipcBase.of[VITE_WALLET_IPC].emit(methodName, payload);
+    ipcBase.of[VITE_WALLET_IPC].emit(payload);
 
     return new Promise((res, rej) => {
         // listening api
