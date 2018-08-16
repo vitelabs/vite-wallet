@@ -20,7 +20,7 @@ let webpackConfig = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Vite-Wallet',
+            title: 'Vite Wallet',
             template: path.join(__dirname, 'index.html')
         }),
         new VueLoaderPlugin()
