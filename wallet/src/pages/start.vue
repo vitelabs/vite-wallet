@@ -3,12 +3,12 @@
         <router-link class="__btn __btn_all_in" :to="{
             name: 'createAccount',
             params: { from: 'start' }
-        }">start</router-link>
+        }">{{ $t('start') }}</router-link>
         <div class="line"></div>
         <router-link class="__btn __btn_border" :to="{
             name: 'importAccount',
             params: { from: 'start' }
-        }">import account</router-link>
+        }">{{ $t('btn.imported') }}</router-link>
     </div>
 </template>
 

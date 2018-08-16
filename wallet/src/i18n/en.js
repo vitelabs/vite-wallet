@@ -1,7 +1,8 @@
 module.exports = {
-    hello: 'hello world',
-
     lang: 'English',
+
+    start: 'Start',
+
     nav: {
         home: 'Home',
         head: {
@@ -99,9 +100,10 @@ module.exports = {
             err: 'Oops, error occurs'
         },
         timestamp: 'Timestamp',
-        tAddress: 'Transaction side address',
+        tAddress: 'Transaction Side Address',
         sum: 'Amount',
         tDetail: 'Transaction Detail',
+        noData: 'No Data'
     },
 
     //common
@@ -110,7 +112,7 @@ module.exports = {
         cancel: 'Cancel',
         login: 'Login',
         imported: 'Import Account',
-        back: 'Go Back'
+        back: 'Back'
     },
     paging: {
         pre: 'Prev',

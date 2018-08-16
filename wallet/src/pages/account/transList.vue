@@ -27,7 +27,9 @@
             </div>
         </div>
 
-        <div class="table-content no-data" v-show="!transList || !transList.length">No Data</div>
+        <div class="table-content no-data" v-show="!transList || !transList.length">
+            {{ $t('transList.noData') }}
+        </div>
 
         <pagination class="pagination" :currentPage="currentPage + 1" 
                     :totalPage="totalPage" :toPage="toPage"></pagination>

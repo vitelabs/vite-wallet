@@ -72,7 +72,10 @@ export default {
     letter-spacing: 0;
     line-height: 16px;
     li {
+        box-sizing: border-box;
         width: 100%;
+        padding: 0 16px;
+        text-align: left;
         height: 36px;
         line-height: 36px;
         &:hover {

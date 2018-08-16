@@ -1,6 +1,8 @@
 module.exports = {
-    hello: '你好 世界',
     lang: '中文',
+
+    start: '开始',
+
     nav: {
         home: '首页',
         head: {
@@ -101,6 +103,7 @@ module.exports = {
         tAddress: '交易方地址',
         sum: '金额',
         tDetail: '交易详情',
+        noData: '暂无数据'
     },
 
     //common
