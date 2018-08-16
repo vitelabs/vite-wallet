@@ -7,7 +7,6 @@ ipcBase.config.appspace = '';
 ipcBase.config.socketRoot = FILE_PATH;
 ipcBase.config.retry = 100;
 ipcBase.config.maxRetries = 5;
-ipcBase.config.silent = true;
 
 let rpcRequestId = 0;
 

@@ -1,22 +1,15 @@
-'use strict';
-
-const Defaults = require('./Defaults.js');
-
 class Parser{
-    constructor(config){
-        if(!config){
-            config = new Defaults;
-        }
-        this.delimiter=config.delimiter;
+    constructor () {
+        this.delimiter = '\n';
     }
 
-    format(message){
+    format (message) {
         message = JSON.stringify(message);
         return message;
     }
 
-    parse(data){
-        data = data.split('\n');
+    parse (data) {
+        data = data.split(this.delimiter);
         let result = [];
         data.forEach(ele => {
             if (!ele) {

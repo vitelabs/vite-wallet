@@ -1,25 +1,22 @@
 'use strict';
 
 const net = require('net'),
-    EventParser = require('../entities/EventParser.js'),
-    Queue = require('~app/modules/js-queue');
+    EventParser = require('../entities/EventParser.js');
 
 let Events = require('~app/modules/event-pubsub');
 let eventParser = new EventParser();
 
 class Client extends Events{
-    constructor(config,log){
+    constructor(config){
         super();
         Object.assign(
             this,
             {
                 Client  : Client,
                 config  : config,
-                queue   : new Queue,
                 socket  : false,
                 connect : connect,
                 emit    : emit,
-                log     : log,
                 retriesRemaining: config.maxRetries||0,
                 explicitlyDisconnected: false,
                 ipcBuffer: ''
@@ -29,24 +26,11 @@ class Client extends Events{
 }
 
 function emit(type,data){
-    this.log('dispatching event to ', this.id, this.path, ' : ', type, ',', data);
     let message = {
         type, 
         data: eventParser.format(data)
     };
 
-    if(!this.config.sync){
-        this.socket.write(message.data);
-        return;
-    }
-
-    this.queue.add(
-        syncEmit.bind(this, message)
-    );
-}
-
-function syncEmit(message){
-    this.log('dispatching event to ', this.id, this.path, ' : ', message.type, ',', message);
     this.socket.write(message.data);
 }
 
@@ -54,13 +38,9 @@ function connect(){
     //init client object for scope persistance especially inside of socket events.
     let client=this;
 
-    client.log('requested connection to ', client.id, client.path);
     if(!this.path){
-        client.log('\n\n######\nerror: ', client.id ,' client has not specified socket path it wishes to connect to.');
         return;
     }
-
-    client.log('Connecting client on Unix Socket :', client.path);
 
     const options = {
         path: client.path,
@@ -80,7 +60,6 @@ function connect(){
     client.socket.on(
         'error',
         function(err){
-            client.log('\n\n######\nerror: ', err);
             client.publish('error', err);
         }
     );
@@ -90,28 +69,18 @@ function connect(){
         function connectionMade(){
             client.publish('connect');
             client.retriesRemaining = client.config.maxRetries;
-            client.log('retrying reset');
         }
     );
 
     client.socket.on(
         'close',
         function connectionClosed(){
-            client.log('connection closed' ,client.id , client.path,
-                client.retriesRemaining, 'tries remaining of', client.config.maxRetries
-            );
-
             if(
                 client.config.stopRetrying ||
                 client.retriesRemaining<1 ||
                 client.explicitlyDisconnected
             ){
                 client.publish('disconnect');
-                client.log(
-                    (client.config.id),
-                    'exceeded connection rety amount of',
-                    ' or stopRetrying flag set.'
-                );
 
                 client.socket.destroy();
                 client.publish('destroy');
@@ -135,9 +104,7 @@ function connect(){
     client.socket.on(
         'data',
         function(data) {
-            client.log('## received events ##');
-
-            if (data.slice(-1)!='\n' || data.indexOf('\n') == -1) {
+            if (data.slice(-1) !== eventParser.delimiter || data.indexOf(eventParser.delimiter) === -1) {
                 this.ipcBuffer += data;
                 return;
             }
@@ -149,15 +116,8 @@ function connect(){
 
             data = eventParser.parse(data);
             data.forEach((ele) => {
-                client.log('detected event', ele.id, ele);
                 client.publish(ele.id, ele);
             });
-
-            if(!client.config.sync){
-                return;
-            }
-
-            client.queue.next();
         }
     );
 }
