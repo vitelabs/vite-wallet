@@ -54,13 +54,13 @@ module.exports = {
         title: 'Account Detail',
         transfer: 'Transfer',
         getTestToken: 'Get Test Tokens',
-        transDetail: 'More transaction details',
+        transDetail: 'More Transaction Details',
         name: 'Account Name',
         address: 'My Address',
         balance: 'Balance',
         fundFloat: 'Fund in Float',
         pend: 'Pending',
-        copy: 'Copy Account Address',
+        copy: 'Copy Address',
         outAddress: 'My Address',
         inAddress: 'Receive Address',
         sum: 'Amount',
@@ -110,6 +110,7 @@ module.exports = {
         cancel: 'Cancel',
         login: 'Login',
         imported: 'Import Account',
+        back: 'Go Back'
     },
     paging: {
         pre: 'Prev',

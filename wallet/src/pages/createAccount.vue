@@ -14,7 +14,7 @@
         </div>
 
         <span class="__btn __btn_all_in __pointer" @click="createAccount">{{ $t('btn.create') }}</span>
-        <router-link class="__btn_link" :to="{ name: 'login' }">{{ $t('btn.login') }}</router-link>
+        <span class="__btn_link" @click="goWhere" >{{ $t(`btn.${btn}`) }}</span>
     </div>
 </template>
 
@@ -24,10 +24,21 @@ export default {
         return {
             name: '',
             pass1: '',
-            pass2: ''
+            pass2: '',
+            btn: this.$route.params.from === 'start' ? 'back' : 'login'
         };
     },
     methods: {
+        goWhere() {
+            if (this.btn === 'back') {
+                this.$router.go(-1);
+                return;
+            }
+            this.$router.push({
+                name: 'login'
+            });
+        },
+
         createAccount() {
             // [NOTICE] order fix
             // name not empty

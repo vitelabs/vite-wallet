@@ -5,11 +5,11 @@ const path = require('path');
 
 let serverName = isWindows ? '/viteGoServer.exe' : '/viteGoServer';
 let oldPath = path.join(global.APP_PATH, serverName);
-let binPath = path.join(global.APP_DATA_PATH, serverName);
+let binPath = path.join(global.USER_DATA_PATH, serverName);
 
 try {
     // [NOTICE] MAC: this file is read-only under the dmg, so move to /appData
-    fs.existsSync(oldPath) && fs.renameSync(oldPath, binPath);
+    fs.existsSync(oldPath) && fs.writeFileSync(binPath, fs.readFileSync(oldPath));
     !isWindows && fs.chmodSync(binPath, 0o777);
 } catch(err) {
     console.log(err);
@@ -19,8 +19,16 @@ let subProcess = null;
 
 module.exports = {
     startIPCServer: function(cb) {
+        if ( !fs.existsSync(binPath) ) {
+            global.walletLog.error(`start ipc server, don\'t have ${binPath}`, false);
+            return;
+        }
+
         // [NOTICE] avoid multiple services open
-        stopIPCServer();
+        if (subProcess) {
+            cb && cb();
+            return;
+        }
 
         global.walletLog.info('start open ipc server', false);
 

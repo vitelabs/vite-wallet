@@ -109,6 +109,7 @@ module.exports = {
         cancel: '取消',
         login: '登录',
         imported: '导入账号',
+        back: '返回'
     },
     paging: {
         pre: '上一页',

@@ -35,7 +35,9 @@
             </div>
         </div>
 
-        <trans-list :totalNum="blockHeight" ></trans-list>
+        <div class="trans-list-wrapper">
+            <trans-list :totalNum="blockHeight" ></trans-list>
+        </div>
     </div>
 </template>
 
@@ -144,11 +146,13 @@ export default {
 .account-wrapper{
     position: relative;
     box-sizing: border-box;
-    padding: 0 30px 30px 30px;
     height: 100%;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
     .account-detail{
         display: flex;
+        margin: 0 30px;
         padding: 24.5px 22.5px 20.2px;
         background: #FFF;
         box-shadow: 0 2px 15px 1px rgba(176,192,237,0.42);
@@ -239,6 +243,12 @@ export default {
                 color: #283D4A;
             }
         }
+    }
+    .trans-list-wrapper {
+        flex: 1;
+        overflow: auto;
+        border-radius: 8px;
+        padding: 30px;
     }
 }
 </style>

@@ -18,12 +18,12 @@ export default [
     },
     {
         name: 'importAccount',
-        path: '/importAccount',
+        path: '/importAccount:from',
         component: importAccount
     },
     {
         name: 'createAccount',
-        path: '/createAccount',
+        path: '/createAccount:from',
         component: createAccount
     },
     {

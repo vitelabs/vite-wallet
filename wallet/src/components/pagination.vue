@@ -85,37 +85,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pagination-wrapper {
-    width: 100%;
+.box {
     text-align: center;
-    .box {
-        box-sizing: border-box;
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-        border: 1px solid #C6CBD4;
-        border-radius: 2px;
-        line-height: 24px;
-        font-size: 14px;
-        color: #333;
-        margin-left: 6px;
-        &:first-child {
-            margin-left: 0;
-        }
-        &.unuse {
-            color: #999;
-        }
-        &.active {
-            background: #195BDD;
-            color: #fff;
-            border: none;
-            top: -1px;
-            position: relative;
-        }
-        &.ellipsis {
-            border: none;
-            cursor: default;
-        }
+    box-sizing: border-box;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 1px solid #C6CBD4;
+    border-radius: 2px;
+    line-height: 24px;
+    font-size: 14px;
+    color: #333;
+    margin-left: 6px;
+    &:first-child {
+        margin-left: 0;
+    }
+    &.unuse {
+        color: #999;
+    }
+    &.active {
+        background: #195BDD;
+        color: #fff;
+        border: none;
+        top: -1px;
+        position: relative;
+    }
+    &.ellipsis {
+        border: none;
+        cursor: default;
     }
 }
 .prev, .next {
