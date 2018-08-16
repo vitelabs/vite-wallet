@@ -4,11 +4,15 @@ const net = require('net');
 const eventParser = require('./EventParser.js');
 
 class Client extends Events{
-    constructor (config) {
+    constructor ({
+        config, id, path
+    }) {
         super();
 
         this.Client = Client;
         this.config = config;
+        this.id = id;
+        this.path = path;
 
         this.socket = false;
         this.connect = connect;
@@ -33,7 +37,6 @@ function connect () {
     let client = this;
     let clientPath = client.path;
     let ipcBuffer = '';
-
 
     if (process.platform ==='win32' && !client.id.startsWith('\\\\.\\pipe\\')){
         clientPath = clientPath.replace(/^\//, '');

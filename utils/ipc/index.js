@@ -40,10 +40,11 @@ class IPC{
             this.of[id].socket.destroy();
         }
     
-        this.of[id] = new Client(this.config);
-        this.of[id].id = id;
-        this.of[id].path = this.config.appspace + id;
-    
+        this.of[id] = new Client({
+            id, 
+            config: this.config,
+            path: this.config.appspace + id
+        });
         this.of[id].connect();
     
         callback && callback();
