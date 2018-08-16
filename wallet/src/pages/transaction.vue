@@ -22,7 +22,8 @@
                     <span class="__btn_text __ellipsis __input" :class="{
                         'active': inputItem === 'inAddr' || !!inAddress
                     }">
-                        <input @focus="inputFocus('inAddr')" v-model="inAddress"
+                        <input ref="inAddr" v-model="inAddress"
+                               @focus="inputFocus('inAddr')"
                                @blur="inputBlur('inAddr')"/>
                     </span>
                     <span v-show="!isValidAddress" class="err">
@@ -70,6 +71,7 @@
 
 <script>
 import bigNumber from 'utils/bigNumber.js';
+import Vue from 'vue';
 
 const TOKEN_ID = 'tti_000000000000000000004cfd';    // vite id
 
@@ -78,6 +80,17 @@ let amountTimeout = null;
 
 export default {
     mounted() {
+        Vue.nextTick(()=>{
+            this.$refs.inAddr && this.$refs.inAddr.focus();
+        });
+        window.document.onkeydown = (e) => {
+            e = e || window.event;
+            let code = e.keyCode || e.which;
+            if (!code || code !== 13) {
+                return;
+            }
+            this.transfer();
+        };
         this.fetchAccount();
     },
     data() {
@@ -169,6 +182,10 @@ export default {
             });
         },
         transfer() {
+            if (this.loading) {
+                return;
+            }
+
             if (!this.inAddress) {
                 this.isValidAddress = false;
             }
@@ -178,8 +195,7 @@ export default {
             if (!this.password) {
                 this.passwordErr = this.$t('transList.valid.pswd');
             }
-
-            if (this.loading || this.amountErr || !this.isValidAddress || this.passwordErr) {
+            if (this.amountErr || !this.isValidAddress || this.passwordErr) {
                 return;
             }
 
