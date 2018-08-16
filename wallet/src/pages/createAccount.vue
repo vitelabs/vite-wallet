@@ -1,20 +1,29 @@
 <template>
     <div class="__index_wrapper create-account-wrapper">
         <div class="__btn __btn_input" 
-             :class="{ 'active': !!name }">
-            <input :placeholder="'account name'" v-model="name" type='text' />
+             :class="{ 'active': !!name || inputItem === 'name' }">
+            <input v-model="name" type='text'
+                   :placeholder="'account name'"
+                   @focus="inputFocus('name')"
+                   @blur="inputBlur('name')" />
         </div>
         <div class="__btn __btn_input" 
-             :class="{ 'active': !!pass1 }">
-            <input :placeholder="$t('create.input')" v-model="pass1" :type="'password'" />
+             :class="{ 'active': !!pass1 || inputItem === 'pass1' }">
+            <input v-model="pass1" type='password'
+                   :placeholder="$t('create.input')"
+                   @focus="inputFocus('pass1')"
+                   @blur="inputBlur('pass1')" />
         </div>
         <div class="__btn __btn_input" 
-             :class="{ 'active': !!pass2 }">
-            <input :placeholder="$t('create.again')" v-model="pass2" :type="'password'" />
+             :class="{ 'active': !!pass2 || inputItem === 'pass2' }">
+            <input v-model="pass2" type='password'
+                   :placeholder="$t('create.again')"
+                   @focus="inputFocus('pass2')"
+                   @blur="inputBlur('pass2')" />
         </div>
 
         <span class="__btn __btn_all_in __pointer" @click="createAccount">{{ $t('btn.create') }}</span>
-        <span class="__btn_link" @click="goWhere" >{{ $t(`btn.${btn}`) }}</span>
+        <span class="__btn_link __pointer" @click="goWhere" >{{ $t(`btn.${btn}`) }}</span>
     </div>
 </template>
 
@@ -25,10 +34,17 @@ export default {
             name: '',
             pass1: '',
             pass2: '',
-            btn: this.$route.params.from === 'start' ? 'back' : 'login'
+            btn: this.$route.params.from === 'start' ? 'back' : 'login',
+            inputItem: ''
         };
     },
     methods: {
+        inputFocus(text) {
+            this.inputItem = text;
+        },
+        inputBlur(text) {
+            text === this.inputItem && (this.inputItem = '');
+        },
         goWhere() {
             if (this.btn === 'back') {
                 this.$router.go(-1);

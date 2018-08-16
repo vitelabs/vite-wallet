@@ -22,7 +22,8 @@
                     <span class="__btn_text __ellipsis __input" :class="{
                         'active': inputItem === 'inAddr' || !!inAddress
                     }">
-                        <input @focus="inputFocus('inAddr')" v-model="inAddress" />
+                        <input @focus="inputFocus('inAddr')" v-model="inAddress"
+                               @blur="inputBlur('inAddr')"/>
                     </span>
                     <span v-show="!isValidAddress" class="err">
                         <img class="icon" src="../assets/imgs/error_icon.svg"/> {{ $t('transList.valid.addr')}}
@@ -36,7 +37,8 @@
                     <span class="__btn_text __ellipsis __input" :class="{ 
                         'active': inputItem === 'amount' || !!amount
                     }">
-                        <input @focus="inputFocus('amount')" class="amount" v-model="amount" />VITE
+                        <input @focus="inputFocus('amount')" v-model="amount"
+                               @blur="inputBlur('amount')" class="amount"  />VITE
                     </span>
                     <span v-show="amountErr" class="err">
                         <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ amountErr }}
@@ -50,7 +52,8 @@
                     <span class="__btn_text __ellipsis __input" :class="{ 
                         'active': inputItem === 'pass' || !!password
                     }">
-                        <input @focus="inputFocus('pass')" v-model="password" type="password" />
+                        <input @focus="inputFocus('pass')" v-model="password"
+                               @blur="inputBlur('pass')"  type="password" />
                     </span>
                     <span v-show="passwordErr" class="err">
                         <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ passwordErr }}
@@ -137,6 +140,9 @@ export default {
     methods: {
         inputFocus(text) {
             this.inputItem = text;
+        },
+        inputBlur(text) {
+            text === this.inputItem && (this.inputItem = '');
         },
         testAmount() {
             return /(^(\d+)$)|(^(\d+[.]\d{1,8})$)/g.test(this.amount);

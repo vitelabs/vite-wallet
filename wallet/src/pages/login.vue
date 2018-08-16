@@ -22,8 +22,10 @@
         </div>
 
         <div class="__btn __btn_input" 
-             :class="{ 'active': !!password }">
-            <input :placeholder="$t('create.input')" autofocus v-model="password" :type="'password'" />
+             :class="{ 'active': !!password || inputItem === 'pass' }">
+            <input autofocus :placeholder="$t('create.input')" 
+                   v-model="password" :type="'password'"
+                   @focus="inputFocus('pass')" @blur="inputBlur('pass')" />
         </div>
 
         <div class="__btn __pointer __btn_all_in" @click="login">{{ $t('btn.login') }}</div>
@@ -73,10 +75,17 @@ export default {
             password: '',
 
             accountList: [],
-            isShowAccountList: false
+            isShowAccountList: false,
+            inputItem: ''
         };
     },
     methods: {
+        inputFocus(text) {
+            this.inputItem = text;
+        },
+        inputBlur(text) {
+            text === this.inputItem && (this.inputItem = '');
+        },
         chooseAccount(account) {
             this.activeAccount = account;
             this.isShowAccountList = false;

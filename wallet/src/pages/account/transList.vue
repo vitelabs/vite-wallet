@@ -145,7 +145,6 @@ export default {
                     } else if (confirms && confirms > 50) {
                         status = 'confirmed';
                     }
-                    status = item.Status === 2 ? 'confirmed' : status;
 
                     let timestamp = item.Timestamp * 1000;
 

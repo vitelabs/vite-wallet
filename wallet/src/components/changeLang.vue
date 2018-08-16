@@ -60,7 +60,7 @@ export default {
 .lang-list {
     position: absolute;
     right: 20px;
-    width: 120px;
+    min-width: 80px;
     margin-top: 4px;
     background: #FFFFFF;
     border: 1px solid #E5EDF3;
@@ -75,7 +75,7 @@ export default {
         box-sizing: border-box;
         width: 100%;
         padding: 0 16px;
-        text-align: left;
+        text-align: center;
         height: 36px;
         line-height: 36px;
         &:hover {
