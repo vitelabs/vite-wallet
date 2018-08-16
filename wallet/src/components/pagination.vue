@@ -1,19 +1,21 @@
 <template>
-    <div v-show="pageList.length" class="pagination-wrapper __pointer">
-        <span class="box prev" :class="{
-            'unuse': currentPage <= 1
-        }" @click="_toPage(currentPage - 1)"> </span>
+    <div v-show="pageList.length">
+        <div class="pagination-wrapper __pointer">
+            <span class="box prev" :class="{
+                'unuse': currentPage <= 1
+            }" @click="_toPage(currentPage - 1)"> </span>
 
-        <span v-for="(pageNumber, i) in pageList" :key="i"
-              @click="_toPage(pageNumber)"
-              class="box" :class="{
-                  'active': pageNumber === currentPage,
-                  'ellipsis': pageNumber === '...'
-        }">{{ pageNumber }}</span>
+            <span v-for="(pageNumber, i) in pageList" :key="i"
+                  @click="_toPage(pageNumber)"
+                  class="box" :class="{
+                      'active': pageNumber === currentPage,
+                      'ellipsis': pageNumber === '...'
+            }">{{ pageNumber }}</span>
 
-        <span class="box next" :class="{
-            'unuse': currentPage >= totalPage
-        }"  @click="_toPage(currentPage + 1)"> </span>
+            <span class="box next" :class="{
+                'unuse': currentPage >= totalPage
+            }"  @click="_toPage(currentPage + 1)"> </span>
+        </div>
     </div>
 </template>
 
@@ -85,6 +87,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.pagination-wrapper {
+    display: inline-block;
+}
 .box {
     text-align: center;
     box-sizing: border-box;

@@ -4,7 +4,7 @@
             errMsg === 'dragDrop.err2' || errMsg === 'dragDrop.err1' ? $t(errMsg) : errMsg
         }}</div>
         <div ref="fileArea" class="file-drag">{{ $t('dragDrop.text') }}</div>
-        <span class="__btn_link" @click="goWhere" >{{ $t(`btn.${btn}`) }}</span>
+        <span class="__btn_link __pointer" @click="goWhere" >{{ $t(`btn.${btn}`) }}</span>
     </div>
 </template>
 

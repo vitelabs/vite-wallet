@@ -22,8 +22,10 @@
         </div>
 
         <div class="__btn __btn_input" 
-             :class="{ 'active': !!password }">
-            <input :placeholder="$t('create.input')" autofocus v-model="password" :type="'password'" />
+             :class="{ 'active': !!password || inputItem === 'pass' }">
+            <input ref="passInput" autofocus :placeholder="$t('create.input')" 
+                   v-model="password" :type="'password'"
+                   @focus="inputFocus('pass')" @blur="inputBlur('pass')" />
         </div>
 
         <div class="__btn __pointer __btn_all_in" @click="login">{{ $t('btn.login') }}</div>
@@ -37,6 +39,7 @@
 
 <script>
 import accountList from 'components/accountList.vue';
+import Vue from 'vue';
 
 export default {
     components: {
@@ -73,10 +76,23 @@ export default {
             password: '',
 
             accountList: [],
-            isShowAccountList: false
+            isShowAccountList: false,
+            inputItem: ''
         };
     },
     methods: {
+        inputFocus(text) {
+            this.inputItem = text;
+        },
+        inputBlur(text) {
+            text === this.inputItem && (this.inputItem = '');
+        },
+        focusPass() {
+            Vue.nextTick(()=>{
+                this.$refs.passInput && this.$refs.passInput.focus();
+            });
+        },
+
         chooseAccount(account) {
             this.activeAccount = account;
             this.isShowAccountList = false;
@@ -89,6 +105,7 @@ export default {
         login() {
             if (!this.password) {
                 window.alert(this.$t('create.input'));
+                this.focusPass();
                 return;
             }
 
@@ -103,6 +120,7 @@ export default {
                 console.warn(message);
                 if (code === 4001) {
                     window.alert(this.$t('hint.pwErr'));
+                    this.focusPass();
                 } else {
                     window.alert(message);
                 }

@@ -8,7 +8,7 @@
             <div class="cell-text">{{ $t('transList.sum') }}</div>
         </div>
 
-        <div class="table-content" v-show="transList && transList.length">
+        <div ref="tableContent" class="table-content" v-show="transList && transList.length">
             <div v-for="(item, index) in transList" :key="index"
                  class="t-row __pointer" @click="goDetail(item)">
                 <span class="cell-text tType">
@@ -27,7 +27,9 @@
             </div>
         </div>
 
-        <div class="table-content no-data" v-show="!transList || !transList.length">No Data</div>
+        <div class="table-content no-data" v-show="!transList || !transList.length">
+            {{ $t('transList.noData') }}
+        </div>
 
         <pagination class="pagination" :currentPage="currentPage + 1" 
                     :totalPage="totalPage" :toPage="toPage"></pagination>
@@ -98,14 +100,14 @@ export default {
         },
 
         toPage(pageNumber) {
-            this.fetchTransList(pageNumber - 1);
+            this.fetchTransList(pageNumber - 1, true);
         },
 
         clearReTimeout() {
             window.clearTimeout(reTimeout);
             reTimeout = null;
         },
-        fetchTransList(pageIndex) {
+        fetchTransList(pageIndex, newPage = false) {
             if ((pageIndex >= this.totalPage && pageIndex) || pageIndex < 0) {
                 return;
             }
@@ -143,7 +145,6 @@ export default {
                     } else if (confirms && confirms > 50) {
                         status = 'confirmed';
                     }
-                    status = item.Status === 2 ? 'confirmed' : status;
 
                     let timestamp = item.Timestamp * 1000;
 
@@ -167,6 +168,7 @@ export default {
                 });
                 this.transList = nowList;
 
+                newPage && this.$refs.tableContent && (this.$refs.tableContent.scrollTop = 0);
                 reFetch();
             }).catch((err) => {
                 console.warn(err);

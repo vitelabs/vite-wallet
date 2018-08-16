@@ -22,7 +22,9 @@
                     <span class="__btn_text __ellipsis __input" :class="{
                         'active': inputItem === 'inAddr' || !!inAddress
                     }">
-                        <input @focus="inputFocus('inAddr')" v-model="inAddress" />
+                        <input ref="inAddr" v-model="inAddress"
+                               @focus="inputFocus('inAddr')"
+                               @blur="inputBlur('inAddr')"/>
                     </span>
                     <span v-show="!isValidAddress" class="err">
                         <img class="icon" src="../assets/imgs/error_icon.svg"/> {{ $t('transList.valid.addr')}}
@@ -36,7 +38,8 @@
                     <span class="__btn_text __ellipsis __input" :class="{ 
                         'active': inputItem === 'amount' || !!amount
                     }">
-                        <input @focus="inputFocus('amount')" class="amount" v-model="amount" />VITE
+                        <input @focus="inputFocus('amount')" v-model="amount"
+                               @blur="inputBlur('amount')" class="amount"  />VITE
                     </span>
                     <span v-show="amountErr" class="err">
                         <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ amountErr }}
@@ -50,7 +53,8 @@
                     <span class="__btn_text __ellipsis __input" :class="{ 
                         'active': inputItem === 'pass' || !!password
                     }">
-                        <input @focus="inputFocus('pass')" v-model="password" type="password" />
+                        <input @focus="inputFocus('pass')" v-model="password"
+                               @blur="inputBlur('pass')"  type="password" />
                     </span>
                     <span v-show="passwordErr" class="err">
                         <img class="icon" src="../assets/imgs/error_icon.svg"/>{{ passwordErr }}
@@ -67,6 +71,7 @@
 
 <script>
 import bigNumber from 'utils/bigNumber.js';
+import Vue from 'vue';
 
 const TOKEN_ID = 'tti_000000000000000000004cfd';    // vite id
 
@@ -75,6 +80,17 @@ let amountTimeout = null;
 
 export default {
     mounted() {
+        Vue.nextTick(()=>{
+            this.$refs.inAddr && this.$refs.inAddr.focus();
+        });
+        window.document.onkeydown = (e) => {
+            e = e || window.event;
+            let code = e.keyCode || e.which;
+            if (!code || code !== 13) {
+                return;
+            }
+            this.transfer();
+        };
         this.fetchAccount();
     },
     data() {
@@ -138,6 +154,9 @@ export default {
         inputFocus(text) {
             this.inputItem = text;
         },
+        inputBlur(text) {
+            text === this.inputItem && (this.inputItem = '');
+        },
         testAmount() {
             return /(^(\d+)$)|(^(\d+[.]\d{1,8})$)/g.test(this.amount);
         },
@@ -163,6 +182,10 @@ export default {
             });
         },
         transfer() {
+            if (this.loading) {
+                return;
+            }
+
             if (!this.inAddress) {
                 this.isValidAddress = false;
             }
@@ -172,8 +195,7 @@ export default {
             if (!this.password) {
                 this.passwordErr = this.$t('transList.valid.pswd');
             }
-
-            if (this.loading || this.amountErr || !this.isValidAddress || this.passwordErr) {
+            if (this.amountErr || !this.isValidAddress || this.passwordErr) {
                 return;
             }
 

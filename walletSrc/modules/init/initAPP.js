@@ -18,7 +18,7 @@ function createWindow () {
         width: 1200,
         minWidth: 1210,
         height: 768,
-        title: 'VITE WALLET',
+        title: 'Vite Wallet',
         images: true
     });
 

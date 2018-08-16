@@ -10,9 +10,9 @@ module.exports = function() {
 
     let template = [
         {
-            label: 'ViteWallet',
+            label: 'Vite Wallet',
             submenu: [
-                { label: 'About ViteWallet', selector: 'orderFrontStandardAboutPanel:' },
+                { label: 'About Vite Wallet', selector: 'orderFrontStandardAboutPanel:' },
                 { type: 'separator' },
                 { 
                     label: 'Quit', 
