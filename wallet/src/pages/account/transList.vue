@@ -236,16 +236,20 @@ export default {
         padding-right: 22.5px;
     }
     &.tType {
-        width: 140px;
+        min-width: 140px;
+        width: 10%;
     }
     &.status {
-        width: 120px;
+        min-width: 120px;
+        width: 10%;
     }
     &.time {
-        width: 200px;
+        min-width: 200px;
+        width: 20%;
     }
     &.address {
-        width: 360px;
+        min-width: 360px;
+        width: 30%;
     }
     &.pink {
         font-family: $font-bold;

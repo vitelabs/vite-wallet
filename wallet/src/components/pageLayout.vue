@@ -64,10 +64,10 @@ export default {
     height: 60px;
     background-image: linear-gradient(126deg, #1B3BD8 0%, #176CE0 31%, #0B92E7 49%, #0BB6EB 71%, #00E0F2 100%);
     text-align: center;
-    padding: 0 20px;
     .logo {
         float: left;
         margin-top: 12px;
+        margin-left: 30px;
         img {
             width: 79.5px;
         }
@@ -88,7 +88,8 @@ export default {
     }
     .change-lang {
         float: right;
-        top: 20px;
+        line-height: 60px;
+        z-index: 100;
     }
 }
 .page-wrapper {
