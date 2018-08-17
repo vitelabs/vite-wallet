@@ -68,6 +68,7 @@ module.exports = {
         sum: 'Amount',
         password: 'Password',
         hint: {
+            // The system has transferred you a test token.
             token: 'The system issues 100 test tokens to you, please check your account!',
             tErr: 'Get test token failed!',
             low: 'Insufficient account balance',

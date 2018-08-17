@@ -1,4 +1,4 @@
-const loopBlockTime = 2000;
+const loopBlockTime = 1000;
 
 class Block {
     constructor() {

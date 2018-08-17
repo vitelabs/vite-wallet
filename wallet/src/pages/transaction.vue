@@ -249,8 +249,7 @@ export default {
         height: 100%;
         overflow: auto;
         background: #FFFFFF;
-        border: 1px solid #F6F5F5;
-        box-shadow: 0 2px 48px 1px rgba(176,192,237,0.42);
+        box-shadow: 0 2px 48px 1px rgba(176,192,237,0.17);
         border-radius: 8px;
         .row {
             padding-top: 20px;

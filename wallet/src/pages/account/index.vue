@@ -155,7 +155,7 @@ export default {
         margin: 0 30px;
         padding: 24.5px 22.5px 20.2px;
         background: #FFF;
-        box-shadow: 0 2px 15px 1px rgba(176,192,237,0.42);
+        box-shadow: 0 2px 15px 1px rgba(176,192,237,0.17);
         border-radius: 8px;
         .row {
             flex: 1;

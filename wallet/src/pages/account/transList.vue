@@ -190,7 +190,7 @@ export default {
     max-height: 100%;
     overflow: auto;
     background: #FFF;
-    box-shadow: 0 2px 15px 1px rgba(176, 192, 237, 0.42);
+    box-shadow: 0 2px 15px 1px rgba(176, 192, 237, 0.17);
     border-radius: 8px;
     .table__head {
         height: 48px;

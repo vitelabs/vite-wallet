@@ -4,7 +4,7 @@
             <div class="hover-title">{{ $t('test.t') }}</div>
             <div class="hover-content">{{ $t('test.txt1') }}</div>
             <div class="hover-content">{{ $t('test.txt2') }}</div>
-            <div class="hover-content">{{ $t('test.v') }}</div>
+            <div class="hover-content bold">{{ $t('test.v') }}</div>
         </div>
     </div>
 </template>
@@ -26,7 +26,7 @@
         text-align: left;
         background: #FFFFFF;
         border: 1px solid #E5EDF3;
-        box-shadow: 0 6px 36px 0 rgba(176,192,237,0.04);
+        box-shadow: 0 2px 15px 1px rgba(176,192,237,0.17);
         border-radius: 8px;
         .hover-title {
             font-family: $font-bold;
@@ -40,8 +40,15 @@
         .hover-content {
             opacity: 0.66;
             font-size: 14px;
-            color: #283D4A;
+            color: #172c39;
             line-height: 22px;
+            margin-bottom: 10px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            &.bold {
+                font-weight: bolder;
+            }
         }
     }
 </style>

@@ -68,7 +68,7 @@ module.exports = {
         sum: '金额',
         password: '密码',
         hint: {
-            token: '系统向您的账户转入100测试代币，请注意接收',
+            token: '系统已向您转入一笔测试代币，请注意接收',
             tErr: '获取测试代币失败！',
             low: '账户余额不足',
             wrong: '密码错误',
