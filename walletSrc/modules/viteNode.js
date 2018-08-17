@@ -20,30 +20,30 @@ let subProcess = null;
 module.exports = {
     startIPCServer: function(cb) {
         if ( !fs.existsSync(binPath) ) {
-            global.walletLog.error(`start ipc server, don\'t have ${binPath}`, false);
+            global.walletLog.error(`Don\'t have ${binPath}`, false);
             return;
         }
 
-        // [NOTICE] avoid multiple services open
+        // [NOTICE] Avoid multiple services open
         if (subProcess) {
             cb && cb();
             return;
         }
 
-        global.walletLog.info('start open ipc server', false);
+        global.walletLog.info('Start to open vite-go-server', false);
 
         let subPro = spawn(binPath, {
             stdio: [fs.openSync(global.SERVER_LOG_PATH, 'w'), 'pipe', fs.openSync(global.SERVER_LOG_PATH, 'w')]
         }, (error) => {
             error && global.walletLog.error({
-                info: 'open ipc server error',
+                info: 'Vite-go-server error occurred during opening.',
                 error
             }, false);
         });
 
         subPro.once('error', error => {
             global.walletLog.error({
-                info: 'ipc server error',
+                info: 'Vite-go-server has encountered an error',
                 error
             }, false);
         });
@@ -61,28 +61,36 @@ module.exports = {
         
         subPro.on('close', (code) => { 
             global.walletLog.info({
-                info: 'ipc server quit',
+                info: 'Vite-go-server has closed',
                 code
             });
-            // Close: clear subProcess
-            subProcess = null;
+
+            // Clear subProcess
+            subPro === subProcess && (subProcess = null);
         });
     },
     
     stopIPCServer
 };
 
-function stopIPCServer () {
-    global.walletLog.info({
-        info: 'stop ipc server ?',
-        subProcess: !!subProcess
-    });
+function stopIPCServer (cb) {
+    global.walletLog.info(`Has vite-go-server? ${!!subProcess}`);
 
     if (!subProcess) {
+        cb && cb();
         return;
     }
 
-    global.walletLog.info('stop ipc server');
+    global.walletLog.info('Start to stop vite-go-server.');
+
+    subProcess.on('close', (code) => {
+        global.walletLog.info({
+            info: 'Stop vite-go-server success.',
+            code
+        });
+        cb && cb();
+    });
+
     if (isWindows) {
         spawn('taskkill /pid ' + subProcess.pid + ' /T /F');
         return;

@@ -11,6 +11,10 @@ module.exports = function () {
     app.on('ready', function () {
         createWindow && createWindow();
     });
+
+    app.on('window-all-closed', (event) => {
+        event.preventDefault();
+    });
 };
 
 function createWindow () {
@@ -29,8 +33,9 @@ function createWindow () {
 
     global.WALLET_WIN.on('closed', () => {
         global.WALLET_WIN = null;
-        stopIPCServer();
-        app.quit();
+        stopIPCServer(()=>{
+            app.quit();
+        });
     });
 
     // Loading first

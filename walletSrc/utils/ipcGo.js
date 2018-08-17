@@ -48,10 +48,8 @@ class ipc {
             // listening err
             ipcBase.of[VITE_WALLET_IPC].on('error', () => {
                 console.log('error');
-
                 if (ipcBase.of[VITE_WALLET_IPC].retriesRemaining === 0) {
                     ipcBase.disconnect(VITE_WALLET_IPC);
-                    this.emitConnected(0);
                 }
             });
 
@@ -70,6 +68,7 @@ class ipc {
     emitConnected(connectStatus) {
         this.__connectStatus = connectStatus;
         this.__connectCB && this.__connectCB(connectStatus);
+        global.viteEventEmitter.emit('ipcConnect', this.__connectStatus);
     }
 
     onConnected(cb) {
