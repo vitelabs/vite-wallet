@@ -15,7 +15,7 @@
 </template>
 
 <script>
-let netEvent = null;
+let p2pEvent = null;
 let blockEvent = null;
 
 export default {
@@ -29,22 +29,22 @@ export default {
         return {
             address: this.$route.params.address,
             blockStatus: 0,
-            netStatus: false
+            p2pStatus: false
         };
     },
     mounted() {
         blockEvent = viteWallet.EventEmitter.on('blockInfo', ({ status }) => {
             this.handleBlock(status);
         });
-        netEvent = viteWallet.EventEmitter.on('netStatus', (netStatus) => {
-            this.netStatus = netStatus;
+        p2pEvent = viteWallet.EventEmitter.on('p2pStatus', (p2pStatus) => {
+            this.p2pStatus = p2pStatus;
         });
 
         this.handleBlock( viteWallet.Block.getSyncInfo().status );
-        this.netStatus = viteWallet.Net.getStatus();
+        this.p2pStatus = viteWallet.Net.getP2PStatus();
     },
     destroyed() {
-        viteWallet.EventEmitter.off(netEvent);
+        viteWallet.EventEmitter.off(p2pEvent);
         viteWallet.EventEmitter.off(blockEvent);
     },
     methods: {
@@ -58,13 +58,18 @@ export default {
                 return;
             }
 
-            if (this.blockStatus !== 2) {
-                window.alert(this.$t('nav.sync'));
+            if (!window.navigator.onLine) {
+                window.alert(this.$t('nav.noNet'));
                 return;
             }
 
-            if (!this.netStatus) {
-                window.alert(this.$t('nav.noNet'));
+            if (!this.p2pStatus) {
+                window.alert(this.$t('nav.noP2P'));
+                return;
+            }
+
+            if (this.blockStatus !== 2) {
+                window.alert(this.$t('nav.sync'));
                 return;
             }
 

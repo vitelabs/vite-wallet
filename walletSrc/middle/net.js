@@ -1,49 +1,49 @@
-const loopNetTime = 2000;
+const loopP2PTime = 2000;
 
 class Net {
     constructor() {
-        this.netStatus = false;
-        this.__startLoopNet();
+        this.p2pStatus = false;
+        this.__startLoopP2P();
     }
 
-    __setGlobalStatus(data) {
-        if (global.netStatus !== data) {
-            global.walletLog.info({
-                info: 'netStatus change',
-                netStatus: data
-            });
-        }
+    __setP2P(data) {
+        this.p2pStatus !== data && global.walletLog.info({
+            info: 'P2P status Change',
+            p2pStatus: data ? 'P2P_netOK' : 'P2P_netFail'
+        });
+        this.p2pStatus = data;
+    }
+
+    __setClientNet(data) {
+        global.netStatus !== data && global.walletLog.info({
+            info: 'Client netStatus change',
+            netStatus: data ? 'client_netOK' : 'client_NetFail'
+        });
         global.netStatus = data;
     }
 
-    __startLoopNet() {
+    __startLoopP2P() {
         global.goViteIPC['p2p.NetworkAvailable']().then((data)=>{
-            this.netStatus = data;
-            this.__setGlobalStatus(data ? 'netOK' : 'netFail');
+            this.__setP2P(data);
         }).catch(()=>{ });
 
         let loopTimeout = setTimeout(()=>{
             clearTimeout(loopTimeout);
             loopTimeout = null;
-            this.__startLoopNet();
-        }, loopNetTime);
+            this.__startLoopP2P();
+        }, loopP2PTime);
     }
 
     updateFromWeb(status) {
-        let text = status ? 'clientNetOK' : 'clientNetFail';
-        if (global.netStatus === 'netFail' && status) {
-            text = 'netFail';
-        }
-        this.__setGlobalStatus(text);
-        !status && (this.netStatus = false);
+        this.__setClientNet(status);
     }
 
-    getStatus() {
-        return this.netStatus;
+    getP2PStatus() {
+        return this.p2pStatus;
     }
 
-    getLoopNetTime() {
-        return loopNetTime;
+    getLoopP2PTime() {
+        return loopP2PTime;
     }
 }
 
