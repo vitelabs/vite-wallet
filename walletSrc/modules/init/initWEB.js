@@ -1,24 +1,8 @@
-const { shell, dialog } = require('electron');
+const { shell } = require('electron');
 const path = require('path');
 require('~app/modules/electron-ga');
 
 const allowHost = ['https://test.vite.net'];
-
-function showError(title) {
-    const options = {
-        type: 'info',
-        message: title,
-        buttons: [global.$i18n('reload'), global.$i18n('close')]
-    };
-
-    global.WALLET_WIN && dialog.showMessageBox(global.WALLET_WIN, options, function (index) {
-        if (index === 0) {
-            global.WALLET_WIN && global.WALLET_WIN.reload();
-            return;
-        }
-        global.WALLET_WIN && global.WALLET_WIN.destroy();
-    });
-}
 
 module.exports = function loadWeb() {
     if (!global.WALLET_WIN) {
@@ -56,7 +40,7 @@ module.exports = function loadWeb() {
     });
 
     global.WALLET_WIN.webContents.on('crashed', () => {
-        showError('crashed');
-        global.walletLog.info('crashed', false);
+        global.dialog.crash('win-crashed');
+        global.walletLog.info('win-crashed', false);
     });
 };

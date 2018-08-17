@@ -1,21 +1,54 @@
-'use strict';
+const Client = require('./client.js');
 
-const IPC = require('./services/IPC.js');
-
-class IPCModule extends IPC{
+class IPC{
     constructor(){
-        super();
-        //include IPC to make extensible
-        Object.defineProperty(
-            this,
-            'IPC',
-            {
-                enumerable:true,
-                writable:false,
-                value:IPC
+        this.of = {};
+        this.config = {
+            appspace: '',
+            retry: 500,
+            maxRetries: Infinity,
+            stopRetrying: false,
+            encoding: 'utf-8'
+        };
+    }
+
+    disconnect (id) {
+        if (!this.of[id]) {
+            return;
+        }
+    
+        this.of[id].explicitlyDisconnected = true;
+    
+        this.of[id].off('*','*');
+        if (this.of[id].socket && this.of[id].socket.destroy) {
+            this.of[id].socket.destroy();
+        }
+    
+        delete this.of[id];
+    }
+
+    connectTo (id, callback) {
+        if (!id) {
+            return;
+        }
+    
+        if (this.of[id]) {
+            if (!this.of[id].socket.destroyed) {
+                callback && callback();
+                return;
             }
-        );
+            this.of[id].socket.destroy();
+        }
+    
+        this.of[id] = new Client({
+            id, 
+            config: this.config,
+            path: this.config.appspace + id
+        });
+        this.of[id].connect();
+    
+        callback && callback();
     }
 }
 
-module.exports = new IPCModule;
+module.exports = new IPC;

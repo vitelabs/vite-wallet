@@ -3,89 +3,94 @@ const spawn = require('~app/modules/cross-spawn');
 const fs = require('fs');
 const path = require('path');
 
-let binPath = '';
-if (!isWindows) {
+let serverName = isWindows ? '/viteGoServer.exe' : '/viteGoServer';
+let oldPath = path.join(global.APP_PATH, serverName);
+let binPath = path.join(global.USER_DATA_PATH, serverName);
+
+try {
     // [NOTICE] MAC: this file is read-only under the dmg, so move to /appData
-    binPath = path.join(global.USER_DATA_PATH, '/viteGoServer');
-    fs.writeFileSync(binPath, fs.readFileSync(path.join(global.APP_PATH, '/viteGoServer')));
-    try {
-        fs.chmodSync(binPath, 0o777);
-    } catch(err) {
-        console.log(err);
-    }
-} else {
-    binPath = path.join(global.APP_PATH, '/viteGoServer.exe');
+    fs.existsSync(oldPath) && fs.writeFileSync(binPath, fs.readFileSync(oldPath));
+    !isWindows && fs.chmodSync(binPath, 0o777);
+} catch(err) {
+    console.log(err);
 }
 
 let subProcess = null;
 
 module.exports = {
     startIPCServer: function(cb) {
-        global.walletLog.info('start open ipc server', false);
-        console.log('startIPCServer');
+        if ( !fs.existsSync(binPath) ) {
+            global.walletLog.error(`Don\'t have ${binPath}`, false);
+            return;
+        }
 
-        // [NOTICE] avoid multiple services open
+        // [NOTICE] Avoid multiple services open
         if (subProcess) {
             cb && cb();
             return;
         }
 
+        global.walletLog.info('Start to open vite-go-server', false);
+
         let subPro = spawn(binPath, {
             stdio: [fs.openSync(global.SERVER_LOG_PATH, 'w'), 'pipe', fs.openSync(global.SERVER_LOG_PATH, 'w')]
         }, (error) => {
-            error && console.log('error', error);
-            global.walletLog.error({
-                info: 'open ipc server error',
+            error && global.walletLog.error({
+                info: 'Vite-go-server error occurred during opening.',
                 error
             }, false);
         });
 
         subPro.once('error', error => {
-            console.log('error', error);
             global.walletLog.error({
-                info: 'ipc server error',
+                info: 'Vite-go-server has encountered an error',
                 error
             }, false);
         });
         
         subPro.stdout.on('data', data => {
             global.walletLog.info(data.toString(), false);
+
             if (data.toString().indexOf('Vite rpc start success!') < 0) {
                 return;
             }
 
-            console.log('start ipc Server');
-            // Start: Assign subPro to subProcess
             subProcess = subPro;
             cb && cb();
         });
         
         subPro.on('close', (code) => { 
-            console.log(`quit code: ${code}`);
             global.walletLog.info({
-                info: 'ipc server quit',
+                info: 'Vite-go-server has closed',
                 code
             });
-            // Close: clear subProcess
-            subProcess = null;
+
+            // Clear subProcess
+            subPro === subProcess && (subProcess = null);
         });
     },
     
     stopIPCServer
 };
 
-function stopIPCServer () {
-    console.log(`subProcess: ${!!subProcess}`);
-    global.walletLog.info({
-        info: 'stop ipc server ?',
-        subProcess: !!subProcess
-    });
+function stopIPCServer (cb) {
+    global.walletLog.info(`Has vite-go-server? ${!!subProcess}`);
 
     if (!subProcess) {
+        cb && cb();
         return;
     }
 
-    global.walletLog.info('stop ipc server');
+    global.walletLog.info('Start to stop vite-go-server.');
+
+    subProcess.on('close', (code) => {
+        global.walletLog.info({
+            info: 'Stop vite-go-server success.',
+            code
+        });
+        cb && cb();
+    });
+
     if (isWindows) {
         spawn('taskkill /pid ' + subProcess.pid + ' /T /F');
         return;

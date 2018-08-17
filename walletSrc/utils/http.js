@@ -1,4 +1,4 @@
-const { net } = require('electron');
+const { app, net } = require('electron');
 const querystring = require('querystring');
 
 const protocol = 'https:';
@@ -40,6 +40,13 @@ function parseReq({
 module.exports = function({
     path, params, method = 'POST', headers = {}, type = 'json'
 }) {
+    if (!app.isReady()) {
+        return Promise.reject({
+            code: -50004,
+            message: 'Net module must be called after the APP is ready.'
+        });
+    }
+
     if (!global.netStatus) {
         return Promise.reject({
             code: -50003,

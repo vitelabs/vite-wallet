@@ -3,44 +3,15 @@ const ipcBase = require('~app/utils/ipc/index.js');
 const VITE_WALLET_IPC = 'vite.ipc';
 const FILE_PATH = global.GO_FILE;
 
-ipcBase.config.appspace = '';
-ipcBase.config.socketRoot = FILE_PATH;
+ipcBase.config.appspace = FILE_PATH;
 ipcBase.config.retry = 100;
 ipcBase.config.maxRetries = 5;
-ipcBase.config.silent = true;
 
 let rpcRequestId = 0;
 
 class ipc {
     constructor() {
         this.__connectStatus = -1;
-
-        ipcBase.connectTo(VITE_WALLET_IPC, () => {
-            // listening connect
-            ipcBase.of[VITE_WALLET_IPC].on('connect', () => {
-                this.emitConnected(1);
-            });
-
-            // listening err
-            ipcBase.of[VITE_WALLET_IPC].on('error', () => {
-                console.log('error');
-
-                if (ipcBase.of[VITE_WALLET_IPC].retriesRemaining === 0) {
-                    ipcBase.disconnect(VITE_WALLET_IPC);
-                    this.emitConnected(0);
-                }
-            });
-
-            // listening disconnect
-            ipcBase.of[VITE_WALLET_IPC].on('disconnect', () => {
-                console.log('disconnect');
-                if (!ipcBase.of[VITE_WALLET_IPC] || 
-                        !ipcBase.of[VITE_WALLET_IPC].retriesRemaining ||
-                        ipcBase.of[VITE_WALLET_IPC].retriesRemaining <= 0) {
-                    this.emitConnected(0);
-                }
-            });
-        });
 
         const apiList = {
             wallet: [
@@ -67,9 +38,37 @@ class ipc {
         }
     }
 
+    connectTo() {
+        ipcBase.connectTo(VITE_WALLET_IPC, () => {
+            // listening connect
+            ipcBase.of[VITE_WALLET_IPC].on('connect', () => {
+                this.emitConnected(1);
+            });
+
+            // listening err
+            ipcBase.of[VITE_WALLET_IPC].on('error', () => {
+                console.log('error');
+                if (ipcBase.of[VITE_WALLET_IPC].retriesRemaining === 0) {
+                    ipcBase.disconnect(VITE_WALLET_IPC);
+                }
+            });
+
+            // listening disconnect
+            ipcBase.of[VITE_WALLET_IPC].on('disconnect', () => {
+                console.log('disconnect');
+                if (!ipcBase.of[VITE_WALLET_IPC] || 
+                        !ipcBase.of[VITE_WALLET_IPC].retriesRemaining ||
+                        ipcBase.of[VITE_WALLET_IPC].retriesRemaining <= 0) {
+                    this.emitConnected(0);
+                }
+            });
+        });
+    }
+
     emitConnected(connectStatus) {
         this.__connectStatus = connectStatus;
         this.__connectCB && this.__connectCB(connectStatus);
+        global.viteEventEmitter.emit('ipcConnect', this.__connectStatus);
     }
 
     onConnected(cb) {
@@ -87,6 +86,7 @@ class ipc {
 
 function netToIPC(methodName, arg) {
     if (this.__connectStatus === 0 || !ipcBase.of[VITE_WALLET_IPC]) {
+        console.log(methodName);
         return Promise.reject({
             code: -50000,
             message: 'IPC no connection.'
@@ -102,7 +102,7 @@ function netToIPC(methodName, arg) {
 
     let payload = jsonrpcPayload(methodName, arg);
     // console.log('fetch', payload);
-    ipcBase.of[VITE_WALLET_IPC].emit(methodName, payload);
+    ipcBase.of[VITE_WALLET_IPC].emit(payload);
 
     return new Promise((res, rej) => {
         // listening api

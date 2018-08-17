@@ -174,14 +174,16 @@ function getLogInfo(info, level=0) {
     let levelText = ['INFO', 'WARNING', 'ERROR'][level];
     let nowDate = formatDate();
     let netStatus = global.netStatus;
-    let userLocale = global.userLocale;
-    return `[${levelText}] ${nowDate} | netStatus(${netStatus} | locale(${userLocale})): ${JSON.stringify(info)}\r\n`;
+    let locale = global.$i18n ? global.$i18n.locale || -1 : -1;
+    return `[${levelText}] ${nowDate} | netStatus(${netStatus} | locale(${locale})): ${JSON.stringify(info)}\r\n`;
 }
 
 function log(path, logInfo) {
     fs.access(path, fs.constants.F_OK | fs.constants.W_OK, (err) => {
         if (!err) { // exist && writable
-            fs.appendFile(path, logInfo, 'utf8');
+            fs.appendFile(path, logInfo, 'utf8', (err)=>{
+                err && console.log(err);
+            });
             return;
         }
         
@@ -191,7 +193,9 @@ function log(path, logInfo) {
         }
 
         // does not exist
-        fs.writeFile(path, logInfo, 'utf8');
+        fs.writeFile(path, logInfo, 'utf8', (err)=>{
+            err && console.log(err);
+        });
     });
 }
 

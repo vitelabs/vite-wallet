@@ -9,15 +9,19 @@ module.exports = {
             nameCount: 0
         };
 
-        let result = fs.existsSync(accountNameFile);
-        // Not exists
-        if (!result) {
-            return defaultObj;
+        let file = '';
+        try {
+            // Not exists
+            if ( !fs.existsSync(accountNameFile) ) {
+                return defaultObj;
+            }
+
+            file = fs.readFileSync(accountNameFile, {
+                encoding: 'utf8'
+            });
+        } catch(err) {
+            console.log(err);
         }
-    
-        let file = fs.readFileSync(accountNameFile, {
-            encoding: 'utf8'
-        });
 
         // Ignore exception: name-list is missing if an exception occurs.
         let obj;
