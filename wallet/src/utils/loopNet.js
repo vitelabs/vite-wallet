@@ -1,16 +1,16 @@
-let loopNetTimeout = null;
+let loopP2PTimeout = null;
 
-function startLoopNet() {
-    viteWallet.EventEmitter.emit('netStatus', viteWallet.Net.getStatus());
-    loopNetTimeout = window.setTimeout(() => {
-        stopLoopNet();
-        startLoopNet();
-    }, viteWallet.Net.getLoopNetTime());
+function startLoopP2P() {
+    viteWallet.EventEmitter.emit('p2pStatus', viteWallet.Net.getP2PStatus());
+    loopP2PTimeout = window.setTimeout(() => {
+        stopLoopP2P();
+        startLoopP2P();
+    }, viteWallet.Net.getLoopP2PTime());
 }
 
-function stopLoopNet() {
-    window.clearTimeout(loopNetTimeout);
-    loopNetTimeout = null;
+function stopLoopP2P() {
+    window.clearTimeout(loopP2PTimeout);
+    loopP2PTimeout = null;
 }
 
-startLoopNet();
+startLoopP2P();

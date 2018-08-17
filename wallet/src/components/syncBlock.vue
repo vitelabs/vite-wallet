@@ -1,29 +1,37 @@
 <template>
     <div class="sync-block-wrapper">
-        <span class="status-text" v-show="statusText !== 'sync'">
+        <span class="status-text" v-show="statusText && statusText !== 'sync'">
             {{ statusText ? $t(`nav.${statusText}`) : '' }}
         </span>
-        <span v-show="statusText !== 'sync' && statusText !== 'noNet'">{{
+
+        <span v-show="!statusText">----</span>
+
+        <span v-show="statusText.indexOf('first') !== -1">{{
             `${currentHeight} / ${targetHeight}`
         }}</span>
-        <span v-show="statusText === 'sync'">
-            {{ $t(`nav.blockHeight`) + ': ' + blockHeight }}
-        </span>
 
         <img src="../assets/imgs/sync_icon.svg"
              v-show="statusText !== 'firstDone' && statusText !== 'sync'" 
              @click="reloadBlock"
              :class="{
                  'icon': true,
-                 'loading': reloading || statusText === 'noNet'
+                 'loading': reloading || statusText === 'noNet' || statusText === 'noP2P'
         }"/>
         <img src="../assets/imgs/done_icon.svg" class="icon" v-show="statusText === 'firstDone'" />
+
+
+        <span v-show="statusText === 'sync'">
+            {{ $t(`nav.blockHeight`) + ': ' + blockHeight }}
+        </span>
+
+
     </div>
 </template>
 
 <script>
-let netEvent = null;
+let p2pEvent = null;
 let blockEvent = null;
+let netEvent = null;
 let heightTimeout = null;
 
 export default {
@@ -43,31 +51,31 @@ export default {
         blockEvent = viteWallet.EventEmitter.on('blockInfo', (blockInfo) => {
             this.syncData(blockInfo);
         });
-        netEvent = viteWallet.EventEmitter.on('netStatus', (netStatus) => {
+        p2pEvent = viteWallet.EventEmitter.on('p2pStatus', (netStatus) => {
             this.netStatus = netStatus;
         });
+        netEvent = viteWallet.EventEmitter.on('clientNetStatus', (status) => {
+            this.updateStatusText(null, status);
+        });
 
+        this.netStatus = viteWallet.Net.getP2PStatus();
         this.syncData( viteWallet.Block.getSyncInfo() );
-        this.netStatus = viteWallet.Net.getStatus();
-
-        window.addEventListener('offline',  ()=>{
-            this.updateStatusText(null, false);
-        });
-        window.addEventListener('online',  ()=>{
-            this.updateStatusText(null, true);
-        });
 
         this.startBlockHeight();
     },
     destroyed() {
-        viteWallet.EventEmitter.off(netEvent);
         viteWallet.EventEmitter.off(blockEvent);
+        viteWallet.EventEmitter.off(p2pEvent);
+        viteWallet.EventEmitter.off(netEvent);
         this.stopBlockHeight();
     },
     watch: {
         status: function(val, oldVal) {
             val === 2 && viteWallet.EventEmitter.off(blockEvent);
             this.updateStatusText(oldVal);
+        },
+        netStatus: function() {
+            this.updateStatusText(null, -1);
         }
     },
     methods: {
@@ -109,27 +117,32 @@ export default {
             });
         },
 
-        updateStatusText(oldVal, clientNet = true) {
+        updateStatusText(oldVal, clientNet = -1) {
+            // Client has no network.
             if (!clientNet) {
                 this.statusText = 'noNet';
                 return;
             }
 
+            // No node connection
+            if (!this.netStatus) {
+                this.statusText = 'noP2P';
+                return;
+            }
+
+            // Waiting for initialization 
             if (this.status === 0) {
                 this.statusText = '';
                 return;
             }
 
+            // Initing
             if (this.status === 1) {
                 this.statusText = 'firstDoing';
                 return;
             }
 
-            if (!this.netStatus) {
-                this.statusText = 'noNet';
-                return;
-            }
-
+            // Block synchronization completed
             if (oldVal === null && this.status === 2) {
                 this.statusText = 'sync';
                 return;

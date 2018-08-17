@@ -50,7 +50,7 @@ module.exports = function({
     if (!global.netStatus) {
         return Promise.reject({
             code: -50003,
-            message: 'Client net error'
+            message: 'Net error'
         });
     }
 

@@ -12,7 +12,8 @@ module.exports = {
             backup: 'Back Up',
         },
         sync: 'Wallet initializing, transactions cannot be made temporarily.',
-        noNet: 'No network detected!',
+        noNet: 'No network detected',
+        noP2P: 'Unable to connect to other nodes',
         firstDone: 'Init Done',
         firstDoing: 'Initializing',
         blockHeight: 'Snapshot Block Height'

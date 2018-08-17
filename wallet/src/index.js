@@ -74,6 +74,7 @@ appReady(function () {
 
     const updateOnlineStatus = () => {
         Net.updateFromWeb(navigator.onLine);
+        viteWallet.EventEmitter.emit('clientNetStatus', navigator.onLine);
     };
     window.addEventListener('online',  updateOnlineStatus);
     window.addEventListener('offline',  updateOnlineStatus);
