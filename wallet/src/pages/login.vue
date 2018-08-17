@@ -69,8 +69,6 @@ export default {
             };
         } else {
             activeAccount = viteWallet.Account.getLast();
-            // [HACK] Avoid the last time the server is not closed, this address is not locked
-            activeAccount && viteWallet.Account.lock(activeAccount.address);
         }
 
         return {
