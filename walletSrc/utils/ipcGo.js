@@ -66,6 +66,8 @@ class ipc {
     }
 
     emitConnected(connectStatus) {
+        global.walletLog.info(`GoViteIPC connect status: ${connectStatus}`);
+
         this.__connectStatus = connectStatus;
         this.__connectCB && this.__connectCB(connectStatus);
         global.viteEventEmitter.emit('ipcConnect', this.__connectStatus);
@@ -86,7 +88,8 @@ class ipc {
 
 function netToIPC(methodName, arg) {
     if (this.__connectStatus === 0 || !ipcBase.of[VITE_WALLET_IPC]) {
-        console.log(methodName);
+        global.walletLog.info(`GoViteIPC APIs call: ${methodName}. IPC no connection.`);
+
         return Promise.reject({
             code: -50000,
             message: 'IPC no connection.'
@@ -101,12 +104,15 @@ function netToIPC(methodName, arg) {
     }
 
     let payload = jsonrpcPayload(methodName, arg);
-    // console.log('fetch', payload);
+
+    global.walletLog.info(`GoViteIPC APIs call: ${JSON.stringify(payload)}`);
     ipcBase.of[VITE_WALLET_IPC].emit(payload);
 
     return new Promise((res, rej) => {
         // listening api
         ipcBase.of[VITE_WALLET_IPC].on(payload.id, function(data) {
+            global.walletLog.info(`GoViteIPC APIs responce: ${JSON.stringify(payload)}, ${JSON.stringify(data)}`);
+
             // console.log(data);
 
             // system error
