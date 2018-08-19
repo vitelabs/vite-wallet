@@ -4,9 +4,7 @@ module.exports = function() {
     let serverLogPath = null;
     global.goViteIPC['common.LogDir']().then((data)=>{
         serverLogPath = data;
-    }).catch((err)=>{
-        console.log(err);
-    });
+    }).catch(()=>{});
 
     let template = [
         {

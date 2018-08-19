@@ -1,6 +1,4 @@
-const path = require('path');
 const { app, BrowserWindow } = require('electron');
-const { stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
 
 module.exports = function () {
     app.on('gpu-process-crashed', () => {
@@ -10,6 +8,10 @@ module.exports = function () {
 
     app.on('ready', function () {
         createWindow && createWindow();
+    });
+
+    app.on('will-quit', ()=>{
+        global.walletLog.info('APP quit');
     });
 
     app.on('window-all-closed', (event) => {
@@ -32,10 +34,7 @@ function createWindow () {
     });
 
     global.WALLET_WIN.on('closed', () => {
-        global.WALLET_WIN = null;
-        stopIPCServer(()=>{
-            app.quit();
-        });
+        global.APPQuit();
     });
 
     // Loading first

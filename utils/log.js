@@ -24,7 +24,6 @@ let logTime = syncLogTime();
 
 // init
 startLogTimeout();
-addLog({ info: 'APP start' });
 addLog({ info: BASE_INFO });
 app.on('will-quit', saveSync);
 
@@ -33,11 +32,9 @@ module.exports = {
         addLog({ info, isSync });
     },
     warn(info, isSync = true) {
-        // console.warn(info);
         addLog({ info, level: 1, isSync });
     },
     error(info, isSync = true) {
-        // console.error(new Error(info));
         addLog({ info, level: 2, isSync });
     }
 };
@@ -57,10 +54,6 @@ function saveSync() {
         info: BASE_INFO
     });  // append app-base-info to server-log
 
-    addLog({
-        info: 'APP quit'
-    });  // append app-quit-info to client-log
-
     if ((new Date().getTime() - logTime) >= validityPeriod)  {
         clearLog();
         return;
@@ -77,7 +70,7 @@ function addLog({
     info, 
 }) {
     let logInfo = getLogInfo(info, level);
-    console.log(logInfo);
+    // console.log(logInfo);
     
     if (!isSync) {
         log(path, logInfo);

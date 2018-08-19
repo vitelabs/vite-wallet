@@ -20,7 +20,7 @@ module.exports = {
                 encoding: 'utf8'
             });
         } catch(err) {
-            console.log(err);
+            global.walletLog.error(`Read account-file: ${JSON.stringify(err)}`);
         }
 
         // Ignore exception: name-list is missing if an exception occurs.
@@ -36,7 +36,7 @@ module.exports = {
         fs.writeFile(accountNameFile, JSON.stringify({
             namesMap, nameCount, lastLoginAccount
         }), 'utf8', (err)=>{
-            err && console.log(err);
+            err && global.walletLog.error(`Write account-file: ${JSON.stringify(err)}`);
         });
     }
 };

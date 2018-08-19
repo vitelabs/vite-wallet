@@ -43,10 +43,10 @@ function requestUpdate() {
             return;
         }
 
+        global.walletLog.log('APP should update.');
         showDialog(data);
-    }).catch((err)=>{
+    }).catch(()=>{
         global.viteEventEmitter.off(serverStautsEvent);
-        console.log(err);
     });
 }
 

@@ -28,7 +28,7 @@ module.exports = {
     // account list
     accList: {
         balance: '余额',
-        addAcc: '新添加一个账号'
+        addAcc: '新添加一个账户'
     },
 
     // create account

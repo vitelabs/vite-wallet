@@ -4,15 +4,18 @@ const fs = require('fs');
 const path = require('path');
 
 let serverName = isWindows ? '/viteGoServer.exe' : '/viteGoServer';
-let oldPath = path.join(global.APP_PATH, serverName);
-let binPath = path.join(global.USER_DATA_PATH, serverName);
+let binPath = path.join(global.APP_PATH, serverName);
 
-try {
-    // [NOTICE] MAC: this file is read-only under the dmg, so move to /appData
-    fs.existsSync(oldPath) && fs.writeFileSync(binPath, fs.readFileSync(oldPath));
-    !isWindows && fs.chmodSync(binPath, 0o777);
-} catch(err) {
-    console.log(err);
+if (!isWindows) {
+    let oldPath = binPath;
+    binPath = path.join(global.USER_DATA_PATH, serverName);
+    try {
+        // [NOTICE] MAC: this file is read-only under the dmg, so move to /appData
+        fs.existsSync(oldPath) && fs.writeFileSync(binPath, fs.readFileSync(oldPath));
+        fs.chmodSync(binPath, 0o777);
+    } catch(err) {
+        global.walletLog.error(`Init server: ${JSON.stringify(err)}`);
+    }
 }
 
 let subProcess = null;
@@ -26,11 +29,12 @@ module.exports = {
 
         // [NOTICE] Avoid multiple services open
         if (subProcess) {
+            global.walletLog.info('Avoid multiple Vite-go-services open.', false);
             cb && cb();
             return;
         }
 
-        global.walletLog.info('Start to open vite-go-server', false);
+        global.walletLog.info('Vite-go-server ready to start.', false);
 
         let subPro = spawn(binPath, {
             stdio: [fs.openSync(global.SERVER_LOG_PATH, 'w'), 'pipe', fs.openSync(global.SERVER_LOG_PATH, 'w')]
@@ -83,6 +87,13 @@ function stopIPCServer (cb) {
 
     global.walletLog.info('Start to stop vite-go-server.');
 
+    if (isWindows) {
+        spawn('taskkill /pid ' + subProcess.pid + ' /T /F');
+        global.walletLog.info('Stop vite-go-server success.');
+        cb && cb();
+        return;
+    }
+
     subProcess.on('close', (code) => {
         global.walletLog.info({
             info: 'Stop vite-go-server success.',
@@ -91,9 +102,5 @@ function stopIPCServer (cb) {
         cb && cb();
     });
 
-    if (isWindows) {
-        spawn('taskkill /pid ' + subProcess.pid + ' /T /F');
-        return;
-    }
     subProcess.kill('SIGHUP');
 }

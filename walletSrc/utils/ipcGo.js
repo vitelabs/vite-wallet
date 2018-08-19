@@ -39,6 +39,8 @@ class ipc {
     }
 
     connectTo(cb) {
+        global.walletLog.info('GoViteIPC start to connect.');
+
         ipcBase.connectTo(VITE_WALLET_IPC, () => {
             // Listening connect
             ipcBase.of[VITE_WALLET_IPC].on('connect', () => {
@@ -59,6 +61,7 @@ class ipc {
 
             ipcBase.of[VITE_WALLET_IPC].on('destroy', () => {
                 global.walletLog.error('GoViteIPC has been destroyed.');
+                global.viteEventEmitter.emit('ipcDisconnect');
                 this.__connectStatus = 0;
                 cb && cb();
             });
@@ -83,13 +86,12 @@ function netToIPC(methodName, arg) {
     let requestId = rpcRequestId;
     rpcRequestId++;
 
-    global.walletLog.info(`GoViteIPC APIs ${methodName} ${requestId}`);
     ipcBase.of[VITE_WALLET_IPC].emit(requestId, methodName, arg);
 
     return new Promise((res, rej) => {
         // Listening api
         ipcBase.of[VITE_WALLET_IPC].on(requestId, function(data) {
-            global.walletLog.info(`GoViteIPC APIs responce ${methodName} ${requestId}: ${JSON.stringify(data)}`);
+            global.walletLog.info(`GoViteIPC APIs ${methodName} ${arg ? JSON.stringify(arg) : '' }: ${JSON.stringify(data)}`);
 
             // system error
             if (data.error) {
@@ -99,7 +101,7 @@ function netToIPC(methodName, arg) {
                 });
             }
 
-            let result = data.result || {};
+            let result = data.result || null;
 
             // server error
             if (result && result.code) {

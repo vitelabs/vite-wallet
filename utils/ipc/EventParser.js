@@ -14,7 +14,7 @@ module.exports = {
         return JSON.stringify({
             jsonrpc: '2.0',
             id: requestId,
-            methodName,
+            method: methodName,
             params: arg
         });
     },
@@ -30,14 +30,13 @@ module.exports = {
 
             try {
                 let res = JSON.parse(ele);
-                console.log(res);
                 // Compatible: somtimes data.result is a json string, sometimes not.
                 try {
                     if (res.result) {
                         res.result = JSON.parse(res.result || '');
                     }
                 } catch (e) {
-                    console.log(e);
+                    // console.log(e);
                 }
 
                 results.push(res);

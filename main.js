@@ -22,17 +22,11 @@ if (isSecondInstance) {
 function init() {
     require('./walletSrc/modules/init/initGlobalVars.js');   // Global vars must be defined in advance
 
-    const { stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
-    process.on('uncaughtException', error => {
-        global.walletLog.error(`UNCAUGHT EXCEPTION: ${JSON.stringify(error)}`);
+    global.walletLog.info('APP start');
 
-        if (global.WALLET_WIN) {
-            global.WALLET_WIN.destroy();
-        } else {
-            stopIPCServer(()=>{
-                app.quit();
-            });
-        }
+    process.on('uncaughtException', error => {
+        global.walletLog.error(`UNCAUGHT EXCEPTION: ${JSON.stringify(error)}`, true);
+        global.APPQuit();
     });
 
     const initServer = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initServer.js'));
@@ -58,7 +52,7 @@ function init() {
     }) {
         global.walletLog.info(`SetReadyStatus: ${JSON.stringify({
             ipcReady, appReady
-        })}`);        
+        })}`);
 
         ipcReady && global.viteEventEmitter.off(ipcEvent);
         appReady && global.viteEventEmitter.off(appEvent);

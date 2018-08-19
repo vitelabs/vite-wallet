@@ -1,5 +1,4 @@
 const { clipboard, app } = require('electron');
-const { add } = require('../utils/log.js');
 
 class System {
     constructor() {
@@ -16,10 +15,6 @@ class System {
 
     getLocale() {
         return app.getLocale();
-    }
-
-    log(msg) {
-        add(msg);
     }
 }
 

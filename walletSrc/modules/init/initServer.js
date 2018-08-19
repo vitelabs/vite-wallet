@@ -5,15 +5,16 @@ let ipcConnectEvent = null;
 
 function connectGoServer() {
     global.goViteIPC.connectTo(function () {
-        console.log('second listening');
-
-        console.log(global.goViteIPC.__connectStatus);
-
-        if (!global.goViteIPC.__connectStatus) {
-            console.log('error: can not connect to go-server');
+        if (ipcConnectEvent) {
             return;
         }
 
+        if (!global.goViteIPC.__connectStatus) {
+            global.walletLog.error('Can not connect to GoVite IPC server.');
+            return;
+        }
+
+        global.walletLog.info('GoVite IPC server has started.');
         global.viteEventEmitter.emit('ipcReady');
         on();
     });
@@ -22,10 +23,10 @@ function connectGoServer() {
 module.exports = function() {
     // Try to connect GoViteServer
     global.goViteIPC.connectTo(function () {
-        console.log('first listening');
-
         // Server already start
         if (global.goViteIPC.__connectStatus) {
+            global.walletLog.info('GoVite IPC server is already start.');
+
             global.viteEventEmitter.emit('serverStatus', 1);
             global.viteEventEmitter.emit('ipcReady');
             on();
@@ -34,6 +35,7 @@ module.exports = function() {
 
         // Start server
         global.viteEventEmitter.emit('serverStatus', 0);
+
         startIPCServer(function () {
             // Server OK
             global.viteEventEmitter.emit('serverStatus', 1);
@@ -47,14 +49,12 @@ function on() {
         return;
     }
 
-    ipcConnectEvent = global.viteEventEmitter.on('ipcConnect', function(connectStatus) {
-        console.log('onipc', connectStatus);
-
-        if (connectStatus !== 0) {
-            return;
-        }
+    ipcConnectEvent = global.viteEventEmitter.on('ipcDisconnect', function() {
+        global.walletLog.info('GoVite IPC server is closed.');
 
         setTimeout(()=>{
+            global.walletLog.info('Start to restart GoVite IPC server.');
+
             startIPCServer(()=>{
                 global.goViteIPC.connectTo();
             });

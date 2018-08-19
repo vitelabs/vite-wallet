@@ -25,7 +25,6 @@ class Client extends Events{
 
 function emit (requestId, methodName, arg) {
     let message = eventParser.format(requestId, methodName, arg);
-    console.log(message);
     this.socket.write(message);
 }
 

@@ -19,7 +19,33 @@ global.WALLET_WIN = null;
 global.netStatus = -1;
 
 // Init log: Log needs environmental information
-global.walletLog = require( path.join(global.APP_PATH, '/walletSrc/utils/log.js') );
+global.walletLog = require('~app/utils/log.js');
+
+// Init app-quit func
+global.APPQuit = function() {
+    const { stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
+
+    let quit = () => {
+        global.goViteIPC && global.goViteIPC.disconnect();
+        stopIPCServer(()=>{
+            app.quit();
+        });
+    };
+
+    global.WALLET_WIN && !global.WALLET_WIN.isDestroyed() && global.WALLET_WIN.destroy();
+    global.WALLET_WIN = null;
+
+    if (!global.walletIpcAPIs) {
+        quit();
+        return;
+    }
+
+    global.walletIpcAPIs.Account.lockCurrentAcc().then(()=>{
+        quit();
+    }).catch(()=>{
+        quit();
+    });
+};
 
 // Init i18n
 const i18n = require('../../i18n/index.js');
@@ -33,4 +59,4 @@ global.dialog = require('../dialog.js');
 const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/utils/ipcGo.js') );
 global.goViteIPC = new ipcGo();
 
-global.viteEventEmitter = require( path.join(global.APP_PATH, '/walletSrc/utils/eventEmitter.js') );
+global.viteEventEmitter = require('~app/utils/eventEmitter.js');

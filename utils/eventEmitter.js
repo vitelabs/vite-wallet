@@ -1,5 +1,6 @@
-let eventList = [];
+const { app } = require('electron');
 
+let eventList = [];
 let isEmit = false;
 let offEvents = [];
 
@@ -33,6 +34,10 @@ module.exports = {
         off(event);
     }
 };
+
+app.on('will-quit', () => {
+    eventList = [];
+});
 
 function off(event) {
     if (!event) {
