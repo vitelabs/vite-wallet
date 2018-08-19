@@ -43,13 +43,12 @@ class ipc {
             // Listening connect
             ipcBase.of[VITE_WALLET_IPC].on('connect', () => {
                 global.walletLog.info('GoViteIPC connected successfully');
-
                 this.__connectStatus = 1;
                 cb && cb();
             });
 
             // Listening err
-            ipcBase.of[VITE_WALLET_IPC].on('error', (err) => {
+            ipcBase.of[VITE_WALLET_IPC].on('error', () => {
                 console.log('error');
                 // if (ipcBase.of[VITE_WALLET_IPC].retriesRemaining === 0) {
                 //     console.log('???');
