@@ -25,6 +25,7 @@ function init() {
     const { stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
     process.on('uncaughtException', error => {
         global.walletLog.error(`UNCAUGHT EXCEPTION: ${JSON.stringify(error)}`);
+        
         if (global.WALLET_WIN) {
             global.WALLET_WIN.destroy();
         } else {

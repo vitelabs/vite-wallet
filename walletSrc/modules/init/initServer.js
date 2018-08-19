@@ -4,14 +4,8 @@ const { startIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modul
 let ipcConnectEvent = null;
 
 function connectGoServer() {
-    global.goViteIPC.connectTo();
-    global.goViteIPC.onConnected(function (connectStatus) {
-        if (ipcConnectEvent) {
-            return;
-        }
-
-        console.log('connectGoServer', connectStatus);
-        if (!connectStatus) {
+    global.goViteIPC.connectTo(function () {
+        if (!global.goViteIPC.__connectStatus) {
             console.log('error: can not connect to go-server');
             return;
         }
@@ -23,12 +17,9 @@ function connectGoServer() {
 
 module.exports = function() {
     // Try to connect
-    global.goViteIPC.connectTo();
-    global.goViteIPC.onConnected(function (connectStatus) {
-        console.log('start  first  connectGoServer', connectStatus);
-
+    global.goViteIPC.connectTo(function () {
         // Server already start
-        if (connectStatus) {
+        if (global.goViteIPC.__connectStatus) {
             global.viteEventEmitter.emit('serverStatus', 1);
             global.viteEventEmitter.emit('ipcReady');
             on();

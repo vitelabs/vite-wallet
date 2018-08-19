@@ -38,47 +38,40 @@ class ipc {
         }
     }
 
-    connectTo() {
+    connectTo(cb) {
         ipcBase.connectTo(VITE_WALLET_IPC, () => {
-            // listening connect
+            // Listening connect
             ipcBase.of[VITE_WALLET_IPC].on('connect', () => {
-                this.emitConnected(1);
+                global.walletLog.info('GoViteIPC connected successfully');
+
+                this.__connectStatus = 1;
+                cb && cb();
             });
 
-            // listening err
-            ipcBase.of[VITE_WALLET_IPC].on('error', () => {
+            // Listening err
+            ipcBase.of[VITE_WALLET_IPC].on('error', (err) => {
                 console.log('error');
-                if (ipcBase.of[VITE_WALLET_IPC].retriesRemaining === 0) {
-                    ipcBase.disconnect(VITE_WALLET_IPC);
-                }
+                // if (ipcBase.of[VITE_WALLET_IPC].retriesRemaining === 0) {
+                //     console.log('???');
+                //     cb && cb();
+                // }
             });
 
-            // listening disconnect
+            // Listening disconnect
             ipcBase.of[VITE_WALLET_IPC].on('disconnect', () => {
                 console.log('disconnect');
+
                 if (!ipcBase.of[VITE_WALLET_IPC] || 
                         !ipcBase.of[VITE_WALLET_IPC].retriesRemaining ||
                         ipcBase.of[VITE_WALLET_IPC].retriesRemaining <= 0) {
-                    this.emitConnected(0);
+                    global.walletLog.info('GoViteIPC is disconnected');
+                    console.log('???');
+                    
+                    this.__connectStatus = 0;
+                    cb && cb();
                 }
             });
         });
-    }
-
-    emitConnected(connectStatus) {
-        global.walletLog.info(`GoViteIPC connect status: ${connectStatus}`);
-
-        this.__connectStatus = connectStatus;
-        this.__connectCB && this.__connectCB(connectStatus);
-        global.viteEventEmitter.emit('ipcConnect', this.__connectStatus);
-    }
-
-    onConnected(cb) {
-        if (this.__connectStatus === 1) {
-            cb && cb(1);
-            return;
-        }
-        this.__connectCB = cb;
     }
 
     disconnect() {
@@ -87,8 +80,8 @@ class ipc {
 }
 
 function netToIPC(methodName, arg) {
-    if (this.__connectStatus === 0 || !ipcBase.of[VITE_WALLET_IPC]) {
-        global.walletLog.info(`GoViteIPC APIs call: ${methodName}. IPC no connection.`);
+    if (this.__connectStatus !== 1 || !ipcBase.of[VITE_WALLET_IPC]) {
+        global.walletLog.error(`GoViteIPC APIs ${methodName}: IPC no connection.`);
 
         return Promise.reject({
             code: -50000,
@@ -96,24 +89,16 @@ function netToIPC(methodName, arg) {
         });
     }
 
-    // Simple compatible with this case.
-    // If there is only one parameter, go-api needs an array containing this parameter.
-    arg = arg === null ? undefined : arg;
-    if (typeof arg !== 'object' && typeof arg !== 'undefined') {
-        arg = [arg];
-    }
+    let requestId = rpcRequestId;
+    rpcRequestId++;
 
-    let payload = jsonrpcPayload(methodName, arg);
-
-    global.walletLog.info(`GoViteIPC APIs call: ${JSON.stringify(payload)}`);
-    ipcBase.of[VITE_WALLET_IPC].emit(payload);
+    global.walletLog.info(`GoViteIPC APIs ${methodName} ${requestId}`);
+    ipcBase.of[VITE_WALLET_IPC].emit(requestId, methodName, arg);
 
     return new Promise((res, rej) => {
-        // listening api
-        ipcBase.of[VITE_WALLET_IPC].on(payload.id, function(data) {
-            global.walletLog.info(`GoViteIPC APIs responce: ${JSON.stringify(payload)}, ${JSON.stringify(data)}`);
-
-            // console.log(data);
+        // Listening api
+        ipcBase.of[VITE_WALLET_IPC].on(requestId, function(data) {
+            global.walletLog.info(`GoViteIPC APIs responce ${methodName} ${requestId}: ${JSON.stringify(data)}`);
 
             // system error
             if (data.error) {
@@ -123,13 +108,7 @@ function netToIPC(methodName, arg) {
                 });
             }
 
-            // Compatible: somtimes data.result is a json string, sometimes not.
-            let result;
-            try {
-                result = JSON.parse(data.result || '');
-            } catch (e) {
-                result = data.result;    
-            }
+            let result = data.result || {};
 
             // server error
             if (result && result.code) {
@@ -143,16 +122,6 @@ function netToIPC(methodName, arg) {
             res(result);
         });
     });
-}
-
-function jsonrpcPayload(method, params) {
-    rpcRequestId++;
-    return {
-        jsonrpc: '2.0',
-        id: rpcRequestId,
-        method,
-        params
-    };
 }
 
 module.exports = ipc;
