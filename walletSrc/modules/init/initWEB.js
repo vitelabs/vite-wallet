@@ -8,11 +8,14 @@ module.exports = function loadWeb() {
     if (!global.WALLET_WIN) {
         return;
     }
+    global.walletLog.info('Start to load web.');
 
     // Load file
     global.WALLET_WIN.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
 
     global.WALLET_WIN.webContents.once('dom-ready', () => {
+        global.walletLog.info('Web dom ready');
+
         // fromPath: app-root
         // Account, Net, Block, Keystore, System, Types, TestToken
         global.WALLET_WIN && global.WALLET_WIN.webContents.executeJavaScript(`

@@ -5,6 +5,10 @@ let ipcConnectEvent = null;
 
 function connectGoServer() {
     global.goViteIPC.connectTo(function () {
+        console.log('second listening');
+
+        console.log(global.goViteIPC.__connectStatus);
+
         if (!global.goViteIPC.__connectStatus) {
             console.log('error: can not connect to go-server');
             return;
@@ -16,8 +20,10 @@ function connectGoServer() {
 }
 
 module.exports = function() {
-    // Try to connect
+    // Try to connect GoViteServer
     global.goViteIPC.connectTo(function () {
+        console.log('first listening');
+
         // Server already start
         if (global.goViteIPC.__connectStatus) {
             global.viteEventEmitter.emit('serverStatus', 1);

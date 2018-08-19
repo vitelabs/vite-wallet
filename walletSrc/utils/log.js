@@ -77,7 +77,8 @@ function addLog({
     info, 
 }) {
     let logInfo = getLogInfo(info, level);
-
+    console.log(logInfo);
+    
     if (!isSync) {
         log(path, logInfo);
         return;
