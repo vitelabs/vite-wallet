@@ -12,7 +12,7 @@
         <router-link class="add-acc" :to="{ 
             name: 'createAccount', params: { from: 'login' }
         }"> 
-            <img class="icon" src="../assets/imgs/add_icon.svg"/>add account
+            <img class="icon" src="../assets/imgs/add_icon.svg"/>{{ $t('accList.addAcc') }}
         </router-link>
     </div>
 </template>

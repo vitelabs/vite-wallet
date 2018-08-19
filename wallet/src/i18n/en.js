@@ -28,6 +28,7 @@ module.exports = {
     // account list
     accList: {
         balance: 'Balance',
+        addAcc: 'Add Account'
     },
 
     //create account
