@@ -93,6 +93,9 @@ export default {
         };
         this.fetchAccount();
     },
+    destroyed() {
+        window.document.onkeydown = null;
+    },
     data() {
         return {
             outAddress: this.$route.params.address,
