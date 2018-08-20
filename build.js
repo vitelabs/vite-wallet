@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { exec } = require('child_process');
 const electronBuilder = require('electron-builder');
 
 const appPath = path.join(__dirname, 'app/');
@@ -77,12 +78,17 @@ function copyIcon() {
 function writePackage() {
     let packageFile = require('./package.json');
     let version = require('./walletSrc/version.json');
+
     packageFile.main = 'main.js';
-    packageFile.version = version.version + '-' + version.clientCode++;
-    // packageFile.version = version.version;
-    fs.writeFileSync('./walletSrc/version.json', JSON.stringify(version), 'utf8');
+    if (version.buildType !== 'prod') {
+        packageFile.version = version.version + '-' + version.clientCode++;
+    } else {
+        packageFile.version = version.version;
+    }
     let build = require('./electron.build.json');
     packageFile.build = build;
+
+    fs.writeFileSync('./walletSrc/version.json', JSON.stringify(version), 'utf8');
     fs.writeFileSync('./app/package.json', JSON.stringify(packageFile), 'utf8');
 }
 
@@ -94,14 +100,54 @@ function startBuild() {
         ], null, 'all'),
         projectDir: path.join(__dirname, './app'),
         publish: 'never'
+    }).then((files)=>{
+        writeSha256(files);
     }).catch(err => {
         throw new Error(err);
     });
 }
 
+function writeSha256(files) {
+    let suffix = build_win ? '.exe' : '.dmg';
+    if (!files || !files.length) {
+        return;
+    }
+
+    let i;
+    for (i=0; i<files.length; i++) {
+        let file = files[i];
+        if (file.endsWith(suffix)) {
+            break;
+        }
+    }
+
+    if (i >= files.length) {
+        return;
+    }
+
+    exec(`shasum -a 256 "${files[i]}"`, (err, stdout)=>{
+        if (err) {
+            console.log(err);
+            return;
+        }
+
+        let sha256 = stdout.split(' ')[0];
+        try {
+            let folder = `./build${build_win ? 'WIN' : 'MAC'}`;
+            let arr = files[i].split('/');
+            let fname = arr[arr.length - 1];
+            !fs.existsSync(folder) && fs.mkdirSync(folder);
+            fs.writeFileSync(`${folder}/sha256`, sha256, 'utf-8');
+            fs.renameSync(files[i], `${folder}/${fname}`);
+            console.log('Build finished');
+        } catch(err) {
+            console.log(err);
+        }
+    });
+}
+
 
 // Base function
-
 function traversing (startPath, cb, folderLevel) {
     function readdirSync (startPath, folderLevel) {
         let files = fs.readdirSync(startPath);
