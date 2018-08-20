@@ -139,7 +139,7 @@ function writeSha256(files) {
             !fs.existsSync(folder) && fs.mkdirSync(folder);
             fs.writeFileSync(`${folder}/sha256`, sha256, 'utf-8');
             fs.renameSync(files[i], `${folder}/${fname}`);
-            console.log('Build finished');
+            console.log(`Build finished ${folder}: ${sha256}`);
         } catch(err) {
             console.log(err);
         }
