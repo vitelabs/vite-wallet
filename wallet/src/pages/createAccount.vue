@@ -3,7 +3,7 @@
         <div class="__btn __btn_input" 
              :class="{ 'active': !!name || inputItem === 'name' }">
             <input ref="name" v-model="name" type='text'
-                   :placeholder="'account name'"
+                   :placeholder="$t('create.accName')"
                    @focus="inputFocus('name')"
                    @blur="inputBlur('name')" />
         </div>

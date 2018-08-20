@@ -33,7 +33,7 @@ function connect () {
         return;
     }
 
-    //init client object for scope persistance especially inside of socket events.
+    // Init client object for scope persistance especially inside of socket events.
     let client = this;
     let clientPath = client.path;
     let ipcBuffer = '';

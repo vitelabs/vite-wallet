@@ -5,9 +5,7 @@ const { shell } = require('electron');
 class Keystore {
     constructor() {
         this.folder = '';
-        global.goViteIPC['wallet.GetDataDir']().then((data)=>{
-            this.folder = data;
-        });
+        this.getFolder();
     }
 
     reloadFile() {
@@ -26,19 +24,28 @@ class Keystore {
     }
 
     openFolder() {
-        if (this.folder) {
+        let openF = () => {
+            !fs.existsSync(this.folder) && fs.mkdirSync(this.folder);
             shell.showItemInFolder(this.folder);
+        };
+        
+        if (this.folder) {
+            openF();
             return;
         }
         
         this.getFolder.then(() => {
-            shell.showItemInFolder(this.folder);
+            openF();
         });
     }
 
     importFile(filePath, fileName) {
         return this.isValidFile(filePath).then((data) => {
-            data && fs.renameSync(filePath, path.join(this.folder, fileName));
+            if (!data || !this.folder) {
+                return false;
+            }
+            !fs.existsSync(this.folder) && fs.mkdirSync(this.folder);
+            fs.renameSync(filePath, path.join(this.folder, fileName));
             return data;
         });
     }

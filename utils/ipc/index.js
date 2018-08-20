@@ -41,7 +41,7 @@ class IPC{
         }
     
         this.of[id] = new Client({
-            id, 
+            id,
             config: this.config,
             path: this.config.appspace + id
         });

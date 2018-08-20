@@ -89,6 +89,15 @@ function netToIPC(methodName, arg) {
     ipcBase.of[VITE_WALLET_IPC].emit(requestId, methodName, arg);
 
     return new Promise((res, rej) => {
+        let ipcTimeout = setTimeout(()=>{
+            clearTimeout(ipcTimeout);
+            ipcTimeout = null;
+            return rej({
+                code: -50005,
+                message: 'IPC connection timeout.'
+            });
+        }, 6000);
+
         // Listening api
         ipcBase.of[VITE_WALLET_IPC].on(requestId, function(data) {
             global.walletLog.info(`GoViteIPC APIs ${methodName} ${arg ? JSON.stringify(arg) : '' }: ${JSON.stringify(data)}`);
