@@ -3,7 +3,7 @@ const spawn = require('~app/modules/cross-spawn');
 const fs = require('fs');
 const path = require('path');
 
-let serverName = isWindows ? '/viteGoServer.exe' : '/viteGoServer';
+let serverName = isWindows ? '/goViteServer.exe' : '/goViteServer';
 let binPath = path.join(global.APP_PATH, serverName);
 
 if (!isWindows) {

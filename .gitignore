@@ -5,9 +5,9 @@ dist
 .eslintcache
 .idea
 .vscode
-viteGoServer_MAC
-viteGoServer_WIN
-viteGoServer_WIN.exe
+goViteServer_MAC
+goViteServer_WIN
+goViteServer_WIN.exe
 vite_leveldb_database
 buildMAC
 buildWIN

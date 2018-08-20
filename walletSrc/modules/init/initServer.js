@@ -21,7 +21,7 @@ function connectGoServer() {
 }
 
 module.exports = function() {
-    // Try to connect GoViteServer
+    // Try to connect goViteServer
     global.goViteIPC.connectTo(function () {
         // Server already start
         if (global.goViteIPC.__connectStatus) {

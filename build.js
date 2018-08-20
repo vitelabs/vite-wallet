@@ -61,11 +61,11 @@ function formatFile(filePath, folderLevel) {
 
 function copyServer() {
     if (!build_win) {
-        fs.writeFileSync('./app/viteGoServer', fs.readFileSync('./viteGoServer_MAC'));
+        fs.writeFileSync('./app/goViteServer', fs.readFileSync('./goViteServer_MAC'));
         return;
     }
 
-    fs.writeFileSync('./app/viteGoServer.exe', fs.readFileSync('./viteGoServer_WIN.exe'));
+    fs.writeFileSync('./app/goViteServer.exe', fs.readFileSync('./goViteServer_WIN.exe'));
 }
 
 function copyIcon() {
@@ -137,9 +137,10 @@ function writeSha256(files) {
             let arr = files[i].split('/');
             let fname = arr[arr.length - 1];
             !fs.existsSync(folder) && fs.mkdirSync(folder);
-            fs.writeFileSync(`${folder}/sha256`, sha256, 'utf-8');
+            fs.writeFileSync(`${folder}/sha256`, `${fname} : ${sha256}`, 'utf-8');
             fs.renameSync(files[i], `${folder}/${fname}`);
-            console.log(`Build finished ${folder}: ${sha256}`);
+            
+            console.log(`Build finished ${folder}: ${fname} - ${sha256}`);
         } catch(err) {
             console.log(err);
         }
