@@ -25,7 +25,7 @@ function init() {
     global.walletLog.info('APP start');
 
     process.on('uncaughtException', error => {
-        global.walletLog.error(`UNCAUGHT EXCEPTION: ${JSON.stringify(error)}`, true);
+        global.walletLog.error(`UNCAUGHT EXCEPTION: ${JSON.stringify(error)}`);
         global.APPQuit();
     });
 
@@ -54,7 +54,10 @@ function init() {
             ipcReady, appReady
         })}`);
 
-        ipcReady && global.viteEventEmitter.off(ipcEvent);
+        if (ipcReady) {
+            global.viteEventEmitter.off(ipcEvent);
+            global.goViteIPC.setConfig({ retry: 1000, maxRetries: 20 });
+        }
         appReady && global.viteEventEmitter.off(appEvent);
     
         if (!ipcReady || !appReady) {

@@ -38,15 +38,26 @@ class ipc {
         }
     }
 
+    setConfig({
+        retry = 100, maxRetries = 5
+    }) {
+        ipcBase.config.retry = retry;
+        ipcBase.config.maxRetries = maxRetries;
+    }
+
     connectTo(cb) {
         global.walletLog.info('GoViteIPC start to connect.');
+        let connectCB = () => {
+            cb && cb();
+            cb = null;
+        };
 
         ipcBase.connectTo(VITE_WALLET_IPC, () => {
             // Listening connect
             ipcBase.of[VITE_WALLET_IPC].on('connect', () => {
                 global.walletLog.info('GoViteIPC connected successfully.');
                 this.__connectStatus = 1;
-                cb && cb();
+                connectCB();
             });
 
             // Listening err
@@ -57,13 +68,21 @@ class ipc {
             // Listening disconnect
             ipcBase.of[VITE_WALLET_IPC].on('disconnect', () => {
                 global.walletLog.error('GoViteIPC is disconnected.');
+                this.__connectStatus = 0;
             });
 
             ipcBase.of[VITE_WALLET_IPC].on('destroy', () => {
-                global.walletLog.error('GoViteIPC has been destroyed.');
-                global.viteEventEmitter.emit('ipcDisconnect');
                 this.__connectStatus = 0;
-                cb && cb();
+                connectCB();
+
+                // [NOTICE] Separate from the 'GoViteIPC destroy'
+                if (!ipcBase.of[VITE_WALLET_IPC] || ipcBase.of[VITE_WALLET_IPC].explicitlyDisconnected) {
+                    global.walletLog.error('GoViteIPC has been destroyed.');
+                    return;
+                }
+                    
+                global.walletLog.error('GoViteIPC connection timeout.');
+                global.viteEventEmitter.emit('ipcDisconnect');
             });
         });
     }

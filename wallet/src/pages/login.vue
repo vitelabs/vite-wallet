@@ -120,13 +120,22 @@ export default {
             }
 
             let address = this.activeAccount.address;
-            viteWallet.Account.unLock(address, this.password).then(()=>{
+            let loginSuccess = ()=>{
                 this.password = '';
                 this.$router.push({
                     name: 'account',
                     params: { address }
                 });
+            };
+
+            viteWallet.Account.unLock(address, this.password).then(()=>{
+                loginSuccess();
             }).catch(({ code, message })=>{
+                if (code === 4002) {
+                    loginSuccess();
+                    return;
+                }
+                
                 console.warn(message);
                 if (code === 4001) {
                     window.alert(this.$t('hint.pwErr'));

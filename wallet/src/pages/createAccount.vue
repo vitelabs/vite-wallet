@@ -54,6 +54,10 @@ export default {
             text === this.inputItem && (this.inputItem = '');
         },
         goWhere() {
+            if (this.isCreating) {
+                return;
+            }
+
             if (this.btn === 'back') {
                 this.$router.go(-1);
                 return;
@@ -80,6 +84,10 @@ export default {
         },
 
         createAccount() {
+            if (this.isCreating) {
+                return;
+            }
+            
             // [NOTICE] order fix
             // name not empty
             if (!this.name) {

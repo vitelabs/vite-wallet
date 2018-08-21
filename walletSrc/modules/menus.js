@@ -15,8 +15,12 @@ module.exports = function() {
                 { 
                     label: 'Quit', 
                     accelerator: 'Command+Q', 
-                    click() { 
-                        app.quit();
+                    click() {
+                        if (global.APPQuit) {
+                            global.APPQuit();
+                        } else {
+                            app.quit();
+                        }
                     }
                 }
             ]

@@ -22,12 +22,19 @@ global.netStatus = -1;
 global.walletLog = require('~app/utils/log.js');
 
 // Init app-quit func
+let isQuiting = false;
 global.APPQuit = function() {
+    if (isQuiting) {
+        return;
+    }
+
+    isQuiting = true;
     const { stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
 
     let quit = () => {
         global.goViteIPC && global.goViteIPC.disconnect();
         stopIPCServer(()=>{
+            isQuiting = false;
             app.quit();
         });
     };

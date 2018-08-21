@@ -19,6 +19,7 @@ if (!isWindows) {
 }
 
 let subProcess = null;
+let stopCB = null;
 
 module.exports = {
     startIPCServer: function(cb) {
@@ -71,6 +72,7 @@ module.exports = {
 
             // Clear subProcess
             subPro === subProcess && (subProcess = null);
+            !stopCB && global.APPQuit();
         });
     },
     
@@ -78,10 +80,15 @@ module.exports = {
 };
 
 function stopIPCServer (cb) {
+    if (stopCB) {
+        return;
+    }
+
     global.walletLog.info(`Has vite-go-server? ${!!subProcess}`);
+    stopCB = cb;
 
     if (!subProcess) {
-        cb && cb();
+        stopCB && stopCB();
         return;
     }
 
@@ -90,7 +97,7 @@ function stopIPCServer (cb) {
     if (isWindows) {
         spawn('taskkill /pid ' + subProcess.pid + ' /T /F');
         global.walletLog.info('Stop vite-go-server success.');
-        cb && cb();
+        stopCB && stopCB();
         return;
     }
 
@@ -99,8 +106,12 @@ function stopIPCServer (cb) {
             info: 'Stop vite-go-server success.',
             code
         });
-        cb && cb();
+        stopCB && stopCB();
     });
 
-    subProcess.kill('SIGHUP');
+    try {
+        subProcess.kill('SIGHUP');
+    } catch(err) {
+        global.walletLog.error(`KILL goViteServer maybe failed: ${JSON.stringify(err)}`);
+    }
 }

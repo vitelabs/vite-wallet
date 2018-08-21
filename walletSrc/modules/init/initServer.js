@@ -5,10 +5,6 @@ let ipcConnectEvent = null;
 
 function connectGoServer() {
     global.goViteIPC.connectTo(function () {
-        if (ipcConnectEvent) {
-            return;
-        }
-
         if (!global.goViteIPC.__connectStatus) {
             global.walletLog.error('Can not connect to GoVite IPC server.');
             return;
@@ -51,13 +47,6 @@ function on() {
 
     ipcConnectEvent = global.viteEventEmitter.on('ipcDisconnect', function() {
         global.walletLog.info('GoVite IPC server is closed.');
-
-        setTimeout(()=>{
-            global.walletLog.info('Start to restart GoVite IPC server.');
-
-            startIPCServer(()=>{
-                global.goViteIPC.connectTo();
-            });
-        }, 5000);
+        global.APPQuit();
     });
 }
