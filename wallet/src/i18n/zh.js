@@ -28,11 +28,12 @@ module.exports = {
     // account list
     accList: {
         balance: '余额',
-        addAcc: '新添加一个账号'
+        addAcc: '新添加一个账户'
     },
 
     // create account
     create: {
+        accName: '账户昵称',
         input: '请输入密码',
         again: '请再次输入密码',
         choose:'选择账户',

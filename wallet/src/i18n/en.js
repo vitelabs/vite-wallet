@@ -33,6 +33,7 @@ module.exports = {
 
     //create account
     create: {
+        accName: 'Account name',
         input: 'Please input password',
         again: 'Please input password again!',
         choose:'Choose account',

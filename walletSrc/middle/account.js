@@ -1,6 +1,4 @@
 const { readAccountFileSync, writeAccountFile } = require('../utils/accountFile.js');
-const { app } = require('electron');
-
 const accNamePre = 'account';
 
 class Account {
@@ -10,10 +8,6 @@ class Account {
         this.__fileAccountsMap = accountFile.namesMap || {};  // AccountName should be saved forever.
         this.__nameCount = accountFile.nameCount || 0;
         this.__lastLoginAccount = accountFile.lastLoginAccount || '';
-
-        app.on('before-quit', () => {
-            this.__lastLoginAccount && this.lock(this.__lastLoginAccount);
-        });
     }
 
     __checkName(address, isSave = true) {
@@ -37,6 +31,13 @@ class Account {
             this.__writeFile();
             return address;
         });
+    }
+
+    lockCurrentAcc() {
+        if (!this.__lastLoginAccount) {
+            return Promise.resolve();
+        }
+        return this.lock(this.__lastLoginAccount);
     }
 
     get(address) {

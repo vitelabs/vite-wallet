@@ -55,7 +55,7 @@ export default {
         transList, accountHead
     },
     mounted() {
-        this.fetchAccount();
+        this.fetchAccount(true);
     },
     data() {
         return {
@@ -106,7 +106,7 @@ export default {
             window.clearTimeout(fetchAccountTimeout);
             fetchAccountTimeout = null;
         },
-        fetchAccount() {
+        fetchAccount(isFirst) {
             let reFetch = () => {
                 fetchAccountTimeout = window.setTimeout(()=>{
                     this.clearAccountTimeout();
@@ -132,7 +132,7 @@ export default {
                 reFetch();
             }).catch((err) => {
                 console.warn(err);
-                window.alert(this.$t('transList.valid.err'));
+                isFirst && window.alert(this.$t('transList.valid.err'));
                 reFetch();
             });
         }

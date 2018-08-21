@@ -1,4 +1,4 @@
-const { net } = require('electron');
+const { app, net } = require('electron');
 const querystring = require('querystring');
 
 const protocol = 'https:';
@@ -40,7 +40,18 @@ function parseReq({
 module.exports = function({
     path, params, method = 'POST', headers = {}, type = 'json'
 }) {
+    if (!app.isReady()) {
+        let message = 'Net module must be called after the APP is ready.';
+
+        global.walletLog.error(`HTTP ${path}: ${message}`);
+        return Promise.reject({
+            code: -50004,
+            message
+        });
+    }
+
     if (!global.netStatus) {
+        global.walletLog.error(`HTTP ${path}: Net error`);
         return Promise.reject({
             code: -50003,
             message: 'Net error'
@@ -83,6 +94,8 @@ module.exports = function({
         };
 
         let httpRej = ({ code, message }) => {
+            global.walletLog.error(`HTTP ${path}: ${message}`);
+
             cancelTimeout();
             return rej({
                 code, message
@@ -111,7 +124,10 @@ module.exports = function({
                         });
                     }
 
-                    res(data || null);
+                    data = data || null;
+
+                    global.walletLog.info(`HTTP ${path}(${JSON.stringify(reqText)}): ${JSON.stringify(data)}`);
+                    res(data);
                 } catch(err) {
                     return httpRej({
                         code: -50001,

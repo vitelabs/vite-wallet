@@ -14,6 +14,7 @@ const System = new system();
 const Types = new types();
 const TestToken = new testToken();
 
-module.exports = {
+global.walletIpcAPIs = {
     Net, Account, Block, Keystore, System, Types, TestToken
 };
+module.exports = global.walletIpcAPIs;

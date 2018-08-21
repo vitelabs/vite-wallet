@@ -1,5 +1,4 @@
 const { clipboard, app } = require('electron');
-const { add } = require('../utils/log.js');
 
 class System {
     constructor() {
@@ -10,19 +9,12 @@ class System {
         clipboard.writeText(text);
     }
 
-    setLocale(locale) {
-        if (global.userLocale !== locale) {
-            global.walletLog.info(`locale-${locale}`);
-        }
-        global.userLocale = locale;
+    setLocale (locale) {
+        global.$i18n.setLocale(locale);
     }
 
     getLocale() {
         return app.getLocale();
-    }
-
-    log(msg) {
-        add(msg);
     }
 }
 

@@ -4,7 +4,7 @@
             <div @click="toggleAccountList">
                 <div v-show="activeAccount" class="__btn_input_active">
                     <div class="name __ellipsis">{{activeAccount.name}}</div>
-                    <div class="address __ellipsis">{{activeAccount.address}}</div>
+                    <div class="address __ellipsis">{{activeAccount.showAddr}}</div>
                 </div>
 
                 <div v-show="!activeAccount" class="__btn_input">{{ $t('create.choose') }}</div>
@@ -39,6 +39,7 @@
 
 <script>
 import accountList from 'components/accountList.vue';
+import ellipsisAddr from 'utils/ellipsisAddr.js';
 import Vue from 'vue';
 
 export default {
@@ -63,12 +64,21 @@ export default {
         let activeAccount;
         if (this.$route.params.address) {
             let address = this.$route.params.address;
+            let showAddr = ellipsisAddr(address);
             activeAccount = {
+                showAddr,
                 address,
                 name: viteWallet.Account.getName(address)
             };
         } else {
-            activeAccount = viteWallet.Account.getLast();
+            let account = viteWallet.Account.getLast();
+            if (account && account.address) {
+                activeAccount = {
+                    address: account.address,
+                    name: account.name,
+                    showAddr: ellipsisAddr(account.address)
+                };
+            }
         }
 
         return {
@@ -129,14 +139,20 @@ export default {
 
         getAccountList() {
             viteWallet.Account.getList().then((list) => {
-                this.accountList = list || [];
+                list = list || [];
+                list.forEach((account) => {
+                    account.showAddr = ellipsisAddr( account.address );
+                });
+                this.accountList = list;
+
                 if (this.activeAccount || !this.accountList.length) {
                     return;
                 }
 
                 this.activeAccount = {
                     name: this.accountList[0].name,
-                    address: this.accountList[0].address
+                    address: this.accountList[0].address,
+                    showAddr: this.accountList[0].showAddr
                 };
             }).catch((err) => {
                 console.warn(err);
@@ -155,7 +171,7 @@ export default {
 
     .slide {
         position: absolute;
-        top: 19px;
+        top: 22px;
         right: 17.5px;
         display: inline-block;
         width: 12px;

@@ -40,6 +40,7 @@
 import pagination from 'components/pagination.vue';
 import date from 'utils/date.js';
 import bigNumber from 'utils/bigNumber.js';
+import ellipsisAddr from 'utils/ellipsisAddr.js';
 
 const pageCount = 20;
 let reTimeout = null;
@@ -147,12 +148,7 @@ export default {
                     }
 
                     let timestamp = item.Timestamp * 1000;
-
-                    let addr = item.FromAddr || item.ToAddr;
-                    let transAddr = addr.length > 25 ? 
-                        addr.slice(0, 15) + '......' + addr.slice(-10) :
-                        '';
-
+                    let transAddr = ellipsisAddr( item.FromAddr || item.ToAddr );
                     let amount = bigNumber.amountToBasicString(item.Amount);
 
                     nowList.push({
