@@ -109,18 +109,25 @@ function netToIPC(methodName, arg) {
 
     return new Promise((res, rej) => {
         let ipcTimeout = setTimeout(()=>{
-            clearTimeout(ipcTimeout);
-            ipcTimeout = null;
+            clearIpcTimeout();
+
+            global.walletLog.info(`GoViteIPC APIs ${methodName}: IPC connection timeout.`);
             return rej({
                 code: -50005,
                 message: 'IPC connection timeout.'
             });
         }, 6000);
 
+        let clearIpcTimeout = ()=>{
+            clearTimeout(ipcTimeout);
+            ipcTimeout = null;
+        };
+
         // Listening api
         ipcBase.of[VITE_WALLET_IPC].on(requestId, function(data) {
-            global.walletLog.info(`GoViteIPC APIs ${methodName} ${arg ? JSON.stringify(arg) : '' }: ${JSON.stringify(data)}`);
-
+            global.walletLog.info(`GoViteIPC APIs ${methodName}: ${JSON.stringify(data)}`);
+            
+            clearIpcTimeout();
             // system error
             if (data.error) {
                 return rej({

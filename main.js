@@ -23,10 +23,10 @@ function init() {
     require('./walletSrc/modules/init/initGlobalVars.js');   // Global vars must be defined in advance
 
     global.walletLog.info('APP start');
-
+    
     process.on('uncaughtException', error => {
         global.walletLog.error(`UNCAUGHT EXCEPTION: ${JSON.stringify(error)}`);
-        global.APPQuit();
+        global.dialog.crash('Program exception');
     });
 
     const initServer = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initServer.js'));

@@ -52,7 +52,7 @@ function question ({
 function myDialog({
     type, buttons, title='Vite Wallet', message, defaultId = 0
 }, cb) {
-    if (!global.WALLET_WIN) {
+    if (!global.WALLET_WIN || global.WALLET_WIN.isDestroyed()) {
         return;
     }
 

@@ -20,7 +20,7 @@ let BASE_INFO = {
     isWindows
 };
 let logTimeout = null;
-let logTime = syncLogTime();
+let logTime = syncLogTime(true);
 
 // init
 startLogTimeout();
@@ -97,7 +97,7 @@ function startLogTimeout() {
     }, validityPeriod);
 }
 
-function syncLogTime() {
+function syncLogTime(isInit) {
     let nowDate = new Date().getTime();
 
     if ( !fs.existsSync(LOG_DATE_PATH) ) {
@@ -105,7 +105,7 @@ function syncLogTime() {
         return nowDate;
     }
 
-    let lastLogDate = fs.readFileSync(LOG_DATE_PATH);
+    let lastLogDate = fs.readFileSync(LOG_DATE_PATH).toString();
     if (!lastLogDate) {
         fs.writeFileSync(LOG_DATE_PATH, nowDate, 'utf8');
         return nowDate;
@@ -116,7 +116,7 @@ function syncLogTime() {
     }
 
     fs.writeFileSync(LOG_DATE_PATH, nowDate, 'utf8');
-    return nowDate;
+    return isInit ? lastLogDate : nowDate;
 }
 
 function clearDIR(dirPath) {
@@ -135,7 +135,7 @@ function clearDIR(dirPath) {
             if (curPath === global.SERVER_LOG_PATH || curPath === global.CLIENT_LOG_PATH) {
                 return;
             }
-    
+
             fs.unlinkSync(curPath);
         });
     } catch(err) {
@@ -145,8 +145,7 @@ function clearDIR(dirPath) {
 
 function formatFileName(type) {
     let time = new Date();
-    let formatDate = `${time.getFullYear()}_${time.getMonth()+1}_${time.getDate()}` + 
-                    `_${time.getHours()}_${time.getMinutes()}_${time.getSeconds()}`;
+    let formatDate = `${time.getFullYear()}_${time.getMonth()+1}_${time.getDate()}` + `_${time.getHours()}_${time.getMinutes()}_${time.getSeconds()}`;
     let filename = `${type}.${formatDate}.log`;
     let oldPath = type === 'server' ? global.SERVER_LOG_PATH : global.CLIENT_LOG_PATH;
     let newPath = path.join(global.LOG_PATH, filename);
