@@ -1,4 +1,4 @@
-// [TODO]  multi-node-modules test mock-server
+// [TODO] test-version use commitId, build multi-node-modules, test, mock-server
 const path = require('path');
 const { app } = require('electron');
 
