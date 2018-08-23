@@ -8,7 +8,7 @@
 
                 <span class="__balance" v-show="!balanceInfos.length">0</span>
                 <div v-show="balanceInfos.length" v-for="(balanceInfo, i) in balanceInfos" :key="i">
-                    <span class="__balance">{{ balanceInfo.balance }}</span>
+                    <span class="__balance">{{ balanceInfo.balance || 0 }}</span>
                     <span class="__symbol">{{ balanceInfo.tokenSymbol }}</span>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                 <span v-show="!fundFloat.balanceInfos || !fundFloat.balanceInfos.length"
                       class="__balance" >0</span>
                 <div v-for="(balanceInfo, i) in fundFloat.balanceInfos" :key="i">
-                    <span class="__balance">{{ balanceInfo.balance }}</span>
+                    <span class="__balance">{{ balanceInfo.balance || 0 }}</span>
                     <span class="__symbol">{{ balanceInfo.tokenSymbol }}</span>
                 </div>
             </div>
@@ -125,10 +125,10 @@ export default {
                 }
 
                 this.accountName = name;
-                this.fundFloat = fundFloat;
+                this.fundFloat = fundFloat || {};
                 this.blockHeight = blockHeight;
-                this.balanceInfos = this.formatAmountList(balanceInfos);    // deal with balanceinfo
-                this.fundFloat.balanceInfos = this.formatAmountList(fundFloat.balanceInfos);    // deal with fundinfo
+                this.balanceInfos = balanceInfos ? this.formatAmountList(balanceInfos) : [];    // deal with balanceinfo
+                this.fundFloat.balanceInfos = fundFloat.balanceInfos ? this.formatAmountList(fundFloat.balanceInfos) : [];    // deal with fundinfo
                 reFetch();
             }).catch((err) => {
                 console.warn(err);
