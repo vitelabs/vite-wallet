@@ -50,7 +50,7 @@ export default {
     methods: {
         goDetail() {
             let locale = this.$i18n.locale === 'zh' ? 'zh/' : '';
-            window.open(`https://test.vite.net/${locale}account/${this.address}`);
+            window.open(`https://testnet.vite.net/${locale}account/${this.address}`);
         },
 
         getTestToken() {

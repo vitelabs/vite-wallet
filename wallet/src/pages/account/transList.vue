@@ -97,7 +97,7 @@ export default {
 
         goDetail(trans) {
             let locale = this.$i18n.locale === 'zh' ? 'zh/' : '';
-            window.open(`https://test.vite.net/${locale}transaction/${trans.hash}`);
+            window.open(`https://testnet.vite.net/${locale}transaction/${trans.hash}`);
         },
 
         toPage(pageNumber) {
