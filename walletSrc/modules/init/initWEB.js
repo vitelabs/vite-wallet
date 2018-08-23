@@ -1,6 +1,7 @@
 const { shell } = require('electron');
 const path = require('path');
 require('~app/modules/electron-ga');
+require('~app/modules/electron-baidu-tongji');
 
 const allowHost = ['https://test.vite.net'];
 
@@ -26,10 +27,12 @@ module.exports = function loadWeb() {
             });
 
             const { Analytics } = require('../modules/electron-ga');
-            const analytics = new Analytics('UA-123680072-1');
-            analytics.send('pageview', {
-                'client': 'ok'
+            window.analytics = new Analytics('UA-123680072-1');
+            analytics.send('event', {
+                dp: 'home'
             });
+
+            window.baiduTongji = require('../modules/electron-baidu-tongji');
         `);
     });
 

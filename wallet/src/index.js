@@ -99,6 +99,9 @@ appReady(function () {
 
 function initVue(routes) {
     const router = new VueRouter({ routes });
+
+    window.baiduTongji('84d0d7aff86074ac33b30b38c222f2c0', router);
+
     new Vue({
         el: '#app',
         components: { App },

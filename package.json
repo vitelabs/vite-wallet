@@ -37,6 +37,7 @@
     },
     "dependencies": {
         "cross-spawn": "^6.0.5",
+        "electron-baidu-tongji": "^1.0.1",
         "electron-ga": "^1.0.6"
     }
 }

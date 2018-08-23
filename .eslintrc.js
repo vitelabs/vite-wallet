@@ -30,6 +30,6 @@ module.exports = {
         "no-console": "off",
         "no-useless-escape": "off",
         "vue/html-indent": ["error", 4],
-        'no-debugger': 1,
+        'no-debugger': 0,
     }
 };
