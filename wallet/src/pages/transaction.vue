@@ -173,7 +173,7 @@ export default {
 
                 balanceInfos.forEach(({ Balance, TokenSymbol })=>{
                     list.push({
-                        balance: bigNumber.amountToBasicString(Balance),
+                        balance: Balance ? bigNumber.amountToBasicString(Balance) || 0 : 0,
                         tokenSymbol: TokenSymbol
                     });
                 });
