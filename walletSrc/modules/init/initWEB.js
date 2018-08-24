@@ -17,7 +17,7 @@ module.exports = function loadWeb() {
     global.WALLET_WIN.webContents.once('dom-ready', () => {
         global.walletLog.info('Web dom ready');
 
-        // fromPath: app-root
+        // FromPath: app-root
         // Account, Net, Block, Keystore, System, Types, TestToken
         global.WALLET_WIN && global.WALLET_WIN.webContents.executeJavaScript(`
             const { remote } = require('electron');

@@ -63,7 +63,10 @@ function init() {
         if (!ipcReady || !appReady) {
             return;
         }
-        
+
+        global.WALLET_WIN && global.WALLET_WIN.setSize(1210, 768);
+        global.WALLET_WIN && global.WALLET_WIN.center();
+
         initWEB();
         initMenu();
     }
