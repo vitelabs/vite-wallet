@@ -16,7 +16,7 @@ global.CLIENT_LOG_PATH = path.join(global.LOG_PATH, '/client.log'); // client lo
 !fs.existsSync(global.LOG_PATH) && fs.mkdirSync(global.LOG_PATH);
 
 global.WALLET_WIN = null;
-global.netStatus = false;
+global.netStatus = -1;
 
 // Init log: Log needs environmental information
 global.walletLog = require('~app/utils/log.js');
