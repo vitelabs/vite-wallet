@@ -39,9 +39,18 @@ module.exports = function loadWeb() {
     // Redefine file
     global.WALLET_WIN.webContents.on('new-window', (event, url) => {
         event.preventDefault();
-        let urlRes = require('url').parse(url);
-        if (allowHost.indexOf(`${urlRes.protocol}//${urlRes.host}`) > -1) {
-            shell.openExternal(url);
+        global.walletLog.info(`Open url: ${url}`);
+
+        try {
+            let urlRes = require('url').parse(url);
+            let host = `${urlRes.protocol}//${urlRes.host}`;
+            global.walletLog.info(`Open url: ${host}`);
+
+            if (allowHost.indexOf(host) > -1) {
+                shell.openExternal(url);
+            }
+        } catch(err) {
+            global.walletLog.error(`Open url error: ${JSON.stringify(err)}`);
         }
     });
 
