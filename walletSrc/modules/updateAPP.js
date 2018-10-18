@@ -2,16 +2,7 @@ const { shell, dialog } = require('electron');
 const version = require('../version.json');
 const request = require('../utils/http.js');
 
-let serverStautsEvent = null;
-let serverStatus = -1;
-let waitForQuit = false;
-
 module.exports = function() {
-    serverStautsEvent = global.viteEventEmitter.on('serverStatus', function(status) {
-        serverStatus = status;
-        serverStatus === 1 && waitForQuit && quit();
-    });
-
     // The net module can be used after the APP is ready.
     let appEvent = null;
     global.viteEventEmitter.on('appReady', function() {
@@ -46,7 +37,6 @@ function requestUpdate() {
         global.walletLog.info('APP should update.');
         showDialog(data);
     }).catch(()=>{
-        global.viteEventEmitter.off(serverStautsEvent);
     });
 }
 
@@ -72,17 +62,10 @@ function showDialog({
         if (!isForce) {
             return;
         }
-
-        // Go-server has started to start, so wait for it to start and close it.
-        if (serverStatus === 0) {
-            waitForQuit = true;
-            return;
-        }
         quit();
     });
 }
 
 function quit() {
-    global.viteEventEmitter.off(serverStautsEvent);
     global.WALLET_WIN.destroy();
 }

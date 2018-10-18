@@ -23,7 +23,7 @@ traversing(appPath, (fPath, folderLevel, next) => {
         formatFile(fPath, folderLevel);
     }
 }, './');
-copyServer();
+copyFolder('./wallet', path.join(appPath, 'walletPages'));
 !no_build && copyIcon();
 !no_build && writePackage();
 !no_build && startBuild();
@@ -57,15 +57,6 @@ function formatFile(filePath, folderLevel) {
     }
 
     fs.writeFileSync(filePath, file.replace(/(~app\/)/g, folderLevel), 'utf8');
-}
-
-function copyServer() {
-    if (!build_win) {
-        fs.writeFileSync('./app/goViteServer', fs.readFileSync('./goViteServer_MAC'));
-        return;
-    }
-
-    fs.writeFileSync('./app/goViteServer.exe', fs.readFileSync('./goViteServer_WIN.exe'));
 }
 
 function copyIcon() {

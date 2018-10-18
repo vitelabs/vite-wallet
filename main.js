@@ -1,4 +1,3 @@
-// [TODO] test-version use commitId, build multi-node-modules, test, mock-server
 const path = require('path');
 const { app } = require('electron');
 
@@ -29,49 +28,24 @@ function init() {
         global.dialog.crash('Program exception');
     });
 
-    const initServer = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initServer.js'));
     const initAPP = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initAPP.js'));
     const initWEB = require( path.join(global.APP_PATH, '/walletSrc/modules/init/initWEB.js') );
     const initMenu = require(path.join(global.APP_PATH, '/walletSrc/modules/menus.js'));
     const updateAPP = require( path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js') );
     
-    let ipcReady = false;
-    let appReady = false;
-    
-    let ipcEvent = global.viteEventEmitter.on('ipcReady', function() {
-        ipcReady = true;
-        setReadyStatus({ appReady, ipcReady });
-    });
     let appEvent = global.viteEventEmitter.on('appReady', function() {
-        appReady = true;
-        setReadyStatus({ ipcReady, appReady });
-    });
-    
-    function setReadyStatus({
-        ipcReady, appReady
-    }) {
         global.walletLog.info(`SetReadyStatus: ${JSON.stringify({
-            ipcReady, appReady
+            appReady: true
         })}`);
 
-        if (ipcReady) {
-            global.viteEventEmitter.off(ipcEvent);
-            global.goViteIPC.setConfig({ retry: 1000, maxRetries: 20 });
-        }
-        appReady && global.viteEventEmitter.off(appEvent);
-    
-        if (!ipcReady || !appReady) {
-            return;
-        }
-
+        global.viteEventEmitter.off(appEvent);
         global.WALLET_WIN && global.WALLET_WIN.setSize(1210, 768);
         global.WALLET_WIN && global.WALLET_WIN.center();
 
         initWEB();
         initMenu();
-    }
+    });
 
     updateAPP();
-    initServer();
     initAPP();  
 }

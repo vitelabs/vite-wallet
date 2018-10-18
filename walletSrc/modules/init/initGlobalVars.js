@@ -1,9 +1,7 @@
 const { app } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const os = require('os');
 
-global.GO_FILE = path.join(os.homedir(), '/viteisbest/');   // ipc path
 global.APP_PATH = process.env.NODE_ENV === 'dev' ? path.join(app.getAppPath(), 'app') : app.getAppPath();   // app-root
 
 global.USER_DATA_PATH = app.getPath('userData');
@@ -27,31 +25,13 @@ global.APPQuit = function() {
     if (isQuiting) {
         return;
     }
-
     isQuiting = true;
-    const { stopIPCServer } = require( path.join(global.APP_PATH, '/walletSrc/modules/viteNode.js') );
-
-    let quit = () => {
-        global.goViteIPC && global.goViteIPC.disconnect();
-        stopIPCServer(()=>{
-            isQuiting = false;
-            app.quit();
-        });
-    };
 
     global.WALLET_WIN && !global.WALLET_WIN.isDestroyed() && global.WALLET_WIN.destroy();
     global.WALLET_WIN = null;
 
-    if (!global.walletIpcAPIs) {
-        quit();
-        return;
-    }
-
-    global.walletIpcAPIs.Account.lockCurrentAcc().then(()=>{
-        quit();
-    }).catch(()=>{
-        quit();
-    });
+    isQuiting = false;
+    app.quit();
 };
 
 // Init i18n
@@ -61,9 +41,5 @@ global.$t = global.$i18n.t.bind(global.$i18n);
 
 // Init dialog
 global.dialog = require('../dialog.js');
-
-// Init ipc
-const ipcGo = require( path.join(global.APP_PATH, '/walletSrc/utils/ipcGo.js') );
-global.goViteIPC = new ipcGo();
 
 global.viteEventEmitter = require('~app/utils/eventEmitter.js');

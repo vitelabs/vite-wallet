@@ -7,15 +7,14 @@
         "url": "git+https://github.com/vitelabs/vite-wallet.git"
     },
     "scripts": {
-        "build:walletmap": "cd wallet && npm run build:map",
-        "build:walletpages": "cd wallet && npm run build",
-        "clean": "rm -rf ./app",
-        "build": "npm run clean && npm run build:walletpages && gulp && node build.js",
-        "builddev": "npm run clean && npm run build:walletmap && gulp && node build.js",
+        "clean": "rm -rf ./app && rm -rf ./vite-web-wallet",
+        "build": "npm run clean && gulp && node build.js",
+        "builddev": "npm run clean && gulp && node build.js",
         "buildWIN": "p=WIN npm run build",
         "dev": "NO_BUILD=true npm run builddev && NODE_ENV=dev electron .",
         "test": "mocha",
-        "lint": "eslint ./ --cache"
+        "lint": "eslint ./ --cache",
+        "build:web": "npm run clean && node buildWeb.js && node build.js"
     },
     "pre-commit": [
         "lint"
