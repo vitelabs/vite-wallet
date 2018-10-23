@@ -1543,12 +1543,12 @@ var messageTimeout = null;
       return true;
     },
     testMessage: function testMessage() {
-      if (/\s+/g.test(this.message)) {
-        this.messageErr = this.$t('accDetail.valid.remarksFormat');
-        return;
-      }
-
-      var str = encodeURIComponent(this.message);
+      // if (/\s+/g.test(this.message)) {
+      //     this.messageErr = this.$t('accDetail.valid.remarksFormat');
+      //     return;
+      // }
+      var message = this.message.replace(/(^\s*)|(\s*$)/g, '');
+      var str = encodeURIComponent(message);
 
       if (str.length > 180) {
         this.messageErr = this.$t('accDetail.valid.remarksLong');
@@ -2232,7 +2232,7 @@ __webpack_require__.r(__webpack_exports__);
         _this3.isLoading = false;
         result && loginSuccess();
         !result && Object(utils_toast_index_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_this3.$t('hint.pwErr'), 'error');
-      }, 0);
+      }, 10);
     }
   }
 });
@@ -3290,7 +3290,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.account-head-wrapper {\n  position: relative;\n  padding: 30px 0 0px 20px;\n  text-align: center;\n  background: #ffffff;\n  box-shadow: 0 2px 48px 1px rgba(176, 192, 237, 0.42);\n  border-radius: 2px;\n  display: flex;\n  flex-wrap: wrap;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.account-head-wrapper .head-title {\n    position: relative;\n    display: block;\n    height: 20px;\n    line-height: 20px;\n    font-size: 14px;\n    letter-spacing: 0.35px;\n    padding-bottom: 24px;\n    font-family: PingFangSC-Semibold;\n}\n.account-head-wrapper .head-title .edit {\n      display: inline-block;\n      width: 20px;\n      height: 20px;\n      margin-left: 20px;\n}\n.account-head-wrapper .head-title .title_icon {\n      float: right;\n}\n.account-head-wrapper .head-title .title_icon.qrcode {\n        position: relative;\n}\n.account-head-wrapper .head-title .title_icon .code-container {\n        box-shadow: 0 2px 48px 1px rgba(176, 192, 237, 0.42);\n        width: 166px;\n        padding: 10px;\n        position: absolute;\n        right: 100%;\n        transform: translateX(20px);\n        background: #fff;\n        z-index: 1;\n}\n.account-head-wrapper .head-title .title_icon .code-container .code {\n          width: 146px;\n          height: 146px;\n          margin: 10px;\n}\n.account-head-wrapper .head-title .title_icon .code-container .btn {\n          background: #007aff;\n          border-radius: 2px;\n          color: #fff;\n          margin: 10px 8px;\n          height: 28px;\n          text-align: center;\n          line-height: 28px;\n}\n.account-head-wrapper .head-title .title_icon.copy {\n        margin-right: 10px;\n}\n.account-head-wrapper .addr-wrapper {\n    padding-right: 20px;\n    padding-bottom: 30px;\n    display: inline-block;\n    max-width: 510px;\n    min-width: 470px;\n    text-align: left;\n}\n.account-head-wrapper .addr-wrapper .addr-content {\n      font-size: 14px;\n      width: 100%;\n      height: 40px;\n      line-height: 40px;\n      box-sizing: border-box;\n      background: #f3f6f9;\n      border: 1px solid #d4dee7;\n      border-radius: 2px;\n      padding: 0 8px;\n      color: #283d4a;\n}\n.account-head-wrapper .custom-name {\n    padding-right: 20px;\n    padding-bottom: 30px;\n    font-size: 24px;\n    color: #1d2024;\n    text-align: left;\n    font-family: PingFangSC-Semibold;\n    max-width: 24%;\n    word-break: break-all;\n}\n.account-head-wrapper .custom-name .name {\n      display: inline-block;\n      line-height: 32px;\n}\n.account-head-wrapper .custom-name .name.small-font {\n        font-size: 20px;\n        line-height: 26px;\n}\n.account-head-wrapper .custom-name input {\n      height: 32px;\n      line-height: 32px;\n      font-size: 20px;\n      width: 100%;\n}\n.account-head-wrapper .btn-group {\n    width: 212px;\n    font-family: Avenir-Book;\n    padding-right: 20px;\n    padding-bottom: 30px;\n}\n.account-head-wrapper .btn-group .btn__small {\n      width: 210px;\n      height: 33px;\n      line-height: 33px;\n      text-align: center;\n      font-size: 14px;\n      border-radius: 2px;\n}\n.account-head-wrapper .btn-group .__btn-test {\n      background: #007aff;\n      color: #ffffff;\n      height: 35px;\n      line-height: 35px;\n}\n.account-head-wrapper .btn-group .__btn-detail {\n      border: 1px solid #007aff;\n      color: #007aff;\n      margin-top: 12px;\n}\n.account-head-wrapper .btn-group .icon {\n      margin-bottom: -7px;\n}\n.account-head-wrapper .btn-group .more-icon {\n      margin-left: 4px;\n}\n@media only screen and (max-width: 500px) {\n.account-head-wrapper {\n    display: block;\n    padding: 15px;\n    display: block;\n    min-width: 0;\n}\n.account-head-wrapper .head-title {\n      padding-bottom: 15px;\n}\n.account-head-wrapper .head-title .edit {\n        float: right;\n}\n.account-head-wrapper .custom-name {\n    width: 100%;\n    max-width: 100%;\n    min-width: 0px;\n    position: relative;\n}\n.account-head-wrapper .custom-name input {\n      width: 100%;\n}\n.account-head-wrapper .addr-wrapper {\n    margin-top: 20px;\n    display: block;\n    width: 100%;\n    min-width: 0;\n}\n.account-head-wrapper .addr-wrapper .addr-content {\n      padding: 10px;\n      height: auto;\n      line-height: 20px;\n      word-break: break-all;\n}\n.account-head-wrapper .btn-group {\n    margin-top: 20px;\n    width: 100%;\n}\n.account-head-wrapper .btn-group .btn__small {\n      width: 100%;\n}\n}\n", ""]);
+exports.push([module.i, "\n.account-head-wrapper {\n  position: relative;\n  padding: 30px 0 0px 20px;\n  text-align: center;\n  background: #ffffff;\n  box-shadow: 0 2px 48px 1px rgba(176, 192, 237, 0.42);\n  border-radius: 2px;\n  display: flex;\n  flex-wrap: wrap;\n  flex-direction: row;\n  justify-content: space-between;\n}\n.account-head-wrapper .head-title {\n    position: relative;\n    display: block;\n    height: 20px;\n    line-height: 20px;\n    font-size: 14px;\n    letter-spacing: 0.35px;\n    padding-bottom: 24px;\n    font-family: PingFangSC-Semibold;\n}\n.account-head-wrapper .head-title .edit {\n      display: inline-block;\n      width: 20px;\n      height: 20px;\n      margin-left: 20px;\n}\n.account-head-wrapper .head-title .title_icon {\n      float: right;\n}\n.account-head-wrapper .head-title .title_icon.qrcode {\n        position: relative;\n}\n.account-head-wrapper .head-title .title_icon .code-container {\n        box-shadow: 0 2px 48px 1px rgba(176, 192, 237, 0.42);\n        width: 166px;\n        padding: 10px;\n        position: absolute;\n        right: 100%;\n        transform: translateX(20px);\n        background: #fff;\n        z-index: 1;\n}\n.account-head-wrapper .head-title .title_icon .code-container .code {\n          width: 146px;\n          height: 146px;\n          margin: 10px;\n}\n.account-head-wrapper .head-title .title_icon .code-container .btn {\n          background: #007aff;\n          border-radius: 2px;\n          color: #fff;\n          margin: 10px 8px;\n          height: 28px;\n          text-align: center;\n          line-height: 28px;\n}\n.account-head-wrapper .head-title .title_icon.copy {\n        margin-right: 10px;\n}\n.account-head-wrapper .addr-wrapper {\n    padding-right: 20px;\n    padding-bottom: 30px;\n    display: inline-block;\n    max-width: 510px;\n    text-align: left;\n}\n.account-head-wrapper .addr-wrapper .addr-content {\n      font-size: 14px;\n      word-break: break-all;\n      width: 100%;\n      line-height: 40px;\n      box-sizing: border-box;\n      background: #f3f6f9;\n      border: 1px solid #d4dee7;\n      border-radius: 2px;\n      padding: 0 10px;\n      color: #283d4a;\n}\n.account-head-wrapper .custom-name {\n    padding-right: 20px;\n    padding-bottom: 30px;\n    font-size: 24px;\n    color: #1d2024;\n    text-align: left;\n    font-family: PingFangSC-Semibold;\n    max-width: 24%;\n    word-break: break-all;\n}\n.account-head-wrapper .custom-name .name {\n      display: inline-block;\n      line-height: 32px;\n}\n.account-head-wrapper .custom-name .name.small-font {\n        font-size: 20px;\n        line-height: 26px;\n}\n.account-head-wrapper .custom-name input {\n      height: 32px;\n      line-height: 32px;\n      font-size: 20px;\n      width: 100%;\n}\n.account-head-wrapper .btn-group {\n    width: 212px;\n    font-family: Avenir-Book;\n    padding-right: 20px;\n    padding-bottom: 30px;\n}\n.account-head-wrapper .btn-group .btn__small {\n      box-sizing: border-box;\n      width: 210px;\n      height: 33px;\n      line-height: 33px;\n      text-align: center;\n      font-size: 14px;\n      border-radius: 2px;\n}\n.account-head-wrapper .btn-group .__btn-test {\n      background: #007aff;\n      color: #ffffff;\n      height: 35px;\n      line-height: 35px;\n}\n.account-head-wrapper .btn-group .__btn-detail {\n      border: 1px solid #007aff;\n      color: #007aff;\n      margin-top: 12px;\n}\n.account-head-wrapper .btn-group .icon {\n      margin-bottom: -7px;\n}\n.account-head-wrapper .btn-group .more-icon {\n      margin-left: 4px;\n}\n@media only screen and (max-width: 500px) {\n.account-head-wrapper {\n    display: block;\n    padding: 15px;\n}\n.account-head-wrapper .head-title {\n      padding-bottom: 15px;\n}\n.account-head-wrapper .custom-name {\n    padding: 0;\n}\n.account-head-wrapper .addr-wrapper {\n    padding: 0;\n    margin-top: 20px;\n    display: block;\n    width: 100%;\n    min-width: 0;\n}\n.account-head-wrapper .addr-wrapper .addr-content {\n      padding: 10px;\n      line-height: 20px;\n}\n.account-head-wrapper .btn-group {\n    padding: 0;\n    margin-top: 20px;\n}\n}\n@media only screen and (max-width: 700px) {\n.account-head-wrapper .head-title .edit {\n    float: right;\n}\n.account-head-wrapper .custom-name {\n    width: 100%;\n    max-width: 100%;\n}\n.account-head-wrapper .custom-name input {\n      width: 100%;\n}\n.account-head-wrapper .btn-group {\n    width: 100%;\n}\n.account-head-wrapper .btn-group .btn__small {\n      width: 100%;\n}\n.account-head-wrapper .addr-wrapper {\n    width: 100%;\n    min-width: 0;\n}\n.account-head-wrapper .addr-wrapper .addr-content {\n      padding: 10px;\n      line-height: 20px;\n}\n}\n", ""]);
 
 // exports
 
@@ -3347,7 +3347,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.transaction-wrapper[data-v-1b157528] {\n  width: 515px;\n  max-width: 90%;\n  background: #fff;\n  box-shadow: 0 2px 48px 1px rgba(176, 192, 237, 0.42);\n  border-radius: 2px;\n}\n.title[data-v-1b157528] {\n  line-height: 32px;\n  font-family: PingFangSC-Semibold;\n  background: #268EFF;\n  font-size: 16px;\n  color: #FFFFFF;\n  height: 60px;\n  line-height: 60px;\n  text-indent: 30px;\n  margin-bottom: 5px;\n}\n.title .close[data-v-1b157528] {\n    float: right;\n    padding: 20px 30px;\n}\n.content-wrapper[data-v-1b157528] {\n  padding: 0px 30px 30px;\n}\n.content-wrapper .row[data-v-1b157528] {\n    margin-top: 20px;\n}\n.content-wrapper .row .row-t[data-v-1b157528] {\n      font-family: PingFangSC-Semibold;\n      font-size: 14px;\n      color: #1D2024;\n      letter-spacing: 0.35px;\n      line-height: 16px;\n      padding-bottom: 15px;\n}\n.content-wrapper .row .row-content[data-v-1b157528] {\n      padding: 10px 15px;\n      border: 1px solid #D4DEE7;\n      border-radius: 2px;\n      font-size: 14px;\n}\n.content-wrapper .row .row-content input[data-v-1b157528] {\n        width: 100%;\n}\n.content-wrapper .row .err[data-v-1b157528] {\n      float: right;\n      font-size: 12px;\n      color: #FF2929;\n      line-height: 16px;\n}\n.content-wrapper .btn[data-v-1b157528] {\n    height: 44px;\n    line-height: 44px;\n    background: #007AFF;\n    border-radius: 2px;\n    text-align: center;\n    color: #FFFFFF;\n    margin-top: 30px;\n    font-family: PingFangSC-Semibold;\n    font-size: 16px;\n}\n.content-wrapper .btn.unuse[data-v-1b157528] {\n      background: #efefef;\n      color: #666;\n}\n", ""]);
+exports.push([module.i, "\n.transaction-wrapper[data-v-1b157528] {\n  width: 515px;\n  max-width: 90%;\n  background: #fff;\n  box-shadow: 0 2px 48px 1px rgba(176, 192, 237, 0.42);\n  border-radius: 2px;\n}\n.title[data-v-1b157528] {\n  line-height: 32px;\n  font-family: PingFangSC-Semibold;\n  background: #268EFF;\n  font-size: 16px;\n  color: #FFFFFF;\n  height: 60px;\n  line-height: 60px;\n  text-indent: 30px;\n  margin-bottom: 5px;\n}\n.title .close[data-v-1b157528] {\n    float: right;\n    padding: 20px 30px;\n}\n.content-wrapper[data-v-1b157528] {\n  padding: 0px 30px 30px;\n}\n.content-wrapper .row[data-v-1b157528] {\n    margin-top: 20px;\n}\n.content-wrapper .row .row-t[data-v-1b157528] {\n      position: relative;\n      font-family: PingFangSC-Semibold;\n      font-size: 14px;\n      color: #1D2024;\n      letter-spacing: 0.35px;\n      line-height: 16px;\n      padding-bottom: 15px;\n}\n.content-wrapper .row .row-content[data-v-1b157528] {\n      padding: 10px 15px;\n      border: 1px solid #D4DEE7;\n      border-radius: 2px;\n      font-size: 14px;\n}\n.content-wrapper .row .row-content input[data-v-1b157528] {\n        width: 100%;\n}\n.content-wrapper .row .err[data-v-1b157528] {\n      position: absolute;\n      right: 0;\n      font-size: 12px;\n      color: #FF2929;\n      line-height: 16px;\n      text-align: right;\n}\n.content-wrapper .btn[data-v-1b157528] {\n    height: 44px;\n    line-height: 44px;\n    background: #007AFF;\n    border-radius: 2px;\n    text-align: center;\n    color: #FFFFFF;\n    margin-top: 30px;\n    font-family: PingFangSC-Semibold;\n    font-size: 16px;\n}\n.content-wrapper .btn.unuse[data-v-1b157528] {\n      background: #efefef;\n      color: #666;\n}\n", ""]);
 
 // exports
 
@@ -3520,7 +3520,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.row[data-v-1a98cf2c] {\n  width: 100%;\n  margin-bottom: 16px;\n  line-height: 22px;\n}\n.row .title[data-v-1a98cf2c] {\n    font-size: 14px;\n    color: #1D2024;\n    letter-spacing: 0.35px;\n    font-family: PingFangSC-Semibold;\n}\n.row .title.meta[data-v-1a98cf2c] {\n      display: none;\n}\n.row .describe[data-v-1a98cf2c] {\n    float: right;\n    font-size: 12px;\n    color: #5E6875;\n    letter-spacing: 0.3px;\n}\n.acc-list[data-v-1a98cf2c] {\n  background: #FFFFFF;\n  border: 1px solid #D4DEE7;\n  border-radius: 2px;\n}\n.acc-list .list-wrapper[data-v-1a98cf2c] {\n    max-height: 190px;\n    overflow: auto;\n}\n.acc-list .acc-item[data-v-1a98cf2c] {\n    padding: 10px 15px;\n    border-bottom: 1px solid #D4DEE7;\n}\n.acc-list .acc-item[data-v-1a98cf2c]:last-child {\n      border: none;\n}\n.acc-list .add[data-v-1a98cf2c] {\n    padding: 0 15px;\n    height: 36px;\n    line-height: 36px;\n    font-size: 12px;\n    color: #007AFF;\n    border-top: 1px solid #D4DEE7;\n}\n.acc-list .add .acc-add[data-v-1a98cf2c] {\n      display: inline-block;\n      margin: 10px 10px 0 0;\n      width: 16px;\n      height: 16px;\n      background: url(" + escape(__webpack_require__(/*! ../../assets/imgs/add_icon.svg */ "./src/assets/imgs/add_icon.svg")) + ") no-repeat center;\n      background-size: 16px 16px;\n}\n.acc-list .add .describe[data-v-1a98cf2c] {\n      position: relative;\n      bottom: 3px;\n      font-size: 12px;\n      color: #007AFF;\n}\n.acc-list .describe[data-v-1a98cf2c] {\n    font-size: 12px;\n    color: #5E6875;\n}\n.acc-list .select[data-v-1a98cf2c] {\n    display: block;\n    box-sizing: border-box;\n    float: right;\n    margin-top: 4px;\n    width: 16px;\n    height: 16px;\n    background: #FFFFFF;\n    background: #FFFFFF;\n    border: 1px solid #D4DEE7;\n    border-radius: 16px;\n}\n.acc-list .select.active[data-v-1a98cf2c] {\n      background: url(" + escape(__webpack_require__(/*! ../../assets/imgs/presnet.svg */ "./src/assets/imgs/presnet.svg")) + ") no-repeat center;\n      background-size: 16px 16px;\n}\n@media only screen and (max-width: 500px) {\n.row .title[data-v-1a98cf2c] {\n    display: none;\n}\n.row .title.meta[data-v-1a98cf2c] {\n      display: inline;\n}\n.acc-list .list-wrapper[data-v-1a98cf2c] {\n    max-height: unset;\n}\n.acc-list .acc-item[data-v-1a98cf2c] {\n    padding: 10px;\n}\n.acc-list .add[data-v-1a98cf2c] {\n    padding: 0 10px;\n}\n.acc-list .add .describe[data-v-1a98cf2c] {\n      display: inline;\n}\n.acc-list .describe[data-v-1a98cf2c] {\n    display: block;\n    width: 93%;\n}\n.acc-list .select[data-v-1a98cf2c] {\n    margin-top: -18px;\n}\n}\n", ""]);
+exports.push([module.i, "\n.row[data-v-1a98cf2c] {\n  width: 100%;\n  margin-bottom: 16px;\n  line-height: 22px;\n}\n.row .title[data-v-1a98cf2c] {\n    font-size: 14px;\n    color: #1D2024;\n    letter-spacing: 0.35px;\n    font-family: PingFangSC-Semibold;\n}\n.row .title.meta[data-v-1a98cf2c] {\n      display: none;\n}\n.row .describe[data-v-1a98cf2c] {\n    float: right;\n    font-size: 12px;\n    color: #5E6875;\n    letter-spacing: 0.3px;\n}\n.acc-list[data-v-1a98cf2c] {\n  background: #FFFFFF;\n  border: 1px solid #D4DEE7;\n  border-radius: 2px;\n}\n.acc-list .list-wrapper[data-v-1a98cf2c] {\n    max-height: 190px;\n    overflow: auto;\n}\n.acc-list .acc-item[data-v-1a98cf2c] {\n    position: relative;\n    padding: 10px 15px;\n    border-bottom: 1px solid #D4DEE7;\n}\n.acc-list .acc-item[data-v-1a98cf2c]:last-child {\n      border: none;\n}\n.acc-list .add[data-v-1a98cf2c] {\n    padding: 0 15px;\n    height: 36px;\n    line-height: 36px;\n    font-size: 12px;\n    color: #007AFF;\n    border-top: 1px solid #D4DEE7;\n}\n.acc-list .add .acc-add[data-v-1a98cf2c] {\n      display: inline-block;\n      margin: 10px 10px 0 0;\n      width: 16px;\n      height: 16px;\n      background: url(" + escape(__webpack_require__(/*! ../../assets/imgs/add_icon.svg */ "./src/assets/imgs/add_icon.svg")) + ") no-repeat center;\n      background-size: 16px 16px;\n}\n.acc-list .add .describe[data-v-1a98cf2c] {\n      display: inline;\n      position: relative;\n      bottom: 3px;\n      font-size: 12px;\n      color: #007AFF;\n}\n.acc-list .describe[data-v-1a98cf2c] {\n    display: block;\n    width: 93%;\n    font-size: 12px;\n    color: #5E6875;\n}\n.acc-list .select[data-v-1a98cf2c] {\n    position: absolute;\n    top: 12px;\n    right: 10px;\n    display: block;\n    box-sizing: border-box;\n    width: 16px;\n    height: 16px;\n    background: #FFFFFF;\n    border: 1px solid #D4DEE7;\n    border-radius: 16px;\n}\n.acc-list .select.active[data-v-1a98cf2c] {\n      background: url(" + escape(__webpack_require__(/*! ../../assets/imgs/presnet.svg */ "./src/assets/imgs/presnet.svg")) + ") no-repeat center;\n      background-size: 16px 16px;\n}\n@media only screen and (max-width: 500px) {\n.row .title[data-v-1a98cf2c] {\n    display: none;\n}\n.row .title.meta[data-v-1a98cf2c] {\n      display: inline;\n}\n.acc-list .list-wrapper[data-v-1a98cf2c] {\n    max-height: unset;\n}\n.acc-list .acc-item[data-v-1a98cf2c] {\n    padding: 10px;\n}\n.acc-list .add[data-v-1a98cf2c] {\n    padding: 0 10px;\n}\n}\n", ""]);
 
 // exports
 
@@ -3539,7 +3539,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.item[data-v-64dc12ff] {\n  width: 474px;\n  margin-bottom: 20px;\n  margin-top: 0;\n}\n.item.unlock .pass[data-v-64dc12ff] {\n    border: 1px solid #efefef;\n}\n.item.unlock .btn[data-v-64dc12ff] {\n    background: #efefef;\n    color: #666;\n}\n.item .title[data-v-64dc12ff] {\n    font-size: 14px;\n    color: #1D2024;\n    letter-spacing: 0.35px;\n    line-height: 16px;\n    margin-bottom: 16px;\n}\n.item .input-wrapper[data-v-64dc12ff] {\n    display: inline-block;\n    width: 397px;\n    height: 40px;\n    margin-right: 10px;\n}\n.item .input-wrapper .pass[data-v-64dc12ff] {\n      display: inline-block;\n      box-sizing: border-box;\n      width: 100%;\n      height: 100%;\n      padding: 0 15px;\n      line-height: 40px;\n      background: #FFFFFF;\n      border: 1px solid #D4DEE7;\n      border-radius: 2px;\n      font-size: 14px;\n}\n.item .btn[data-v-64dc12ff] {\n    position: relative;\n    top: -2px;\n    display: inline-block;\n    width: 60px;\n    height: 40px;\n    text-align: center;\n    line-height: 40px;\n    background: #007AFF;\n    border-radius: 2px;\n    font-family: Avenir-Book;\n    font-size: 14px;\n    color: #FFFFFF;\n}\n.item .btn.unuse[data-v-64dc12ff] {\n      background: #efefef;\n      color: #666;\n}\n@media only screen and (max-width: 500px) {\n.item[data-v-64dc12ff] {\n    width: auto;\n}\n.item .input-wrapper[data-v-64dc12ff] {\n    width: 75%;\n}\n.item .btn[data-v-64dc12ff] {\n    float: right;\n}\n}\n", ""]);
+exports.push([module.i, "\n.item[data-v-64dc12ff] {\n  margin-bottom: 20px;\n  margin-top: 0;\n}\n.item.unlock .pass[data-v-64dc12ff] {\n    border: 1px solid #efefef;\n}\n.item.unlock .btn[data-v-64dc12ff] {\n    background: #efefef;\n    color: #666;\n}\n.item .title[data-v-64dc12ff] {\n    font-size: 14px;\n    color: #1D2024;\n    letter-spacing: 0.35px;\n    line-height: 16px;\n    margin-bottom: 16px;\n}\n.item .input-wrapper[data-v-64dc12ff] {\n    display: inline-block;\n    width: 83%;\n    height: 40px;\n    margin-right: 10px;\n}\n.item .input-wrapper .pass[data-v-64dc12ff] {\n      display: inline-block;\n      box-sizing: border-box;\n      width: 100%;\n      height: 100%;\n      padding: 0 15px;\n      line-height: 40px;\n      background: #FFFFFF;\n      border: 1px solid #D4DEE7;\n      border-radius: 2px;\n      font-size: 14px;\n}\n.item .btn[data-v-64dc12ff] {\n    position: relative;\n    top: -1px;\n    float: right;\n    width: 12%;\n    max-width: 60px;\n    height: 40px;\n    text-align: center;\n    line-height: 40px;\n    background: #007AFF;\n    border-radius: 2px;\n    font-family: Avenir-Book;\n    font-size: 14px;\n    color: #FFFFFF;\n}\n.item .btn.unuse[data-v-64dc12ff] {\n      background: #efefef;\n      color: #666;\n}\n@media only screen and (max-width: 500px) {\n.item .input-wrapper[data-v-64dc12ff] {\n    width: 75%;\n}\n.item .btn[data-v-64dc12ff] {\n    width: 60px;\n}\n}\n", ""]);
 
 // exports
 
@@ -3578,7 +3578,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.setting-wrapper[data-v-211b2acd] {\n  position: relative;\n  box-sizing: border-box;\n  padding: 30px;\n  height: 100%;\n}\n.setting-wrapper .title[data-v-211b2acd] {\n    font-family: PingFangSC-Semibold;\n    font-size: 24px;\n    color: #1D2024;\n    line-height: 32px;\n}\n.setting-wrapper .content-wrapper[data-v-211b2acd] {\n    position: absolute;\n    top: 92px;\n    bottom: 30px;\n    left: 30px;\n    right: 30px;\n    overflow: auto;\n    background: #FFFFFF;\n    box-shadow: 0 2px 48px 1px rgba(176, 192, 237, 0.17);\n    border-radius: 8px;\n}\n.setting-wrapper .content-wrapper .content[data-v-211b2acd] {\n      padding: 20px;\n}\n.setting-wrapper .content-wrapper .description[data-v-211b2acd] {\n      padding: 20px;\n      border-top: 1px solid #C6CBD4;\n      opacity: 0.8;\n      line-height: 28px;\n      letter-spacing: 0.35px;\n      font-size: 14px;\n      color: #5E6875;\n}\n.setting-wrapper .content-wrapper .description a[data-v-211b2acd] {\n        color: #5E6875;\n}\n.setting-wrapper .content-wrapper .description a[data-v-211b2acd]:last-child {\n          margin-left: 20px;\n}\n.setting-wrapper .content-wrapper .description a[data-v-211b2acd]:first-child {\n          margin-left: 0;\n}\n.setting-wrapper .content-wrapper .description .title[data-v-211b2acd] {\n        margin-right: 15px;\n        opacity: 0.8;\n        font-size: 14px;\n        font-family: PingFangSC-Semibold;\n}\n@media only screen and (max-width: 500px) {\n.setting-wrapper[data-v-211b2acd] {\n    padding: 15px;\n    background: #fff;\n}\n.setting-wrapper .content-wrapper[data-v-211b2acd] {\n    top: 77px;\n    left: 15px;\n    right: 15px;\n    bottom: 15px;\n    box-shadow: none;\n    border-radius: 0px;\n}\n.setting-wrapper .content-wrapper .content[data-v-211b2acd] {\n      padding: 0;\n}\n.setting-wrapper .content-wrapper .description[data-v-211b2acd] {\n      padding: 0;\n}\n.setting-wrapper .content-wrapper .description a[data-v-211b2acd] {\n        display: block;\n}\n.setting-wrapper .content-wrapper .description a[data-v-211b2acd]:last-child {\n          margin-left: 0;\n}\n}\n", ""]);
+exports.push([module.i, "\n.setting-wrapper[data-v-211b2acd] {\n  position: relative;\n  box-sizing: border-box;\n  padding: 30px;\n  height: 100%;\n}\n.setting-wrapper .title[data-v-211b2acd] {\n    font-family: PingFangSC-Semibold;\n    font-size: 24px;\n    color: #1D2024;\n    line-height: 32px;\n}\n.setting-wrapper .content-wrapper[data-v-211b2acd] {\n    position: absolute;\n    top: 92px;\n    bottom: 30px;\n    left: 30px;\n    right: 30px;\n    overflow: auto;\n    background: #FFFFFF;\n    box-shadow: 0 2px 48px 1px rgba(176, 192, 237, 0.17);\n    border-radius: 8px;\n}\n.setting-wrapper .content-wrapper .content[data-v-211b2acd] {\n      max-width: 480px;\n      padding: 20px;\n}\n.setting-wrapper .content-wrapper .description[data-v-211b2acd] {\n      padding: 20px;\n      border-top: 1px solid #C6CBD4;\n      opacity: 0.8;\n      line-height: 28px;\n      letter-spacing: 0.35px;\n      font-size: 14px;\n      color: #5E6875;\n}\n.setting-wrapper .content-wrapper .description a[data-v-211b2acd] {\n        color: #5E6875;\n}\n.setting-wrapper .content-wrapper .description a[data-v-211b2acd]:last-child {\n          margin-left: 20px;\n}\n.setting-wrapper .content-wrapper .description a[data-v-211b2acd]:first-child {\n          margin-left: 0;\n}\n.setting-wrapper .content-wrapper .description .title[data-v-211b2acd] {\n        margin-right: 15px;\n        opacity: 0.8;\n        font-size: 14px;\n        font-family: PingFangSC-Semibold;\n}\n@media only screen and (max-width: 500px) {\n.setting-wrapper[data-v-211b2acd] {\n    padding: 15px;\n    background: #fff;\n}\n.setting-wrapper .content-wrapper[data-v-211b2acd] {\n    top: 77px;\n    left: 15px;\n    right: 15px;\n    bottom: 15px;\n    box-shadow: none;\n    border-radius: 0px;\n}\n.setting-wrapper .content-wrapper .content[data-v-211b2acd] {\n      padding: 0;\n}\n.setting-wrapper .content-wrapper .description[data-v-211b2acd] {\n      padding: 0;\n}\n}\n@media only screen and (max-width: 750px) {\n.setting-wrapper .content-wrapper .description a[data-v-211b2acd] {\n    display: block;\n}\n.setting-wrapper .content-wrapper .description a[data-v-211b2acd]:last-child {\n      margin-left: 0;\n}\n}\n", ""]);
 
 // exports
 
@@ -9845,6 +9845,7 @@ setTimeout(function () {
 }, 800);
 setTimeout(function () {
   console.log(window.viteWalletStorage);
+  _store__WEBPACK_IMPORTED_MODULE_12__["default"].dispatch('getDefaultTokenList');
   var i18n = new vue_i18n__WEBPACK_IMPORTED_MODULE_3__["default"](Object(i18n__WEBPACK_IMPORTED_MODULE_9__["default"])());
   var _viteWallet = viteWallet,
       Wallet = _viteWallet.Wallet;
@@ -11525,18 +11526,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var TokenIds = {
-  'tti_5649544520544f4b454e6e40': 'VITE',
-  'tti_12ea0c02170304090a5ac879': 'VCP',
-  'tti_b6187a150d175e5a165b1c5b': 'VV'
-};
+/* harmony import */ var utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! utils/request */ "./src/utils/request.js");
+
 var state = {
   onroad: {
     balanceInfos: {}
   },
   balance: {
     balanceInfos: {}
-  }
+  },
+  tokenIds: {}
 };
 var mutations = {
   commitBalanceInfo: function commitBalanceInfo(state, payload) {
@@ -11552,6 +11551,9 @@ var mutations = {
     state.onroad = {
       balanceInfos: {}
     };
+  },
+  commitSetTokenIds: function commitSetTokenIds(state, tokenIds) {
+    state.tokenIds = tokenIds;
   }
 };
 var actions = {
@@ -11561,6 +11563,30 @@ var actions = {
       commit('commitBalanceInfo', data);
     }).catch(function (e) {
       console.warn(e);
+    });
+  },
+  getDefaultTokenList: function getDefaultTokenList(_ref2) {
+    var commit = _ref2.commit;
+    var toRequest = window.viteWalletRequest || utils_request__WEBPACK_IMPORTED_MODULE_0__["default"];
+    toRequest({
+      method: 'GET',
+      path: '/api/version/config?app=web&channel=token&version=default',
+      type: 'form' // Client Wallet
+
+    }).then(function (data) {
+      if (!data) {
+        return;
+      }
+
+      data = JSON.parse(data);
+      console.log(data);
+      var tokenIds = {};
+      data.forEach(function (item) {
+        tokenIds[item.tokenId] = item.tokenSymbol;
+      });
+      commit('commitSetTokenIds', tokenIds);
+    }).catch(function (err) {
+      console.error(err);
     });
   }
 };
@@ -11596,11 +11622,11 @@ var getters = {
       balanceInfo[_tokenId].onroadNum = _item.number;
     }
 
-    for (var _tokenId2 in TokenIds) {
+    for (var _tokenId2 in state.tokenIds) {
       balanceInfo[_tokenId2] = balanceInfo[_tokenId2] || {
         balance: '0',
         fundFloat: '0',
-        symbol: TokenIds[_tokenId2],
+        symbol: state.tokenIds[_tokenId2],
         decimals: '0'
       };
     }
@@ -12069,6 +12095,84 @@ function recordPerformance() {
 }
 
 recordPerformance();
+
+/***/ }),
+
+/***/ "./src/utils/request.js":
+/*!******************************!*\
+  !*** ./src/utils/request.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return request; });
+/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! qs */ "./node_modules/qs/lib/index.js");
+/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(qs__WEBPACK_IMPORTED_MODULE_0__);
+
+function request(_ref) {
+  var _ref$method = _ref.method,
+      method = _ref$method === void 0 ? 'GET' : _ref$method,
+      path = _ref.path,
+      _ref$params = _ref.params,
+      params = _ref$params === void 0 ? {} : _ref$params;
+  method = method.toUpperCase();
+  var xhr = new XMLHttpRequest();
+  var qsStr = qs__WEBPACK_IMPORTED_MODULE_0___default.a.stringify(params);
+  method === 'GET' && (path.indexOf('?') < 0 ? path = "".concat(path, "?").concat(qsStr) : path = "".concat(path).concat(qsStr));
+  xhr.open(method, path, true);
+  xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded; charset=utf-8');
+
+  if (method === 'POST') {
+    xhr.send(qsStr);
+  } else {
+    xhr.send();
+  }
+
+  return new Promise(function (res, rej) {
+    xhr.onload = function () {
+      if (xhr.status == 200) {
+        try {
+          var _JSON$parse = JSON.parse(xhr.responseText),
+              code = _JSON$parse.code,
+              msg = _JSON$parse.msg,
+              data = _JSON$parse.data,
+              error = _JSON$parse.error;
+
+          if (code !== 0) {
+            return rej({
+              code: code,
+              message: msg || error
+            });
+          }
+
+          data = data || null;
+          res(data);
+        } catch (e) {
+          rej(e);
+        }
+      } else {
+        rej();
+      }
+    };
+
+    xhr.onerror = function (err) {
+      console.error(err);
+      rej();
+    };
+
+    xhr.onabort = function (x) {
+      console.warn(x);
+      rej();
+    };
+
+    xhr.ontimeout = function (time) {
+      console.warn(time);
+      rej();
+    };
+  });
+}
 
 /***/ }),
 
@@ -13373,4 +13477,4 @@ function getList() {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=index.ee31b34997d88ee97054.js.map
+//# sourceMappingURL=index.9a514c46b1d39f84f36d.js.map

@@ -10,7 +10,7 @@ module.exports = function loadWeb() {
         return;
     }
     global.walletLog.info('Start to load web.');
-    global.WALLET_WIN.webContents.openDevTools();
+    // global.WALLET_WIN.webContents.openDevTools();
     // global.WALLET_WIN.loadURL('https://wallet.vite.net/#/');
     global.WALLET_WIN.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
 
@@ -21,6 +21,7 @@ module.exports = function loadWeb() {
         global.WALLET_WIN && global.WALLET_WIN.webContents.executeJavaScript(`
             const { remote } = require('electron');
             window.viteWalletStorage = remote.require('./walletSrc/modules/localStorage.js');
+            window.viteWalletRequest = remote.require('./walletSrc/utils/http.js')
 
             const { Analytics } = require('../modules/electron-ga');
             window.analytics = new Analytics('UA-123680072-1');

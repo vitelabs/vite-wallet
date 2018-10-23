@@ -10,7 +10,7 @@ function getFileName(name) {
 }
 
 function setItem(name, str) {
-    console.log(name, str);
+    // console.log(name, str);
 
     let fileName = getFileName(name);
     if (!fileName) {
@@ -28,7 +28,7 @@ function setItem(name, str) {
 }
 
 function getItem(name) {
-    console.log(name);
+    // console.log(name);
 
     let fileName = getFileName(name);
     if (!fileName) {
@@ -49,7 +49,7 @@ function getItem(name) {
         global.walletLog.error(`Read account-file: ${JSON.stringify(err)}`);
     }
 
-    console.log(file);
+    // console.log(file);
     return file;
 }
 

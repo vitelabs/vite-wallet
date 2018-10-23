@@ -64,7 +64,7 @@ module.exports = function({
         // Request text
         let reqText = parseReq({ params, type, method });
 
-        if (method === 'GET') {
+        if (method === 'GET' && params && reqText) {
             path += `?${reqText}`;
         }
 
