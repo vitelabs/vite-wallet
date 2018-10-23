@@ -3,7 +3,7 @@ const path = require('path');
 require('~app/modules/electron-ga');
 require('~app/modules/electron-baidu-tongji');
 
-const allowHost = ['https://testnet.vite.net'];
+const allowHost = ['https://testnet.vite.net', 'http://132.232.134.168:8080'];
 
 module.exports = function loadWeb() {
     if (!global.WALLET_WIN) {

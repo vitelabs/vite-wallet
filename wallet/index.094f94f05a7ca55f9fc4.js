@@ -9844,7 +9844,6 @@ setTimeout(function () {
   element.className += ' dis';
 }, 800);
 setTimeout(function () {
-  console.log(window.viteWalletStorage);
   _store__WEBPACK_IMPORTED_MODULE_12__["default"].dispatch('getDefaultTokenList');
   var i18n = new vue_i18n__WEBPACK_IMPORTED_MODULE_3__["default"](Object(i18n__WEBPACK_IMPORTED_MODULE_9__["default"])());
   var _viteWallet = viteWallet,
@@ -11579,7 +11578,6 @@ var actions = {
       }
 
       data = JSON.parse(data);
-      console.log(data);
       var tokenIds = {};
       data.forEach(function (item) {
         tokenIds[item.tokenId] = item.tokenSymbol;
@@ -12014,7 +12012,6 @@ var storage = window.localStorage;
 /* harmony default export */ __webpack_exports__["default"] = ({
   setItem: function setItem(name, data) {
     var key = "".concat(walletSpace, ":").concat(name);
-    console.log(key);
 
     try {
       storage.setItem(key, JSON.stringify(data));
@@ -12029,7 +12026,6 @@ var storage = window.localStorage;
 
 function getItem(name) {
   var key = "".concat(walletSpace, ":").concat(name);
-  console.log(key);
 
   try {
     var data;
@@ -12039,8 +12035,6 @@ function getItem(name) {
     } else {
       data = storage.getItem(key);
     }
-
-    console.log(data);
 
     if (!data) {
       return null;
@@ -13477,4 +13471,4 @@ function getList() {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=index.9a514c46b1d39f84f36d.js.map
+//# sourceMappingURL=index.094f94f05a7ca55f9fc4.js.map
