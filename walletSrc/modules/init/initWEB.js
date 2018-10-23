@@ -5,12 +5,9 @@ require('~app/modules/electron-baidu-tongji');
 
 const allowHost = ['https://testnet.vite.net', 'http://132.232.134.168:8080'];
 
-module.exports = function loadWeb() {
-    if (!global.WALLET_WIN) {
-        return;
-    }
-    global.walletLog.info('Start to load web.');
+function loadWebDom() {
     // global.WALLET_WIN.webContents.openDevTools();
+
     // global.WALLET_WIN.loadURL('https://wallet.vite.net/#/');
     global.WALLET_WIN.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
 
@@ -29,6 +26,21 @@ module.exports = function loadWeb() {
                 dp: 'home'
             });
         `);
+    });
+}
+
+module.exports = function loadWeb() {
+    if (!global.WALLET_WIN) {
+        return;
+    }
+
+    global.walletLog.info('Start to load web.');
+    loadWebDom();
+
+    global.WALLET_WIN.webContents.on('will-navigate', (event, url) => {
+        event.preventDefault();
+        global.walletLog.info(`Location change: ${url}`);
+        loadWebDom();
     });
 
     // Redefine file
