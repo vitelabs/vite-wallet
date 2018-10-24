@@ -3,7 +3,7 @@ const path = require('path');
 require('~app/modules/electron-ga');
 require('~app/modules/electron-baidu-tongji');
 
-const allowHost = ['https://testnet.vite.net', 'http://132.232.134.168:8080', 'https://vite.net/', 'https://www.vite.org/', 'https://github.com/vitelabs'];
+const allowHost = ['https://testnet.vite.net', 'http://132.232.134.168:8080', 'https://vite.net', 'https://vite.org', 'https://github.com'];
 
 function loadWebDom() {
     // global.WALLET_WIN.webContents.openDevTools();
@@ -17,8 +17,12 @@ function loadWebDom() {
         // FromPath: app-root
         global.WALLET_WIN && global.WALLET_WIN.webContents.executeJavaScript(`
             const { remote } = require('electron');
-            window.viteWalletStorage = remote.require('./walletSrc/modules/localStorage.js');
-            window.viteWalletRequest = remote.require('./walletSrc/utils/http.js')
+            const {
+                appLocalStorage, appHttp, appI18n
+            } = remote.require('./walletSrc/modules/toWeb.js');
+            window.viteWalletStorage = appLocalStorage;
+            window.viteWalletRequest = appHttp;
+            window.viteWalletI18n = appI18n;
 
             const { Analytics } = require('../modules/electron-ga');
             window.analytics = new Analytics('UA-123680072-1');
@@ -55,6 +59,7 @@ module.exports = function loadWeb() {
         try {
             let urlRes = require('url').parse(url);
             let host = `${urlRes.protocol}//${urlRes.host}`;
+            console.log(host);
             global.walletLog.info(`Open url: ${host}`);
 
             if (allowHost.indexOf(host) > -1) {

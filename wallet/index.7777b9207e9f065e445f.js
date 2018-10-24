@@ -210,6 +210,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     changeLocale: function changeLocale(locale) {
       this.$i18n.locale = locale;
+      window.viteWalletI18n && window.viteWalletI18n.setLocale(locale);
       utils_localStorage__WEBPACK_IMPORTED_MODULE_0__["default"].setItem('lang', locale);
       this.toggleLangList();
     }
@@ -1543,10 +1544,6 @@ var messageTimeout = null;
       return true;
     },
     testMessage: function testMessage() {
-      // if (/\s+/g.test(this.message)) {
-      //     this.messageErr = this.$t('accDetail.valid.remarksFormat');
-      //     return;
-      // }
       var message = this.message.replace(/(^\s*)|(\s*$)/g, '');
       var str = encodeURIComponent(message);
 
@@ -1589,10 +1586,18 @@ var messageTimeout = null;
 
       if (!activeAccount) {
         Object(utils_toast_index_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this.$t('transList.valid.err'));
+        return;
+      }
+
+      if (!viteWallet.Net.getNetStatus()) {
+        Object(utils_toast_index_js__WEBPACK_IMPORTED_MODULE_1__["default"])(this.$t('nav.noNet'));
+        return;
       }
 
       this.loading = true;
       var amount = viteWallet.BigNumber.toMin(this.amount, this.token.decimals);
+      var successText = this.$t('transList.valid.succ');
+      var failText = this.$t('transList.valid.err');
       activeAccount.sendTx({
         toAddr: this.inAddress,
         pass: this.password,
@@ -1600,12 +1605,23 @@ var messageTimeout = null;
         amount: amount,
         message: this.message
       }).then(function () {
+        Object(utils_toast_index_js__WEBPACK_IMPORTED_MODULE_1__["default"])(successText);
+
+        if (!_this5) {
+          return;
+        }
+
         _this5.loading = false;
-        Object(utils_toast_index_js__WEBPACK_IMPORTED_MODULE_1__["default"])(_this5.$t('transList.valid.succ'));
 
         _this5.closeTrans();
       }).catch(function (err) {
         console.warn(err);
+
+        if (!_this5) {
+          Object(utils_toast_index_js__WEBPACK_IMPORTED_MODULE_1__["default"])(failText);
+          return;
+        }
+
         _this5.loading = false;
         var code = err && err.error ? err.error.code || 0 : err ? err.code : 0;
         var message = err && err.message ? err.message : err.error ? err.error.message || '' : '';
@@ -2594,6 +2610,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     changeLocale: function changeLocale(locale) {
       this.$i18n.locale = locale;
+      window.viteWalletI18n && window.viteWalletI18n.setLocale(locale);
       utils_localStorage__WEBPACK_IMPORTED_MODULE_0__["default"].setItem('lang', locale);
       this.toggleLangList();
     }
@@ -9467,7 +9484,8 @@ module.exports = {
     },
     valid: {
       remarksFormat: 'Format error! Remarks can only contain Chinese, English and punctuations.',
-      remarksLong: 'Comment is too long! The input length should be within 180 English characters (or punctuations, 1 Chinese character = 6 English character)'
+      // 备注请勿超出180个英文字符（或标点符号，一个汉字=6个英文字符）
+      remarksLong: 'Notes do not exceed 180 English characters (or punctuations, 1 Chinese character = 6 English character)'
     },
     hint: {
       token: 'VITE test tokens have be sent to your account, please check your account!',
@@ -9554,7 +9572,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = (function () {
-  var locale = utils_localStorage__WEBPACK_IMPORTED_MODULE_2__["default"].getItem('lang') || 'en';
+  var appLocale = window.viteWalletI18n ? window.viteWalletI18n.locale : '';
+
+  if (appLocale) {
+    appLocale = appLocale.indexOf('zh') === 0 ? 'zh' : 'en';
+  }
+
+  var locale = utils_localStorage__WEBPACK_IMPORTED_MODULE_2__["default"].getItem('lang') || appLocale || 'en';
   return {
     locale: locale,
     fallbackLocale: 'en',
@@ -13471,4 +13495,4 @@ function getList() {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=index.9359c242a81642775b47.js.map
+//# sourceMappingURL=index.7777b9207e9f065e445f.js.map
