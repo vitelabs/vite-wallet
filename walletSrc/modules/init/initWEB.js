@@ -38,6 +38,10 @@ module.exports = function loadWeb() {
     loadWebDom();
 
     global.WALLET_WIN.webContents.on('will-navigate', (event, url) => {
+        if (url.indexOf('file') !== 0) {
+            return;
+        }
+
         event.preventDefault();
         global.walletLog.info(`Location change: ${url}`);
         loadWebDom();

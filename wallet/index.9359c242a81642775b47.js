@@ -1607,7 +1607,7 @@ var messageTimeout = null;
       }).catch(function (err) {
         console.warn(err);
         _this5.loading = false;
-        var code = err && err.error ? err.error.code || 0 : 0;
+        var code = err && err.error ? err.error.code || 0 : err ? err.code : 0;
         var message = err && err.message ? err.message : err.error ? err.error.message || '' : '';
 
         if (code === -34001) {
@@ -13471,4 +13471,4 @@ function getList() {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=index.094f94f05a7ca55f9fc4.js.map
+//# sourceMappingURL=index.9359c242a81642775b47.js.map
