@@ -3,7 +3,7 @@ const path = require('path');
 require('~app/modules/electron-ga');
 require('~app/modules/electron-baidu-tongji');
 
-const allowHost = ['https://testnet.vite.net', 'http://132.232.134.168:8080'];
+const allowHost = ['https://testnet.vite.net', 'http://132.232.134.168:8080', 'https://vite.net/', 'https://www.vite.org/', 'https://github.com/vitelabs'];
 
 function loadWebDom() {
     // global.WALLET_WIN.webContents.openDevTools();
