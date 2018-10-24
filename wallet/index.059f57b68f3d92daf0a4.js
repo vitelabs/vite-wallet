@@ -9881,6 +9881,15 @@ setTimeout(function () {
     routes: routes_index__WEBPACK_IMPORTED_MODULE_8__["default"]
   });
   router.beforeEach(function (to, from, next) {
+    // windows APP
+    if (!to.name && to.path) {
+      var arr = to.path.split('/');
+      router.replace({
+        name: arr[arr.length - 1] || 'index'
+      });
+      return;
+    }
+
     if (!from.name && to.name !== 'index') {
       router.replace({
         name: 'index'
@@ -13495,4 +13504,4 @@ function getList() {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=index.7777b9207e9f065e445f.js.map
+//# sourceMappingURL=index.059f57b68f3d92daf0a4.js.map
