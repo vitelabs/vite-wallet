@@ -10,11 +10,13 @@
         "clean": "rm -rf ./app && rm -rf ./vite-web-wallet",
         "build": "npm run clean && gulp && node build.js",
         "builddev": "npm run clean && gulp && node build.js",
-        "buildWIN": "p=WIN npm run build",
+        "build:win": "p=WIN npm run build",
         "dev": "NO_BUILD=true npm run builddev && NODE_ENV=dev electron .",
         "test": "mocha",
         "lint": "eslint ./ --cache",
-        "build:web": "npm run clean && node buildWeb.js && node build.js"
+        "build:web": "npm run clean && node buildWeb.js && node build.js",
+        "upload":"scp .buildMAC/*.dmg  ubuntu@150.109.63.114:~/nginx/files/",
+        "upload:win":"scp .buildWIN/*.exe  ubuntu@150.109.63.114:~/nginx/files/"
     },
     "pre-commit": [
         "lint"
