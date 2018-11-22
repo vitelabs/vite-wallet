@@ -15,8 +15,8 @@
         "test": "mocha",
         "lint": "eslint ./ --cache",
         "build:web": "npm run clean && node buildWeb.js && node build.js",
-        "upload":"scp .buildMAC/*.dmg  ubuntu@150.109.63.114:~/nginx/files/",
-        "upload:win":"scp .buildWIN/*.exe  ubuntu@150.109.63.114:~/nginx/files/"
+        "upload":"scp ./buildMAC/*.dmg  ubuntu@150.109.63.114:~/nginx/files/",
+        "upload:win":"scp ./buildWIN/*.exe  ubuntu@150.109.63.114:~/nginx/files/"
     },
     "pre-commit": [
         "lint"
