@@ -1624,8 +1624,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1633,6 +1631,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     var list = this.$wallet.getList();
+    console.log(list);
     return {
       isShowLogin: list && list.length
     };
@@ -5956,6 +5955,61 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -7345,7 +7399,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.__tb[data-v-2936371e] {\n  display: flex;\n  flex-direction: column;\n  max-height: 100%;\n  min-width: 1050px;\n  overflow: hidden;\n  background: #FFF;\n  box-shadow: 0 2px 15px 1px rgba(176, 192, 237, 0.17);\n  border-radius: 8px;\n}\n.__tb .__tb_content[data-v-2936371e] {\n    position: relative;\n    overflow-x: hidden;\n    overflow-y: auto;\n}\n.__tb .__tb_no_data[data-v-2936371e] {\n    height: 75px;\n    line-height: 75px;\n    text-align: center;\n}\n.__tb .__tb_pagination[data-v-2936371e] {\n    height: 75px;\n    line-height: 75px;\n    text-align: center;\n    border-top: 1px solid #f3f6f9;\n}\n.__tb .__tb_head[data-v-2936371e] {\n    flex: none;\n    font-family: PingFangSC-Semibold, arial, sans-serif;\n    color: #1D2024;\n}\n.__tb .__tb_row[data-v-2936371e] {\n    display: flex;\n    justify-content: space-between;\n    border-bottom: 1px solid #f3f6f9;\n    height: 48px;\n    line-height: 48px;\n    box-sizing: border-box;\n}\n.__tb .__tb_content_row[data-v-2936371e] {\n    color: #5E6875;\n}\n.__tb .__tb_content_row[data-v-2936371e]:last-child {\n      border: none;\n}\n.__tb .__tb_content_row.active[data-v-2936371e]:hover {\n      background: rgba(88, 145, 255, 0.13);\n}\n.__tb .__tb_cell[data-v-2936371e] {\n    display: inline-block;\n    text-align: left;\n    font-size: 14px;\n}\n.__tb .__tb_cell[data-v-2936371e]:first-child {\n      padding-left: 22.5px;\n}\n.__tb .__tb_cell[data-v-2936371e]:last-child {\n      padding-right: 22.5px;\n}\n@media only screen and (max-width: 500px) {\n.__tb .__tb_cell[data-v-2936371e] {\n      white-space: nowrap;\n}\n.__tb .__tb_cell[data-v-2936371e]:first-child {\n        float: left;\n        padding-left: 10px;\n}\n.__tb .__tb_cell[data-v-2936371e]:last-child {\n        float: right;\n        padding-right: 10px;\n}\n}\n.vote[data-v-2936371e] {\n  height: 100%;\n  overflow: hidden;\n  padding: 40px;\n  box-sizing: border-box;\n  display: flex;\n  flex-direction: column;\n}\n.vote .filter[data-v-2936371e] {\n    align-self: flex-end;\n}\n.vote .title[data-v-2936371e] {\n    display: flex;\n    flex: none;\n    justify-content: space-between;\n    font-family: PingFangSC-Semibold;\n    font-size: 18px;\n    color: #1d2024;\n    height: 40px;\n    margin-bottom: 24px;\n    line-height: 40px;\n}\n.vote .title .ct[data-v-2936371e] {\n      border-left: 2px solid rgba(0, 122, 255, 0.7);\n      padding-left: 10px;\n      height: 18px;\n      line-height: 18px;\n}\n.vote .__tb[data-v-2936371e] {\n    width: 100%;\n}\n.vote .vote_list[data-v-2936371e] {\n    overflow-x: auto;\n    overflow-y: hidden;\n    margin: 40px 0;\n    margin-bottom: 29px;\n}\n.vote .vote_list .__tb_row.seat[data-v-2936371e] {\n      height: 78px;\n}\n.vote .vote_list .__tb_content[data-v-2936371e] {\n      overflow: visible;\n}\n.vote .node_list[data-v-2936371e] {\n    flex: 1;\n    overflow-x: auto;\n    overflow-y: hidden;\n    display: flex;\n    flex-direction: column;\n}\n.vote .node_list .tb_container[data-v-2936371e] {\n      height: calc(100% - 64px);\n      overflow: auto;\n}\n.vote .node_list .__tb_cell[data-v-2936371e] {\n      min-width: 100px;\n}\n.vote .node_list .__tb_cell[data-v-2936371e]:first-child {\n        width: 30%;\n}\n.vote .node_list .__tb_cell[data-v-2936371e]:nth-child(2) {\n        width: 40%;\n}\n.vote .__tb_cell[data-v-2936371e] {\n    min-width: 180px;\n}\n.vote .__tb_cell .reward[data-v-2936371e] {\n      margin-left: 10px;\n}\n.vote .__tb_cell.nodename[data-v-2936371e] {\n      overflow: hidden;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      width: 150px;\n}\n.vote .__tb_cell .hoveraction.tipsicon[data-v-2936371e] {\n      position: relative;\n      display: inline-block;\n      background: url(" + escape(__webpack_require__(/*! assets/imgs/hover_help.svg */ "./src/assets/imgs/hover_help.svg")) + ");\n      overflow: visible;\n      width: 16px;\n      height: 16px;\n      vertical-align: sub;\n      cursor: pointer;\n}\n.vote .__tb_cell .hoveraction.tipsicon .unregister-tips[data-v-2936371e] {\n        word-break: break-all;\n        min-width: 314px;\n        min-height: 100px;\n        padding: 10px;\n        font-size: 14px;\n        color: #3e4a59;\n        line-height: 20px;\n}\n.clickable[data-v-2936371e] {\n  color: #007aff;\n  cursor: pointer;\n}\n.unclickable[data-v-2936371e] {\n  color: #ced1d5;\n}\n@media only screen and (max-width: 550px) {\n.vote[data-v-2936371e] {\n    overflow: auto;\n    padding: 15px;\n    display: block;\n}\n}\n", ""]);
+exports.push([module.i, "\n.__tb[data-v-2936371e] {\n  display: flex;\n  flex-direction: column;\n  max-height: 100%;\n  min-width: 1050px;\n  overflow: hidden;\n  background: #FFF;\n  box-shadow: 0 2px 15px 1px rgba(176, 192, 237, 0.17);\n  border-radius: 8px;\n}\n.__tb .__tb_content[data-v-2936371e] {\n    position: relative;\n    overflow-x: hidden;\n    overflow-y: auto;\n}\n.__tb .__tb_no_data[data-v-2936371e] {\n    height: 75px;\n    line-height: 75px;\n    text-align: center;\n}\n.__tb .__tb_pagination[data-v-2936371e] {\n    height: 75px;\n    line-height: 75px;\n    text-align: center;\n    border-top: 1px solid #f3f6f9;\n}\n.__tb .__tb_head[data-v-2936371e] {\n    flex: none;\n    font-family: PingFangSC-Semibold, arial, sans-serif;\n    color: #1D2024;\n}\n.__tb .__tb_row[data-v-2936371e] {\n    display: flex;\n    justify-content: space-between;\n    border-bottom: 1px solid #f3f6f9;\n    height: 48px;\n    line-height: 48px;\n    box-sizing: border-box;\n}\n.__tb .__tb_content_row[data-v-2936371e] {\n    color: #5E6875;\n}\n.__tb .__tb_content_row[data-v-2936371e]:last-child {\n      border: none;\n}\n.__tb .__tb_content_row.active[data-v-2936371e]:hover {\n      background: rgba(88, 145, 255, 0.13);\n}\n.__tb .__tb_cell[data-v-2936371e] {\n    display: inline-block;\n    text-align: left;\n    font-size: 14px;\n}\n.__tb .__tb_cell[data-v-2936371e]:first-child {\n      padding-left: 22.5px;\n}\n.__tb .__tb_cell[data-v-2936371e]:last-child {\n      padding-right: 22.5px;\n}\n@media only screen and (max-width: 500px) {\n.__tb .__tb_cell[data-v-2936371e] {\n      white-space: nowrap;\n}\n.__tb .__tb_cell[data-v-2936371e]:first-child {\n        float: left;\n        padding-left: 10px;\n}\n.__tb .__tb_cell[data-v-2936371e]:last-child {\n        float: right;\n        padding-right: 10px;\n}\n}\n.vote[data-v-2936371e] {\n  height: 100%;\n  overflow: hidden;\n  padding: 40px;\n  box-sizing: border-box;\n  display: flex;\n  flex-direction: column;\n}\n.vote .filter[data-v-2936371e] {\n    align-self: flex-end;\n}\n.vote .title[data-v-2936371e] {\n    display: flex;\n    flex: none;\n    justify-content: space-between;\n    font-family: PingFangSC-Semibold;\n    font-size: 18px;\n    color: #1d2024;\n    height: 40px;\n    margin-bottom: 24px;\n    line-height: 40px;\n}\n.vote .title .ct[data-v-2936371e] {\n      border-left: 2px solid rgba(0, 122, 255, 0.7);\n      padding-left: 10px;\n      height: 18px;\n      line-height: 18px;\n}\n.vote .__tb[data-v-2936371e] {\n    width: 100%;\n}\n.vote .vote_list[data-v-2936371e] {\n    overflow-x: auto;\n    overflow-y: hidden;\n    margin: 40px 0;\n    margin-bottom: 29px;\n}\n.vote .vote_list .__tb_row.seat[data-v-2936371e] {\n      height: 78px;\n}\n.vote .vote_list .__tb_content[data-v-2936371e] {\n      overflow: visible;\n}\n.vote .node_list[data-v-2936371e] {\n    flex: 1;\n    overflow-x: auto;\n    overflow-y: hidden;\n    display: flex;\n    flex-direction: column;\n}\n.vote .node_list .tb_container[data-v-2936371e] {\n      height: calc(100% - 64px);\n      overflow: auto;\n}\n.vote .node_list .__tb_cell[data-v-2936371e] {\n      min-width: 100px;\n      text-overflow: hidden;\n      margin: 0 5px;\n      text-overflow: ellipsis;\n}\n.vote .node_list .__tb_cell[data-v-2936371e]:first-child {\n        width: 5%;\n        min-width: 30px;\n}\n.vote .node_list .__tb_cell[data-v-2936371e]:nth-child(2) {\n        width: 30%;\n}\n.vote .node_list .__tb_cell[data-v-2936371e]:nth-child(3) {\n        width: 40%;\n        min-width: 450px;\n}\n.vote .node_list .__tb_cell[data-v-2936371e]:nth-child(4) {\n        width: 15%;\n        min-width: 150px;\n}\n.vote .node_list .__tb_cell[data-v-2936371e]:last-child {\n        width: 5%;\n        min-width: 50px;\n}\n.vote .__tb_cell[data-v-2936371e] {\n    min-width: 180px;\n}\n.vote .__tb_cell .reward[data-v-2936371e] {\n      margin-left: 10px;\n}\n.vote .__tb_cell.nodename[data-v-2936371e] {\n      overflow: hidden;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      width: 150px;\n}\n.vote .__tb_cell .hoveraction.tipsicon[data-v-2936371e] {\n      position: relative;\n      display: inline-block;\n      background: url(" + escape(__webpack_require__(/*! assets/imgs/hover_help.svg */ "./src/assets/imgs/hover_help.svg")) + ");\n      overflow: visible;\n      width: 16px;\n      height: 16px;\n      vertical-align: sub;\n      cursor: pointer;\n}\n.vote .__tb_cell .hoveraction.tipsicon .unregister-tips[data-v-2936371e] {\n        word-break: break-all;\n        min-width: 314px;\n        min-height: 100px;\n        padding: 10px;\n        font-size: 14px;\n        color: #3e4a59;\n        line-height: 20px;\n}\n.clickable[data-v-2936371e] {\n  color: #007aff;\n  cursor: pointer;\n}\n.unclickable[data-v-2936371e] {\n  color: #ced1d5;\n}\n@media only screen and (max-width: 550px) {\n.vote[data-v-2936371e] {\n    overflow: auto;\n    padding: 15px;\n    display: block;\n}\n}\n", ""]);
 
 // exports
 
@@ -10581,65 +10635,57 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.isShowLogin ? _c("login") : _vm._e(),
-      _vm._v(" "),
-      !_vm.isShowLogin
-        ? _c(
-            "div",
-            { staticClass: "start-wrapper" },
-            [
-              _c("div", { staticClass: "__title" }, [
-                _vm._v(_vm._s(_vm.$t("nav.head.create")))
-              ]),
-              _vm._v(" "),
-              _c(
-                "router-link",
-                {
-                  staticClass: "__btn __btn_all_in",
-                  attrs: {
-                    to: {
-                      name: "createAccount"
-                    }
-                  }
-                },
-                [_vm._v(_vm._s(_vm.$t("start")))]
-              ),
-              _vm._v(" "),
-              _c(
-                "router-link",
-                {
-                  staticClass: "__btn __btn_border _top",
-                  attrs: {
-                    to: {
-                      name: "importAccount"
-                    }
-                  }
-                },
-                [_vm._v(_vm._s(_vm.$t("btn.imported")))]
-              ),
-              _vm._v(" "),
-              _c(
-                "router-link",
-                {
-                  staticClass: "__btn_link _top",
-                  attrs: {
-                    to: {
-                      name: "restore"
-                    }
-                  }
-                },
-                [_vm._v(_vm._s(_vm.$t("mnemonic.restore")))]
-              )
-            ],
-            1
+  return _vm.isShowLogin
+    ? _c("login")
+    : _c(
+        "div",
+        { staticClass: "start-wrapper" },
+        [
+          _c("div", { staticClass: "__title" }, [
+            _vm._v(_vm._s(_vm.$t("nav.head.create")))
+          ]),
+          _vm._v(" "),
+          _c(
+            "router-link",
+            {
+              staticClass: "__btn __btn_all_in",
+              attrs: {
+                to: {
+                  name: "createAccount"
+                }
+              }
+            },
+            [_vm._v(_vm._s(_vm.$t("start")))]
+          ),
+          _vm._v(" "),
+          _c(
+            "router-link",
+            {
+              staticClass: "__btn __btn_border _top",
+              attrs: {
+                to: {
+                  name: "importAccount"
+                }
+              }
+            },
+            [_vm._v(_vm._s(_vm.$t("btn.imported")))]
+          ),
+          _vm._v(" "),
+          _c(
+            "router-link",
+            {
+              staticClass: "__btn_link _top",
+              attrs: {
+                to: {
+                  name: "restore"
+                }
+              }
+            },
+            [_vm._v(_vm._s(_vm.$t("mnemonic.restore")))]
           )
-        : _vm._e()
-    ],
-    1
-  )
+        ],
+        1
+      )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -14091,9 +14137,9 @@ var render = function() {
             _c("div", { staticClass: "title" }, [
               _c("div", { staticClass: "ct" }, [
                 _vm._v(
-                  "\n                " +
+                  "\n        " +
                     _vm._s(_vm.$t("vote.section1.title")) +
-                    "\n            "
+                    "\n      "
                 )
               ])
             ]),
@@ -14123,11 +14169,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "__tb_cell" }, [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(v.nodeStatusText) +
-                              " \n                        "
-                          ),
+                          _vm._v(_vm._s(v.nodeStatusText) + " "),
                           v.nodeStatus === 2
                             ? _c(
                                 "i",
@@ -14151,9 +14193,7 @@ var render = function() {
                                         directives: [
                                           {
                                             name: "click-outside",
-                                            rawName: "v-click-outside",
-                                            value: _vm.hideTips,
-                                            expression: "hideTips"
+                                            rawName: "v-click-outside"
                                           }
                                         ],
                                         staticClass: "unregister-tips",
@@ -14162,7 +14202,8 @@ var render = function() {
                                             "vote.section1.hoverHelp",
                                             { nodeName: v.nodeName }
                                           )
-                                        }
+                                        },
+                                        on: { clickoutside: _vm.hideTips }
                                       })
                                     : _vm._e()
                                 ],
@@ -14230,9 +14271,9 @@ var render = function() {
               [
                 _c("div", { staticClass: "ct" }, [
                   _vm._v(
-                    "\n                " +
+                    "\n        " +
                       _vm._s(_vm.$t("vote.section2.title")) +
-                      "\n            "
+                      "\n      "
                   )
                 ]),
                 _vm._v(" "),
@@ -14267,7 +14308,7 @@ var render = function() {
                   ? _c(
                       "div",
                       { staticClass: "__tb_content" },
-                      _vm._l(_vm.nodeList, function(v) {
+                      _vm._l(_vm.nodeList, function(v, i) {
                         return _c(
                           "div",
                           {
@@ -14275,6 +14316,10 @@ var render = function() {
                             staticClass: "__tb_row __tb_content_row active"
                           },
                           [
+                            _c("div", { staticClass: "__tb_cell rank" }, [
+                              _vm._v(_vm._s(i + 1))
+                            ]),
+                            _vm._v(" "),
                             _c("div", { staticClass: "__tb_cell nodename" }, [
                               _vm._v(_vm._s(v.nodeName))
                             ]),
@@ -17972,11 +18017,11 @@ module.exports = {
     cancelBtn: 'Cancel',
     help: {
       title: 'About SBP',
-      text: 'SBP（Snapshot Block Producer）is a node that has right to creating blocks, you can register to be a SBP candidate by staking a certain amount of VITE, each round (about 75 seconds) will elect 25 SBPs, the SBPs will be elected from random 23 out of top 25 candidate nodes, plus random 2 out of the candidate nodes ranking 26th-100th on the list. The 50% of block creation rewards will be allocated to the block creation node, the other 50% will be allocated to nodes that are ranked on top 100 as voting rewards. <br/><br/> One registration address (staking address) can register multiple block creation nodes (node names), a node name cannot be used if the node name has been registered by a registration address. A node name can switch block creation address, however, block creation address cannot be reused by other node names.'
+      text: 'SBP（Snapshot Block Producer）is a node that has right to create blocks, you can register to become a SBP candidate by staking a certain amount of VITE, each round (about 75 seconds) will elect 25 SBPs, the SBPs will be elected from random 23 out of top 25 candidate nodes, plus random 2 out of the candidate nodes ranking 26th-100th on the list. The 50% of block creation rewards will be allocated to the block creation node, the other 50% will be allocated to nodes that are ranked on top 100 as voting rewards. <br/><br/> One registration address (staking address) can register multiple block creation nodes (node names), a node name cannot be used if the node name has been registered by a registration address. A node name can switch block creation address, however, block creation address cannot be reused by other node names.'
     },
     confirm: {
       title: 'Registration of SBP candidates',
-      describe: 'The {amount} VITE of current address will be locked about 90 days when you submit registration,  the amount will be returned to staking address after being unlocked',
+      describe: 'The {amount} VITE of current address will be locked about 90 days when you submit the registration,  the amount will be returned to staking address after being unlocked',
       leftBtn: 'Not register yet',
       rightBtn: 'Ready to register',
       edit: {
@@ -17991,7 +18036,7 @@ module.exports = {
       }
     },
     section1: {
-      title: 'Submit Registration',
+      title: 'Registration Form',
       nodeName: 'Node Name',
       producerAddr: 'Block Creation Address',
       quotaAddr: 'Staking Address',
@@ -17999,7 +18044,7 @@ module.exports = {
       allReward: 'All of the retrievable block creation rewards',
       time: '7776000 snapshot blocks（approximately 90 days）',
       quotaAmount: 'Staking Amount',
-      confirmBtn: 'Submit Registration',
+      confirmBtn: 'Submit',
       namePlaceholder: 'Please input node name',
       nameHint: 'Within 40 characters, support English letters (both upper and lower cases), numbers, \'_\'、\'.\'',
       nameErr: 'This node name is illegal',
@@ -18074,7 +18119,7 @@ module.exports = {
     },
     section2: {
       title: 'SBP candidates',
-      head: ['Node Name', 'Address', 'Votes', 'Action'],
+      head: ['Rank', 'Node Name', 'Address', 'Votes', 'Action'],
       confirm: {
         normal: {
           title: 'Voting',
@@ -18575,7 +18620,7 @@ module.exports = {
     },
     section2: {
       title: '候选节点列表',
-      head: ['节点名称', '出块地址', '当前票数', '操作'],
+      head: ['排名', '节点名称', '出块地址', '当前票数', '操作'],
       confirm: {
         normal: {
           title: '投票',
@@ -23644,4 +23689,4 @@ function getList() {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=index.f09aeab133abe64ea7f4.js.map
+//# sourceMappingURL=index.45cec91eeae058231f37.js.map
