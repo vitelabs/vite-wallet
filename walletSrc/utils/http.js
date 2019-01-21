@@ -2,7 +2,7 @@ const { app, net } = require('electron');
 const querystring = require('querystring');
 
 const protocol = 'https:';
-const hostname = 'testnet.vite.net';
+const HOSTNAME = 'testnet.vite.net';
 const TIMEOUT = 10000;
 
 function setHeader({
@@ -38,7 +38,7 @@ function parseReq({
 }
 
 module.exports = function({
-    path, params, method = 'POST', headers = {}, type = 'json'
+    path, params, method = 'POST', headers = {}, type = 'json', timeout = TIMEOUT, hostname = HOSTNAME
 }) {
     let originalPath = path;
 
@@ -89,7 +89,7 @@ module.exports = function({
                     code: -50002,
                     message: 'Http server timeout.'
                 });
-            }, TIMEOUT);
+            }, timeout);
 
             let cancelTimeout = () => {
                 clearTimeout(httpTimeout);
@@ -120,7 +120,9 @@ module.exports = function({
 
                     try {
                         let { code, msg, data, error } = JSON.parse(bodyData);
-                        if (code !== 0) {
+                        let rightCode = hostname.indexOf('gate') !== -1 ? 200 : 0;
+
+                        if (code !== rightCode) {
                             return httpRej({
                                 code,
                                 message: msg || error

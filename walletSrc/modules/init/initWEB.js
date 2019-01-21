@@ -61,7 +61,6 @@ module.exports = function loadWeb() {
         try {
             let urlRes = require('url').parse(url);
             let host = `${urlRes.protocol}//${urlRes.host}`;
-            console.log(host);
             global.walletLog.info(`Open url: ${host}`);
 
             if (allowHost.indexOf(host) > -1) {
