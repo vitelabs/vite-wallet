@@ -4,7 +4,14 @@ require('~app/modules/electron-ga');
 require('~app/modules/electron-baidu-tongji');
 
 const allowHost = [
-    'https://reward.vite.net', 'https://testnet.vite.net', 'http://132.232.134.168:8080', 'https://vite.net', 'https://vite.org', 'https://github.com'
+    'https://reward.vite.net', 
+    'https://testnet.vite.net', 
+    'http://132.232.134.168:8080', 
+    'https://vite.net', 
+    'https://vite.org', 
+    'https://github.com',
+    'https://etherscan.io',
+    'https://ropsten.etherscan.io'
 ];
 
 function loadWebDom() {
