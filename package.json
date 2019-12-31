@@ -15,8 +15,9 @@
         "test": "mocha",
         "lint": "eslint ./ --cache",
         "build:web": "npm run clean && node buildWeb.js && node build.js",
-        "upload":"scp ./buildMAC/*.dmg  ubuntu@150.109.63.114:~/nginx/files/",
-        "upload:win":"scp ./buildWIN/*.exe  ubuntu@150.109.63.114:~/nginx/files/"
+        "devd": "gulp",
+        "upload": "scp ./buildMAC/*.dmg  ubuntu@150.109.63.114:~/nginx/files/",
+        "upload:win": "scp ./buildWIN/*.exe  ubuntu@150.109.63.114:~/nginx/files/"
     },
     "pre-commit": [
         "lint"
@@ -30,11 +31,11 @@
         "eslint": "~4.19.1",
         "eslint-plugin-vue": "~4.7.0",
         "event-pubsub": "^4.3.0",
-        "gulp": "~3.9.1",
         "gulp-babel": "~7.0.1",
         "js-queue": "^2.0.0",
         "mocha": "^5.2.0",
-        "pre-commit": "^1.2.2"
+        "pre-commit": "^1.2.2",
+        "gulp": "^4.0.2"
     },
     "dependencies": {
         "cross-spawn": "^6.0.5",

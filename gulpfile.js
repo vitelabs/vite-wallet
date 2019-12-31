@@ -56,6 +56,6 @@ gulp.task('srcJson', function () {
 });
 taskNames.push('srcJson');
 
-gulp.task('default', taskNames, function (done) {
+gulp.task('default', gulp.series(...taskNames, function(done) {
     done();
-});
+}));

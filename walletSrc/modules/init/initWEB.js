@@ -15,7 +15,7 @@ const allowHost = [
 ];
 
 function loadWebDom() {
-    // global.WALLET_WIN.webContents.openDevTools();
+    global.WALLET_WIN.webContents.openDevTools();
 
     // global.WALLET_WIN.loadURL('https://wallet.vite.net/#/');
     global.WALLET_WIN.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
