@@ -21,8 +21,8 @@ module.exports = function () {
 
 function createWindow () {
     global.WALLET_WIN = new BrowserWindow({
-        width: 600,
-        minWidth: 1210,
+        width: 1450,
+        minWidth: 1450,
         height: 200,
         title: 'Vite Wallet',
         images: true
