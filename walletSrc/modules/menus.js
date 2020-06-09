@@ -33,6 +33,13 @@ module.exports = function() {
         }, {
             label: 'Development',
             submenu: [
+                {
+                    label: 'Relaunch', 
+                    accelerator: 'CmdOrCtrl+R', 
+                    click() {
+                        global.WALLET_WIN && global.WALLET_WIN.webContents.reload();
+                    }
+                },
                 { 
                     label: 'devtool', 
                     accelerator: 'CmdOrCtrl+Y', 

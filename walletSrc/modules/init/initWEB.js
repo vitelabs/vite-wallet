@@ -1,7 +1,7 @@
 const { shell } = require('electron');
 const path = require('path');
-require('~app/modules/electron-ga');
-require('~app/modules/electron-baidu-tongji');
+// require('~app/modules/electron-ga');
+// require('~app/modules/electron-baidu-tongji');
 
 const allowHost = [
     'https://reward.vite.net', 
@@ -11,34 +11,18 @@ const allowHost = [
     'https://vite.org', 
     'https://github.com',
     'https://etherscan.io',
-    'https://ropsten.etherscan.io'
+    'https://ropsten.etherscan.io',
+    'http://localhost:8081'
 ];
 
 function loadWebDom() {
     global.WALLET_WIN.webContents.openDevTools();
 
-    // global.WALLET_WIN.loadURL('https://wallet.vite.net/#/');
-    global.WALLET_WIN.loadFile( path.join(global.APP_PATH, '/walletPages/index.html') );
+    global.WALLET_WIN.loadURL('http://localhost:5000');
+    // global.WALLET_WIN.loadFile(path.join(global.APP_PATH, '/walletPages/index.html') );
 
     global.WALLET_WIN.webContents.once('dom-ready', () => {
         global.walletLog.info('Web dom ready');
-
-        // FromPath: app-root
-        global.WALLET_WIN && global.WALLET_WIN.webContents.executeJavaScript(`
-            const { remote } = require('electron');
-            const {
-                appLocalStorage, appHttp, appI18n
-            } = remote.require('./walletSrc/modules/toWeb.js');
-            window.viteWalletStorage = appLocalStorage;
-            window.viteWalletRequest = appHttp;
-            window.viteWalletI18n = appI18n;
-
-            const { Analytics } = require('../modules/electron-ga');
-            window.analytics = new Analytics('UA-123680072-1');
-            analytics.send('event', {
-                dp: 'home'
-            });
-        `);
     });
 }
 

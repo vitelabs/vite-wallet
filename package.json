@@ -7,7 +7,7 @@
         "url": "git+https://github.com/vitelabs/vite-wallet.git"
     },
     "scripts": {
-        "clean": "rm -rf ./app && rm -rf ./vite-web-wallet",
+        "clean": "rm -rf ./app",
         "build": "npm run clean && gulp && node build.js",
         "builddev": "npm run clean && gulp && node build.js",
         "build:win": "p=WIN npm run build",
@@ -26,20 +26,21 @@
         "babel-core": "^6.26.3",
         "babel-eslint": "^8.2.6",
         "babel-preset-es2016-node5": "^1.1.2",
-        "electron": "^2.0.4",
-        "electron-builder": "^20.25.0",
+        "electron": "^9.0.3",
+        "electron-builder": "^22.7.0",
         "eslint": "~4.19.1",
         "eslint-plugin-vue": "~4.7.0",
         "event-pubsub": "^4.3.0",
+        "gulp": "^4.0.2",
         "gulp-babel": "~7.0.1",
         "js-queue": "^2.0.0",
         "mocha": "^5.2.0",
-        "pre-commit": "^1.2.2",
-        "gulp": "^4.0.2"
+        "pre-commit": "^1.2.2"
     },
     "dependencies": {
         "cross-spawn": "^6.0.5",
         "electron-baidu-tongji": "^1.0.1",
-        "electron-ga": "^1.0.6"
+        "electron-ga": "^1.0.6",
+        "menubar": "^9.0.1"
     }
 }

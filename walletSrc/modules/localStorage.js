@@ -1,12 +1,18 @@
 const fs = require('fs');
 const path = require('path');
 
+const USER_WALLET_PATH = path.join(global.USER_DATA_PATH, '/wallet/');
+
+if (!fs.existsSync(USER_WALLET_PATH)) {
+    fs.mkdirSync(USER_WALLET_PATH);
+}
+
 function getFileName(name) {
     if (!name) {
         return null;
     }
     name = name.replace(':', '_');
-    return path.join(global.USER_DATA_PATH, name);
+    return path.join(USER_WALLET_PATH, name);
 }
 
 function setItem(name, str) {

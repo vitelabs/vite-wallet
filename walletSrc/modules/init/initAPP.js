@@ -1,3 +1,4 @@
+const path = require('path');
 const { app, BrowserWindow } = require('electron');
 
 module.exports = function () {
@@ -25,12 +26,16 @@ function createWindow () {
         minWidth: 1450,
         height: 200,
         title: 'Vite Wallet',
-        images: true
+        images: true,
+        titleBarStyle: 'hidden',
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
     });
 
     global.WALLET_WIN.on('close', (event) => {
         event.preventDefault();
-        global.dialog.quit();        
+        app.exit();
     });
 
     global.WALLET_WIN.on('closed', () => {

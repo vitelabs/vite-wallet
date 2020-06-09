@@ -1,13 +1,13 @@
 const exec = require('child_process').exec;
-// const del = require('del');
+const shell = require('shelljs');
 
-exec('git clone --depth 1 https://github.com/vitelabs/vite-web-wallet.git && \
-        cd vite-web-wallet && \
-        npm install && \
-        npm run build',
+exec('cd vite-web-wallet && \
+        yarn install && \
+        yarn build',
 (err, stdout, stderr) => {
     console.log(stdout, stderr);
-    // del(['./vite-web-wallet']);
-    // cb(err);
+    if (err) {
+        throw err;
+    }
 }
 );
