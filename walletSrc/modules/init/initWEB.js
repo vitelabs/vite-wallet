@@ -6,9 +6,6 @@ const serve = require('electron-serve');
 serve({directory: path.join(global.APP_PATH, 'walletPages')});
 
 
-// require('~app/modules/electron-ga');
-// require('~app/modules/electron-baidu-tongji');
-
 const allowHost = [
     'https://reward.vite.net', 
     'https://testnet.vite.net', 
@@ -24,7 +21,9 @@ const allowHost = [
 function loadWebDom() {
     const walletWindow = global.WALLET_WIN;
 
-    walletWindow.webContents.openDevTools();
+    if (process.env.NODE_ENV === 'dev') {
+        walletWindow.webContents.openDevTools();
+    }
 
     if (process.env.HOT_RELOAD === 'true') {
         walletWindow.loadURL('http://localhost:8081');

@@ -2,17 +2,19 @@
     "name": "vite-wallet",
     "version": "1.3.0",
     "main": "app/main.js",
+    "description": "The Desktop app for vite.",
+    "author": "Vitelabs",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/vitelabs/vite-wallet.git"
     },
     "scripts": {
         "clean": "rm -rf ./app",
-        "build": "npm run clean && gulp && node build.js",
-        "builddev": "npm run clean && gulp && node build.js",
+        "build": "npm run clean && gulp && NODE_ENV=prod node build.js",
+        "builddev": "npm run clean && gulp && NODE_ENV=dev node build.js",
         "build:win": "p=WIN npm run build",
         "dev": "NO_BUILD=true npm run builddev && NODE_ENV=dev HOT_RELOAD=true electron .",
-        "dev:release": "npm run clean && gulp && node build.js && NODE_ENV=dev electron .",
+        "dev:nohot": "NO_BUILD=true npm run builddev && NODE_ENV=dev electron .",
         "test": "mocha",
         "lint": "eslint ./ --cache",
         "devd": "gulp",
@@ -23,7 +25,7 @@
         "babel-core": "^6.26.3",
         "babel-eslint": "^8.2.6",
         "babel-preset-es2016-node5": "^1.1.2",
-        "electron": "^9.0.3",
+        "electron": "9.0.3",
         "electron-builder": "^22.7.0",
         "eslint": "~4.19.1",
         "eslint-plugin-vue": "~4.7.0",
@@ -37,9 +39,8 @@
     "dependencies": {
         "@trodi/electron-splashscreen": "^1.0.0",
         "cross-spawn": "^6.0.5",
-        "electron-baidu-tongji": "^1.0.1",
-        "electron-ga": "^1.0.6",
         "electron-serve": "^1.0.0",
         "menubar": "^9.0.1"
-    }
+    },
+    "electronVersion": "9.0.3"
 }

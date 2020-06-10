@@ -24,7 +24,7 @@ traversing(appPath, (fPath, folderLevel, next) => {
     }
 }, './');
 copyFolder('./vite-web-wallet/dist', path.join(appPath, 'walletPages'));
-!no_build && copyIcon();
+copyIcon();
 !no_build && writePackage();
 !no_build && startBuild();
 

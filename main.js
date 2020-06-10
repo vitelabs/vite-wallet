@@ -25,6 +25,7 @@ function init() {
     global.walletLog.info('APP start');
 
     process.on('uncaughtException', error => {
+        console.log(error);
         global.walletLog.error(`UNCAUGHT EXCEPTION: ${JSON.stringify(error)}`);
         global.dialog.crash('Program exception');
     });
@@ -33,6 +34,7 @@ function init() {
     const initWEB = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initWEB.js'));
     const initMenu = require(path.join(global.APP_PATH, '/walletSrc/modules/menus.js'));
     const updateAPP = require(path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js'));
+    const initTray = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initTray.js'));
 
     let appEvent = global.viteEventEmitter.on('appReady', function () {
         global.walletLog.info(`SetReadyStatus: ${JSON.stringify({
@@ -45,6 +47,7 @@ function init() {
 
         initWEB();
         initMenu();
+        initTray();
     });
 
     updateAPP();

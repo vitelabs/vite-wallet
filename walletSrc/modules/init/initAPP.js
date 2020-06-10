@@ -46,13 +46,19 @@ function createWindow () {
         }
     });
 
+    global.willQuit = false;
+
     global.WALLET_WIN.on('close', (event) => {
-        event.preventDefault();
-        app.exit();
+        if (global.willQuit) {
+            global.APPQuit();
+        } else {
+            event.preventDefault();
+            app.hide();
+        }
     });
 
-    global.WALLET_WIN.on('closed', () => {
-        global.APPQuit();
+    app.on('before-quit', () => {
+        global.willQuit = true;
     });
 
     let defaultLocale = app.getLocale();
