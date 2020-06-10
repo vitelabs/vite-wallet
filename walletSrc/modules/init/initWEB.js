@@ -1,5 +1,11 @@
-const { shell } = require('electron');
 const path = require('path');
+
+const { shell } = require('electron');
+const serve = require('electron-serve');
+
+serve({directory: path.join(global.APP_PATH, 'walletPages')});
+
+
 // require('~app/modules/electron-ga');
 // require('~app/modules/electron-baidu-tongji');
 
@@ -16,12 +22,17 @@ const allowHost = [
 ];
 
 function loadWebDom() {
-    global.WALLET_WIN.webContents.openDevTools();
+    const walletWindow = global.WALLET_WIN;
 
-    global.WALLET_WIN.loadURL('http://localhost:5000');
-    // global.WALLET_WIN.loadFile(path.join(global.APP_PATH, '/walletPages/index.html') );
+    walletWindow.webContents.openDevTools();
 
-    global.WALLET_WIN.webContents.once('dom-ready', () => {
+    if (process.env.HOT_RELOAD === 'true') {
+        walletWindow.loadURL('http://localhost:8081');
+    } else {
+        walletWindow.loadURL('app://x.vite.net');
+    }
+
+    walletWindow.webContents.once('dom-ready', () => {
         global.walletLog.info('Web dom ready');
     });
 }

@@ -11,10 +11,10 @@
         "build": "npm run clean && gulp && node build.js",
         "builddev": "npm run clean && gulp && node build.js",
         "build:win": "p=WIN npm run build",
-        "dev": "NO_BUILD=true npm run builddev && NODE_ENV=dev electron .",
+        "dev": "NO_BUILD=true npm run builddev && NODE_ENV=dev HOT_RELOAD=true electron .",
+        "dev:release": "npm run clean && gulp && node build.js && NODE_ENV=dev electron .",
         "test": "mocha",
         "lint": "eslint ./ --cache",
-        "build:web": "npm run clean && node buildWeb.js && node build.js",
         "devd": "gulp",
         "upload": "scp ./buildMAC/*.dmg  ubuntu@150.109.63.114:~/nginx/files/",
         "upload:win": "scp ./buildWIN/*.exe  ubuntu@150.109.63.114:~/nginx/files/"
@@ -38,9 +38,11 @@
         "pre-commit": "^1.2.2"
     },
     "dependencies": {
+        "@trodi/electron-splashscreen": "^1.0.0",
         "cross-spawn": "^6.0.5",
         "electron-baidu-tongji": "^1.0.1",
         "electron-ga": "^1.0.6",
+        "electron-serve": "^1.0.0",
         "menubar": "^9.0.1"
     }
 }

@@ -1,5 +1,20 @@
 const path = require('path');
-const { app, BrowserWindow } = require('electron');
+
+const { app } = require('electron');
+const Splashscreen = require('@trodi/electron-splashscreen');
+
+// Wallet Window Config
+const windowConfig = {
+    width: 1450,
+    minWidth: 1450,
+    height: 200,
+    title: 'Vite Wallet',
+    images: true,
+    titleBarStyle: 'hidden',
+    webPreferences: {
+        preload: path.join(__dirname, 'preload.js')
+    }
+};
 
 module.exports = function () {
     app.on('gpu-process-crashed', () => {
@@ -21,15 +36,13 @@ module.exports = function () {
 };
 
 function createWindow () {
-    global.WALLET_WIN = new BrowserWindow({
-        width: 1450,
-        minWidth: 1450,
-        height: 200,
-        title: 'Vite Wallet',
-        images: true,
-        titleBarStyle: 'hidden',
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
+    global.WALLET_WIN = Splashscreen.initSplashScreen({
+        windowOpts: windowConfig,
+        templateUrl: path.join(global.APP_PATH, 'icon', 'splash-screen.html'),
+        splashScreenOpts: {
+            width: 440,
+            height: 430,
+            transparent: true
         }
     });
 

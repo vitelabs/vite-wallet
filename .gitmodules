@@ -1,3 +1,3 @@
 [submodule "vite-web-wallet"]
 	path = vite-web-wallet
-	url = https://github.com/vitelabs/vite-web-wallet.git
+	url = git@github.com:vitelabs/vite-web-wallet.git

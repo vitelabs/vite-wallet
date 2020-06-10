@@ -128,6 +128,11 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@trodi/electron-splashscreen@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@trodi/electron-splashscreen/-/electron-splashscreen-1.0.0.tgz#5f82384049a3bf3f744cf1de67cd09b787fab50f"
+  integrity sha512-9APxa//o6dp8mtk0sVKeD+kB5jf8gH8vu5ALkO/7L5gKnAihrvs5KnpuEtQ1sWex14Yf2HjUlLYc1bFx5JVPFw==
+
 "@types/color-name@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
@@ -1549,6 +1554,11 @@ electron-publish@22.7.0:
     fs-extra "^9.0.0"
     lazy-val "^1.0.4"
     mime "^2.4.5"
+
+electron-serve@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/electron-serve/-/electron-serve-1.0.0.tgz#babf2f5022102fa300a841d91e4c2e7048ac4b1f"
+  integrity sha512-Rsm4tjj1eK7NUWKgGw6NjHkjfB+bIXZh0ztybUYzqmwCm1wzb7zv95LERbwricDZfCsKHB0V57NgVvHdi2OOAQ==
 
 electron@^9.0.3:
   version "9.0.3"

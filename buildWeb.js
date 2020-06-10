@@ -1,5 +1,4 @@
 const exec = require('child_process').exec;
-const shell = require('shelljs');
 
 exec('cd vite-web-wallet && \
         yarn install && \
