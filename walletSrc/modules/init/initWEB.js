@@ -6,18 +6,6 @@ const serve = require('electron-serve');
 serve({directory: path.join(global.APP_PATH, 'walletPages')});
 
 
-const allowHost = [
-    'https://reward.vite.net', 
-    'https://testnet.vite.net', 
-    'http://132.232.134.168:8080', 
-    'https://vite.net', 
-    'https://vite.org', 
-    'https://github.com',
-    'https://etherscan.io',
-    'https://ropsten.etherscan.io',
-    'http://localhost:8081'
-];
-
 function loadWebDom() {
     const walletWindow = global.WALLET_WIN;
 
@@ -64,7 +52,7 @@ module.exports = function loadWeb() {
             let host = `${urlRes.protocol}//${urlRes.host}`;
             global.walletLog.info(`Open url: ${host}`);
 
-            if (allowHost.indexOf(host) > -1) {
+            if (host.indexOf('http') > -1) {
                 shell.openExternal(url);
             }
         } catch(err) {

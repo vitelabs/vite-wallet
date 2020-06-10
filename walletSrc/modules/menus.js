@@ -41,13 +41,6 @@ module.exports = function() {
                     }
                 },
                 { 
-                    label: 'devtool', 
-                    accelerator: 'CmdOrCtrl+Y', 
-                    click() {
-                        global.WALLET_WIN && global.WALLET_WIN.webContents.openDevTools();
-                    } 
-                },
-                { 
                     label: 'log', 
                     accelerator: 'CmdOrCtrl+L', 
                     click() {
@@ -57,5 +50,16 @@ module.exports = function() {
             ]
         }
     ];
+    if (process.env.NODE_ENV === 'dev') {
+        template[2].submenu.push(
+            { 
+                label: 'devtool', 
+                accelerator: 'CmdOrCtrl+Y', 
+                click() {
+                    global.WALLET_WIN && global.WALLET_WIN.webContents.openDevTools();
+                } 
+            }
+        )
+    }
     Menu.setApplicationMenu( Menu.buildFromTemplate(template) );
 };

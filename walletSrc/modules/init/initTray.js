@@ -16,7 +16,6 @@ module.exports = function() {
                 app.show();
             }
         },
-        // { label: 'Auto update', type: 'checkbox'},
         { label: `Version: ${version.version}`, type: 'normal' },
         { label: 'Quit', type: 'normal', click: () => app.quit()}
     ]);
