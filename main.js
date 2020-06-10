@@ -1,6 +1,14 @@
 const path = require('path');
 
 const { app } = require('electron');
+const { autoUpdater } = require("electron-updater");
+const log = require("electron-log");
+
+
+log.transports.file.level = "info";
+autoUpdater.logger = log;
+autoUpdater.checkForUpdatesAndNotify();
+
 
 // Single app instance
 const gotTheLock = app.requestSingleInstanceLock();
@@ -33,7 +41,7 @@ function init() {
     const initAPP = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initAPP.js'));
     const initWEB = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initWEB.js'));
     const initMenu = require(path.join(global.APP_PATH, '/walletSrc/modules/menus.js'));
-    const updateAPP = require(path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js'));
+    // const updateAPP = require(path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js'));
     const initTray = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initTray.js'));
 
     let appEvent = global.viteEventEmitter.on('appReady', function () {
@@ -50,6 +58,6 @@ function init() {
         initTray();
     });
 
-    updateAPP();
+    // updateAPP();
     initAPP();
 }

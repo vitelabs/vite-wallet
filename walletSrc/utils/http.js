@@ -2,7 +2,7 @@ const { app, net } = require('electron');
 const querystring = require('querystring');
 
 const protocol = 'https:';
-const HOSTNAME = 'testnet.vite.net';
+const HOSTNAME = 'x.vite.net';
 const TIMEOUT = 10000;
 
 function setHeader({

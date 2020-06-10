@@ -10,8 +10,8 @@
     },
     "scripts": {
         "clean": "rm -rf ./app",
-        "build": "npm run clean && gulp && NODE_ENV=prod node build.js",
-        "builddev": "npm run clean && gulp && NODE_ENV=dev node build.js",
+        "build": "gulp && NODE_ENV=prod node build.js",
+        "builddev": "gulp && NODE_ENV=dev node build.js",
         "build:win": "p=WIN npm run build",
         "dev": "NO_BUILD=true npm run builddev && NODE_ENV=dev HOT_RELOAD=true electron .",
         "dev:nohot": "NO_BUILD=true npm run builddev && NODE_ENV=dev electron .",
@@ -39,7 +39,9 @@
     "dependencies": {
         "@trodi/electron-splashscreen": "^1.0.0",
         "cross-spawn": "^6.0.5",
+        "electron-log": "^4.2.1",
         "electron-serve": "^1.0.0",
+        "electron-updater": "^4.3.1",
         "menubar": "^9.0.1"
     },
     "electronVersion": "9.0.3"
