@@ -2,7 +2,7 @@ const path = require('path');
 
 const { app, Menu, Tray } = require('electron');
 
-const version = require('../../version.json');
+const version = require('../../../package.json');
 
 let trayApp = null;
 
@@ -14,6 +14,7 @@ module.exports = function() {
             type: 'normal', 
             click: () => {
                 app.show();
+                global.WALLET_WIN.moveTop();
             }
         },
         { label: `Version: ${version.version}`, type: 'normal' },

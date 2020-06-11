@@ -45,7 +45,8 @@
         "electron-serve": "^1.0.0",
         "electron-settings": "^4.0.0",
         "electron-updater": "^4.3.1",
-        "menubar": "^9.0.1"
+        "menubar": "^9.0.1",
+        "semver": "^7.3.2"
     },
     "electronVersion": "9.0.3",
     "build": {

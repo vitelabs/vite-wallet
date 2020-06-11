@@ -1,14 +1,9 @@
 const path = require('path');
 
-const { app } = require('electron');
+const { app, shell, dialog } = require('electron');
 const { autoUpdater } = require("electron-updater");
 const log = require("electron-log");
-
-
-log.transports.file.level = "debug";
-autoUpdater.logger = log;
-autoUpdater.checkForUpdatesAndNotify();
-
+const semver = require('semver')
 
 // Single app instance
 const gotTheLock = app.requestSingleInstanceLock();
@@ -60,4 +55,26 @@ function init() {
 
     // updateAPP();
     initAPP();
+
+    log.transports.file.level = "debug";
+    autoUpdater.logger = log;
+    autoUpdater.autoDownload = false;
+    autoUpdater.checkForUpdates().then(({updateInfo}) => {
+        if (!updateInfo) return;
+        const currentVersion = require('./package.json').version;
+        log.log(updateInfo);
+        if (semver.gt(updateInfo.version, currentVersion)) {
+            dialog.showMessageBox(global.WALLET_WIN, {
+                type: 'question', 
+                buttons: [global.$t('cancel'), global.$t('yes')], 
+                title: global.$t('updateTitle'), 
+                message: global.$t('updateAPP'), 
+                defaultId: 1
+            }).then(({response}) => {
+                if (response === 1) {
+                    shell.openExternal('https://github.com/vitelabs/vite-wallet/releases');
+                }
+            })
+        }
+    }).catch(err => log.log(err));
 }
