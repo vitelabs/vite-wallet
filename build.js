@@ -76,7 +76,7 @@ function writePackage() {
     if (version.buildType !== 'prod') {
         packageFile.version = version.version + '-' + version.clientCode++;
     } else {
-        packageFile.version = version.version;
+        packageFile.version = packageFile.version;
     }
     let build = require('./electron.build.json');
     packageFile.build = build;
