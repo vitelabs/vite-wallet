@@ -14,3 +14,4 @@ buildWIN
 app
 server.log
 app.zip
+.env

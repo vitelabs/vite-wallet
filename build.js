@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
@@ -90,7 +92,7 @@ function startBuild() {
             target
         ], null, 'all'),
         projectDir: path.join(__dirname, './app'),
-        publish: 'never'
+        publish: process.env.RELEASE === 'true' ? 'always' : 'never'
     }).then((files)=>{
         writeSha256(files);
     }).catch(err => {
