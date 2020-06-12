@@ -62,7 +62,9 @@ function createWindow () {
         if (data && data.height && data.width) {
             global.WALLET_WIN.setSize(data.width, data.height);
         } else {
-            global.WALLET_WIN.maximize();
+            if (process.platform === 'darwin') {
+                global.WALLET_WIN.maximize();
+            }
         }
     });
 
