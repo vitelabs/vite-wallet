@@ -12,6 +12,7 @@ const windowConfig = {
     title: 'Vite Wallet',
     images: true,
     titleBarStyle: 'hidden',
+    autoHideMenuBar: true,
     webPreferences: {
         preload: path.join(__dirname, 'preload.js')
     }
@@ -27,13 +28,22 @@ module.exports = function () {
         createWindow && createWindow();
     });
 
-    app.on('will-quit', ()=>{
-        console.info('APP quit');
+    app.on('window-all-closed', (event) => {
+        if (process.platform !== 'darwin') {
+            app.quit();
+        }
     });
 
-    app.on('window-all-closed', (event) => {
-        event.preventDefault();
+    app.on('before-quit', () => {
+        global.willQuit = true;
+        const sizes = global.WALLET_WIN.getSize();
+        settings.set('windowSize', {
+            width: sizes[0],
+            height: sizes[1]
+        });
     });
+
+    app.on('activate', () => { global.WALLET_WIN.show() });
 };
 
 function createWindow () {
@@ -43,7 +53,8 @@ function createWindow () {
         splashScreenOpts: {
             width: 440,
             height: 430,
-            transparent: true
+            transparent: true,
+            frame: false
         }
     });
 
@@ -59,20 +70,11 @@ function createWindow () {
 
     global.WALLET_WIN.on('close', (event) => {
         if (global.willQuit) {
-            global.APPQuit();
+            global.WALLET_WIN = null;
         } else {
             event.preventDefault();
-            app.hide();
+            global.WALLET_WIN.hide();
         }
-    });
-
-    app.on('before-quit', () => {
-        const sizes = global.WALLET_WIN.getSize();
-        settings.set('windowSize', {
-            width: sizes[0],
-            height: sizes[1]
-        });
-        global.willQuit = true;
     });
 
     let defaultLocale = app.getLocale();

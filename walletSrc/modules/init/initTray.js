@@ -13,13 +13,14 @@ module.exports = function() {
             label: 'Show', 
             type: 'normal', 
             click: () => {
-                app.show();
-                global.WALLET_WIN.moveTop();
+                global.WALLET_WIN.show();
             }
         },
         { label: `Version: ${version.version}`, type: 'normal' },
-        { label: 'Quit', type: 'normal', click: () => app.quit()}
+        { label: 'Quit', type: 'normal', click: () => global.APPQuit() }
     ]);
+
+    trayApp.on('click', () => global.WALLET_WIN.show());
 
     // Call this again for Linux because we modified the context menu
     trayApp.setContextMenu(contextMenu);

@@ -2,7 +2,7 @@
     "appId": "com.electron.vite.wallet",
     "productName": "Vite Wallet",
     "buildDependenciesFromSource": true,
-    "asar": false,
+    "asar": true,
     "mac": {
         "icon": "icon/vite_512x512@2x.png",
         "hardenedRuntime" : true,

@@ -28,7 +28,7 @@ log.catchErrors({
                 }
 
                 if (result.response === 2) {
-                    electron.app.quit();
+                    global.APPQuit();
                 }
             });
     }
