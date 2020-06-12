@@ -3,7 +3,36 @@ const path = require('path');
 const { app, shell, dialog } = require('electron');
 const { autoUpdater } = require("electron-updater");
 const log = require("electron-log");
-const semver = require('semver')
+const semver = require('semver');
+
+
+// Init log and catch all error.
+Object.assign(console, log.functions);
+log.catchErrors({
+    showDialog: false,
+    onError(error, versions, submitIssue) {
+        dialog.showMessageBox({
+            title: 'An error occurred',
+            message: error.message,
+            detail: error.stack,
+            type: 'error',
+            buttons: ['Ignore', 'Report', 'Exit'],
+        })
+            .then((result) => {
+                if (result.response === 1) {
+                    submitIssue('https://github.com/vitelabs/vite-wallet/issues/new', {
+                        title: `Error report for ${versions.app}`,
+                        body: 'Error:\n```' + error.stack + '\n```\n' + `OS: ${versions.os}`
+                    });
+                    return;
+                }
+
+                if (result.response === 2) {
+                    electron.app.quit();
+                }
+            });
+    }
+});
 
 // Single app instance
 const gotTheLock = app.requestSingleInstanceLock();
@@ -25,22 +54,14 @@ if (!gotTheLock) {
 function init() {
     require('./walletSrc/modules/init/initGlobalVars.js');   // Global vars must be defined in advance
 
-    global.walletLog.info('APP start');
-
-    process.on('uncaughtException', error => {
-        console.log(error);
-        global.walletLog.error(`UNCAUGHT EXCEPTION: ${JSON.stringify(error)}`);
-        global.dialog.crash('Program exception');
-    });
-
+    console.info('APP start');
     const initAPP = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initAPP.js'));
     const initWEB = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initWEB.js'));
     const initMenu = require(path.join(global.APP_PATH, '/walletSrc/modules/menus.js'));
-    // const updateAPP = require(path.join(global.APP_PATH, '/walletSrc/modules/updateAPP.js'));
     const initTray = require(path.join(global.APP_PATH, '/walletSrc/modules/init/initTray.js'));
 
     let appEvent = global.viteEventEmitter.on('appReady', function () {
-        global.walletLog.info(`SetReadyStatus: ${JSON.stringify({
+        console.info(`SetReadyStatus: ${JSON.stringify({
             appReady: true
         })}`);
 
@@ -53,24 +74,23 @@ function init() {
         initTray();
     });
 
-    // updateAPP();
     initAPP();
 
-    log.transports.file.level = "debug";
+    // Init auto update
     autoUpdater.logger = log;
     autoUpdater.autoDownload = false;
-    autoUpdater.checkForUpdates().then(({updateInfo}) => {
+    autoUpdater.checkForUpdates().then(({ updateInfo }) => {
         if (!updateInfo) return;
         const currentVersion = require('./package.json').version;
-        log.log(updateInfo);
+        console.log(updateInfo);
         if (semver.gt(updateInfo.version, currentVersion)) {
             dialog.showMessageBox(global.WALLET_WIN, {
-                type: 'question', 
-                buttons: [global.$t('cancel'), global.$t('yes')], 
-                title: global.$t('updateTitle'), 
-                message: global.$t('updateAPP'), 
+                type: 'question',
+                buttons: [global.$t('cancel'), global.$t('yes')],
+                title: global.$t('updateTitle'),
+                message: global.$t('updateAPP'),
                 defaultId: 1
-            }).then(({response}) => {
+            }).then(({ response }) => {
                 if (response === 1) {
                     shell.openExternal('https://github.com/vitelabs/vite-wallet/releases');
                 }

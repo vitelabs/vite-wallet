@@ -1,4 +1,5 @@
 const { app, Menu, shell } = require('electron');
+const log = require("electron-log");
 
 module.exports = function() {
     let template = [
@@ -41,10 +42,10 @@ module.exports = function() {
                     }
                 },
                 { 
-                    label: 'log', 
+                    label: 'Log', 
                     accelerator: 'CmdOrCtrl+L', 
                     click() {
-                        shell.showItemInFolder(global.LOG_PATH);
+                        shell.showItemInFolder(log.transports.file.getFile().path);
                     } 
                 }
             ]

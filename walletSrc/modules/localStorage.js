@@ -16,12 +16,12 @@ function getFileName(name) {
 }
 
 function setItem(name, str) {
-    global.walletLog.info('setFile', JSON.stringify({
+    console.info('setFile', JSON.stringify({
         name, str
     }));
 
     let fileName = getFileName(name);
-    global.walletLog.info('setFile: fileName', fileName);
+    console.info('setFile: fileName', fileName);
 
     if (!fileName) {
         return;
@@ -30,15 +30,15 @@ function setItem(name, str) {
     try {
         fs.writeFileSync(fileName, str, 'utf8');
     } catch (err) {
-        global.walletLog.error(`Write ${fileName}: ${JSON.stringify(err)}`);
+        console.error(`Write ${fileName}: ${JSON.stringify(err)}`);
     }
 }
 
 function getItem(name) {
-    global.walletLog.info('getFile', name);
+    console.info('getFile', name);
 
     let fileName = getFileName(name);
-    global.walletLog.info('getFile: fileName', fileName);
+    console.info('getFile: fileName', fileName);
 
     if (!fileName) {
         return null;
@@ -48,16 +48,16 @@ function getItem(name) {
     try {
         // Not exists
         if ( !fs.existsSync(fileName) ) {
-            global.walletLog.info('getFile: !file', fileName);
+            console.info('getFile: !file', fileName);
             return null;
         }
 
         file = fs.readFileSync(fileName, {
             encoding: 'utf8'
         });
-        global.walletLog.info('getFile: !file', file);
+        console.info('getFile: !file', file);
     } catch(err) {
-        global.walletLog.error(`Read account-file: ${JSON.stringify(err)}`);
+        console.error(`Read account-file: ${JSON.stringify(err)}`);
     }
 
     return file;

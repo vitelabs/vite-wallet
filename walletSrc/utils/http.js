@@ -45,7 +45,7 @@ module.exports = function({
     if (!app.isReady()) {
         let message = 'Net module must be called after the APP is ready.';
 
-        global.walletLog.error(`HTTP ${originalPath}: ${message}`);
+        console.error(`HTTP ${originalPath}: ${message}`);
         return Promise.reject({
             code: -50004,
             message
@@ -53,7 +53,7 @@ module.exports = function({
     }
 
     if (!global.netStatus) {
-        global.walletLog.error(`HTTP ${originalPath}: Net error`);
+        console.error(`HTTP ${originalPath}: Net error`);
         return Promise.reject({
             code: -50003,
             message: 'Net error'
@@ -97,7 +97,7 @@ module.exports = function({
             };
 
             let httpRej = ({ code, message }) => {
-                global.walletLog.error(`HTTP ${originalPath}: ${message}`);
+                console.error(`HTTP ${originalPath}: ${message}`);
 
                 cancelTimeout();
                 return rej({
@@ -131,7 +131,7 @@ module.exports = function({
 
                         data = data || null;
 
-                        global.walletLog.info(`HTTP ${originalPath}: ${JSON.stringify(data)}`);
+                        console.info(`HTTP ${originalPath}: ${JSON.stringify(data)}`);
                         cancelTimeout();
                         res(data);
                     } catch(err) {
@@ -147,7 +147,7 @@ module.exports = function({
             request.end();
         });
     } catch(err) {
-        global.walletLog.error(`HTTP ${originalPath}: Net catch error, ${JSON.stringify(err)}`);
+        console.error(`HTTP ${originalPath}: Net catch error, ${JSON.stringify(err)}`);
         return Promise.reject({
             code: -50006,
             message: JSON.stringify(err)

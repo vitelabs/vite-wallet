@@ -20,7 +20,7 @@ const windowConfig = {
 module.exports = function () {
     app.on('gpu-process-crashed', () => {
         global.dialog.crash('gpu-process-crashed');
-        global.walletLog.info('gpu-process-crashed', false);
+        console.info('gpu-process-crashed', false);
     });
 
     app.on('ready', function () {
@@ -28,7 +28,7 @@ module.exports = function () {
     });
 
     app.on('will-quit', ()=>{
-        global.walletLog.info('APP quit');
+        console.info('APP quit');
     });
 
     app.on('window-all-closed', (event) => {

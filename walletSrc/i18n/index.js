@@ -9,7 +9,7 @@ class i18n {
 
     setLocale(locale) {
         if (locale !== this.locale) {
-            global.walletLog.info(`Locale: ${locale}`);
+            console.info(`Locale: ${locale}`);
         }
         this.locale = locale;
     }

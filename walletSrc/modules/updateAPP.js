@@ -34,7 +34,7 @@ function requestUpdate() {
             return;
         }
 
-        global.walletLog.info('APP should update.');
+        console.info('APP should update.');
         showDialog(data);
     }).catch(()=>{
     });
@@ -45,7 +45,7 @@ function showDialog({
 }) {
     let buttons = ['download'];
     !isForce && buttons.push('no thanks');
-    global.walletLog.info(`APP update force? ${isForce}`);
+    console.info(`APP update force? ${isForce}`);
 
     dialog.showMessageBox(global.WALLET_WIN, {
         type: 'info',

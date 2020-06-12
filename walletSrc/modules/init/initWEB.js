@@ -20,7 +20,7 @@ function loadWebDom() {
     }
 
     walletWindow.webContents.once('dom-ready', () => {
-        global.walletLog.info('Web dom ready');
+        console.info('Web dom ready');
     });
 }
 
@@ -29,7 +29,7 @@ module.exports = function loadWeb() {
         return;
     }
 
-    global.walletLog.info('Start to load web.');
+    console.info('Start to load web.');
     loadWebDom();
 
     global.WALLET_WIN.webContents.on('will-navigate', (event, url) => {
@@ -38,30 +38,30 @@ module.exports = function loadWeb() {
         }
 
         event.preventDefault();
-        global.walletLog.info(`Location change: ${url}`);
+        console.info(`Location change: ${url}`);
         loadWebDom();
     });
 
     // Redefine file
     global.WALLET_WIN.webContents.on('new-window', (event, url) => {
         event.preventDefault();
-        global.walletLog.info(`Open url: ${url}`);
+        console.info(`Open url: ${url}`);
 
         try {
             let urlRes = require('url').parse(url);
             let host = `${urlRes.protocol}//${urlRes.host}`;
-            global.walletLog.info(`Open url: ${host}`);
+            console.info(`Open url: ${host}`);
 
             if (host.indexOf('http') > -1) {
                 shell.openExternal(url);
             }
         } catch(err) {
-            global.walletLog.error(`Open url error: ${JSON.stringify(err)}`);
+            console.error(`Open url error: ${JSON.stringify(err)}`);
         }
     });
 
     global.WALLET_WIN.webContents.on('crashed', () => {
         global.dialog.crash('win-crashed');
-        global.walletLog.info('win-crashed', false);
+        console.info('win-crashed', false);
     });
 };

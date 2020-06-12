@@ -16,9 +16,6 @@ global.CLIENT_LOG_PATH = path.join(global.LOG_PATH, '/client.log'); // client lo
 global.WALLET_WIN = null;
 global.netStatus = -1;
 
-// Init log: Log needs environmental information
-global.walletLog = require('~app/utils/log.js');
-
 // Init app-quit func
 let isQuiting = false;
 global.APPQuit = function() {
