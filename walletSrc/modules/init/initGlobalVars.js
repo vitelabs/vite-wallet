@@ -1,17 +1,14 @@
 const { app } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const Store = require('electron-store');
 
 global.APP_PATH = process.env.NODE_ENV === 'dev' ? path.join(app.getAppPath(), 'app') : app.getAppPath();   // app-root
 
 global.USER_DATA_PATH = app.getPath('userData');
-global.LOG_PATH = path.join(global.USER_DATA_PATH, '/log');
-global.SERVER_LOG_PATH = path.join(global.LOG_PATH, '/server.log'); // server log path
-global.CLIENT_LOG_PATH = path.join(global.LOG_PATH, '/client.log'); // client log path
 
 !fs.existsSync(global.APP_PATH) && fs.mkdirSync(global.APP_PATH);
 !fs.existsSync(global.USER_DATA_PATH) && fs.mkdirSync(global.USER_DATA_PATH);
-!fs.existsSync(global.LOG_PATH) && fs.mkdirSync(global.LOG_PATH);
 
 global.WALLET_WIN = null;
 global.netStatus = -1;
@@ -40,3 +37,16 @@ global.$t = global.$i18n.t.bind(global.$i18n);
 global.dialog = require('../dialog.js');
 
 global.viteEventEmitter = require('~app/utils/eventEmitter.js');
+
+
+// Init electron store
+
+// Init Setting store
+global.settingsStore = new Store({
+    name: 'settings'
+});
+
+// Init wallet store
+global.walletStore = new Store({
+    name: 'walletList'
+});

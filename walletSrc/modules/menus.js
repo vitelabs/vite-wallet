@@ -47,6 +47,13 @@ module.exports = function() {
                     click() {
                         shell.showItemInFolder(log.transports.file.getFile().path);
                     } 
+                },
+                {
+                    label: 'Wallet File', 
+                    accelerator: 'CmdOrCtrl+K', 
+                    click() {
+                        shell.showItemInFolder(global.walletStore.path);
+                    }
                 }
             ]
         }
@@ -54,7 +61,7 @@ module.exports = function() {
     if (process.env.NODE_ENV === 'dev') {
         template[2].submenu.push(
             { 
-                label: 'devtool', 
+                label: 'Devtool', 
                 accelerator: 'CmdOrCtrl+Y', 
                 click() {
                     global.WALLET_WIN && global.WALLET_WIN.webContents.openDevTools();

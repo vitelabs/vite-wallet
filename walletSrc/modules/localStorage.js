@@ -1,44 +1,41 @@
-const fs = require('fs');
-const path = require('path');
-
-const USER_WALLET_PATH = path.join(global.USER_DATA_PATH, '/wallet/');
-
-if (!fs.existsSync(USER_WALLET_PATH)) {
-    fs.mkdirSync(USER_WALLET_PATH);
-}
+const store = global.walletStore;
 
 function getFileName(name) {
     if (!name) {
         return null;
     }
     name = name.replace(':', '_');
-    return path.join(USER_WALLET_PATH, name);
+    return name;
 }
 
 function setItem(name, str) {
-    console.info('setFile', JSON.stringify({
-        name, str
-    }));
-
     let fileName = getFileName(name);
-    console.info('setFile: fileName', fileName);
+
+    // VITE_WEB_WALLET_ACC_LIST contains the wallet info, for security, don't log into file.
+    if (fileName !== 'VITE_WEB_WALLET_ACC_LIST') {
+        console.info('setWalletStore', JSON.stringify({
+            name, str
+        }));
+    }
+    
+    console.info('setWalletStore: Key', fileName);
 
     if (!fileName) {
         return;
     }
 
     try {
-        fs.writeFileSync(fileName, str, 'utf8');
+        store.set(fileName, str);
     } catch (err) {
-        console.error(`Write ${fileName}: ${JSON.stringify(err)}`);
+        console.error(`setWalletStoreFailed ${fileName}: ${JSON.stringify(err)}`);
     }
 }
 
 function getItem(name) {
-    console.info('getFile', name);
+    console.info('getWalletStore', name);
 
     let fileName = getFileName(name);
-    console.info('getFile: fileName', fileName);
+    console.info('getWalletStore: Key', fileName);
 
     if (!fileName) {
         return null;
@@ -46,18 +43,14 @@ function getItem(name) {
 
     let file = '';
     try {
-        // Not exists
-        if ( !fs.existsSync(fileName) ) {
-            console.info('getFile: !file', fileName);
-            return null;
+        file = store.get(fileName);
+        
+        // VITE_WEB_WALLET_ACC_LIST contains the wallet info, for security, don't log into file.
+        if (fileName !== 'VITE_WEB_WALLET_ACC_LIST') {
+            console.info('getWalletStore: Value', file);
         }
-
-        file = fs.readFileSync(fileName, {
-            encoding: 'utf8'
-        });
-        console.info('getFile: !file', file);
     } catch(err) {
-        console.error(`Read account-file: ${JSON.stringify(err)}`);
+        console.error(`getWalletStoreFailed: ${JSON.stringify(err)}`);
     }
 
     return file;

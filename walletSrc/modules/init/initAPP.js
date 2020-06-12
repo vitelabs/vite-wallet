@@ -2,7 +2,6 @@ const path = require('path');
 
 const { app } = require('electron');
 const Splashscreen = require('@trodi/electron-splashscreen');
-const settings = require('electron-settings').default;
 
 // Wallet Window Config
 const windowConfig = {
@@ -36,11 +35,6 @@ module.exports = function () {
 
     app.on('before-quit', () => {
         global.willQuit = true;
-        const sizes = global.WALLET_WIN.getSize();
-        settings.set('windowSize', {
-            width: sizes[0],
-            height: sizes[1]
-        });
     });
 
     app.on('activate', () => { global.WALLET_WIN.show() });
@@ -58,13 +52,9 @@ function createWindow () {
         }
     });
 
-    settings.get('windowSize').then(data => {
-        if (data && data.height && data.width) {
-            global.WALLET_WIN.setSize(data.width, data.height);
-        } else {
-            if (process.platform === 'darwin') {
-                global.WALLET_WIN.maximize();
-            }
+    global.WALLET_WIN.on('ready-to-show', () => {
+        if (process.platform === 'darwin') {
+            global.WALLET_WIN.maximize();
         }
     });
 

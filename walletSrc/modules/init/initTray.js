@@ -1,8 +1,14 @@
 const path = require('path');
 
-const { app, Menu, Tray } = require('electron');
+const { app, Menu, Tray, shell } = require('electron');
+const log = require("electron-log");
+const AutoLaunch = require('auto-launch');
 
 const version = require('../../../package.json');
+
+const minecraftAutoLauncher = new AutoLaunch({
+    name: 'Vite Wallet'
+});
 
 let trayApp = null;
 
@@ -16,6 +22,45 @@ module.exports = function() {
                 global.WALLET_WIN.show();
             }
         },
+        { type: 'separator' },
+        { 
+            label: 'Back Up Wallet', 
+            type: 'normal', 
+            click: () => {
+                shell.showItemInFolder(global.walletStore.path);
+            }
+        },
+        { 
+            label: 'Settings', 
+            submenu: [
+                { 
+                    label: 'Auto Start', 
+                    type: 'checkbox',
+                    checked: !!global.settingsStore.get('autoLaunch'),
+                    click: ({checked}) => {
+                        minecraftAutoLauncher.isEnabled()
+                            .then(function(isEnabled){
+                                if(isEnabled){
+                                    return;
+                                }
+                                checked ? minecraftAutoLauncher.enable() : minecraftAutoLauncher.disable();
+                                global.settingsStore.set('autoLaunch', checked);
+                            })
+                            .catch(function(err){
+                                console.error(err);
+                            });
+                    }
+                }
+            ]
+        },
+        { type: 'separator' },
+        { 
+            label: 'Log File', 
+            type: 'normal', 
+            click: () => {
+                shell.showItemInFolder(log.transports.file.getFile().path);
+            }
+        },
         { label: `Version: ${version.version}`, type: 'normal' },
         { label: 'Quit', type: 'normal', click: () => global.APPQuit() }
     ]);
@@ -24,4 +69,5 @@ module.exports = function() {
 
     // Call this again for Linux because we modified the context menu
     trayApp.setContextMenu(contextMenu);
+    global.trayApp = trayApp;
 }
