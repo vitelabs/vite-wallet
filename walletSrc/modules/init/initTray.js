@@ -38,17 +38,8 @@ module.exports = function() {
                     type: 'checkbox',
                     checked: !!global.settingsStore.get('autoLaunch'),
                     click: ({checked}) => {
-                        minecraftAutoLauncher.isEnabled()
-                            .then(function(isEnabled){
-                                if(isEnabled){
-                                    return;
-                                }
-                                checked ? minecraftAutoLauncher.enable() : minecraftAutoLauncher.disable();
-                                global.settingsStore.set('autoLaunch', checked);
-                            })
-                            .catch(function(err){
-                                console.error(err);
-                            });
+                        checked ? minecraftAutoLauncher.enable() : minecraftAutoLauncher.disable();
+                        global.settingsStore.set('autoLaunch', checked);
                     }
                 }
             ]
