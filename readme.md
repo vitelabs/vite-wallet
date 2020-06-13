@@ -1,24 +1,67 @@
 # vite-wallet
+> The Desktop wallet of [vite](https://vite.org).
 
 ## Install
 
-1. In 'wallet' folder, run the command `npm install`.
-2. `cd wallet` and `npm install`.
+[Mac and Windows](https://github.com/vitelabs/vite-wallet/releases)
 
-## Get Started
+## Development
 
-1. Install.
-2. Configure `eslint` in your editor, rules like '.eslintrc'.
-3. In 'wallet' folder, run command `npm run dev`.
+### Init 
 
-### Branches
+This project contains the [vite-web-wallet](https://github.com/vitelabs/vite-web-wallet). You need init submodules first.
 
-* Develop on branch 'dev/{version}/{function name}'
-* Test on branch 'test'
-* Fixed version on branch 'dev/{version}'
+```
+git submodule init
+git submodule update
+```
 
-`Notice: development branch split from 'dev/{last_version}'. If 'dev/{last_version}' is not exist, split from 'master'`
+### Install
 
-#### Examples
+To install the dependencies of vite-wallet:
 
-` 'dev/2.0.0/utf8' from 'dev/1.0.0' || 'master' `
+```
+yarn
+```
+
+To install the dependencies of [vite-web-wallet](https://github.com/vitelabs/vite-web-wallet):
+
+```
+cd vite-web-wallet
+yarn
+```
+
+### Developing
+
+If want to use the local dev server of vite-web-wallet:
+
+```bash
+# You need get in to vite-web-wallet
+yarn dev
+```
+And then, open a new tab on terminal:
+
+```
+yarn dev
+```
+
+### Build
+
+First, you need build the vite-web-wallet dist:
+
+```bash
+cd vite-web-wallet
+yarn build
+```
+
+Second, you need to build vite-wallet:
+
+```bash
+# In vite-wallet project root path
+
+# Building mac
+yarn build
+
+# Building windows
+yarn build:win
+```
