@@ -16,7 +16,7 @@ module.exports = function() {
     trayApp = new Tray(path.join(global.APP_PATH, 'icon', 'tray-logo.png'));
     const contextMenu = Menu.buildFromTemplate([
         { 
-            label: 'Show', 
+            label: global.$t('show'), 
             type: 'normal', 
             click: () => {
                 global.WALLET_WIN.show();
@@ -24,17 +24,17 @@ module.exports = function() {
         },
         { type: 'separator' },
         { 
-            label: 'Back Up Wallet', 
+            label: global.$t('backup'), 
             type: 'normal', 
             click: () => {
                 shell.showItemInFolder(global.walletStore.path);
             }
         },
         { 
-            label: 'Settings', 
+            label: global.$t('settings'), 
             submenu: [
                 { 
-                    label: 'Auto Start', 
+                    label: global.$t('autoLaunch'), 
                     type: 'checkbox',
                     checked: !!global.settingsStore.get('autoLaunch'),
                     click: ({checked}) => {
@@ -46,14 +46,14 @@ module.exports = function() {
         },
         { type: 'separator' },
         { 
-            label: 'Log File', 
+            label: global.$t('log'), 
             type: 'normal', 
             click: () => {
                 shell.showItemInFolder(log.transports.file.getFile().path);
             }
         },
-        { label: `Version: ${version.version}`, type: 'normal' },
-        { label: 'Quit', type: 'normal', click: () => global.APPQuit() }
+        { label: `${global.$t('version')}: ${version.version}`, type: 'normal' },
+        { label: global.$t('quit'), type: 'normal', click: () => global.APPQuit() }
     ]);
 
     trayApp.on('click', () => global.WALLET_WIN.show());
