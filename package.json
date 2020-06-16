@@ -18,8 +18,9 @@
         "test": "mocha",
         "lint": "eslint ./ --cache",
         "devd": "gulp",
-        "release": "RELEASE=true npm run build",
-        "release:win": "RELEASE=true npm run build:win"
+        "release:mac": "RELEASE=true npm run build",
+        "release:win": "RELEASE=true npm run build:win",
+        "release": "npm run release:mac && npm run release:win"
     },
     "devDependencies": {
         "babel-core": "^6.26.3",
