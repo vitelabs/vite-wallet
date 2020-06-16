@@ -80,6 +80,7 @@ module.exports = function() {
             trayApp.setToolTip(`You have ${unreceivedNum} unreceived transactions`);
         } else {
             trayApp.setTitle('');
+            trayApp.setToolTip('');
         }
     });
 }
