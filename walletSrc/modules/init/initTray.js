@@ -1,6 +1,6 @@
 const path = require('path');
 
-const { app, Menu, Tray, shell } = require('electron');
+const { app, Menu, Tray, shell, ipcMain, nativeImage } = require('electron');
 const log = require("electron-log");
 const AutoLaunch = require('auto-launch');
 
@@ -11,9 +11,10 @@ const minecraftAutoLauncher = new AutoLaunch({
 });
 
 let trayApp = null;
+const logoPath = path.join(global.APP_PATH, 'icon', 'tray-logo.png');
 
 module.exports = function() {
-    trayApp = new Tray(path.join(global.APP_PATH, 'icon', 'tray-logo.png'));
+    trayApp = new Tray(logoPath);
     const contextMenu = Menu.buildFromTemplate([
         { 
             label: global.$t('show'), 
@@ -56,9 +57,27 @@ module.exports = function() {
         { label: global.$t('quit'), type: 'normal', click: () => global.APPQuit() }
     ]);
 
-    trayApp.on('click', () => global.WALLET_WIN.show());
+    trayApp.on('click', () => {
+        if (global.WALLET_WIN.isVisible()) {
+            global.WALLET_WIN.hide();
+        } else {
+            global.WALLET_WIN.show();
+        }
+    });
 
     // Call this again for Linux because we modified the context menu
     trayApp.setContextMenu(contextMenu);
     global.trayApp = trayApp;
+
+    ipcMain.on('balanceInfo', (event, _balanceInfo) => {
+        const balanceInfo = JSON.parse(_balanceInfo);
+        let unreceivedNum = 0;
+        for (const tokenId in balanceInfo) {
+            unreceivedNum += (+balanceInfo[tokenId].onroadNum || 0);
+        }
+        if (unreceivedNum) {
+            trayApp.setTitle(unreceivedNum + '');
+            trayApp.setToolTip(`You have ${unreceivedNum} unreceived transactions`);
+        }
+    });
 }
