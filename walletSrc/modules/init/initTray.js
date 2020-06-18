@@ -83,4 +83,8 @@ module.exports = function() {
             trayApp.setToolTip('');
         }
     });
+
+    ipcMain.on('notificationClick', () => {
+        global.WALLET_WIN.show();
+    });
 }
