@@ -27,6 +27,7 @@ traversing(appPath, (fPath, folderLevel, next) => {
 }, './');
 copyFolder('./vite-web-wallet/dist', path.join(appPath, 'walletPages'));
 copyIcon();
+writePackage();
 !no_build && startBuild();
 
 function formatFile(filePath, folderLevel) {
@@ -58,6 +59,15 @@ function formatFile(filePath, folderLevel) {
     }
 
     fs.writeFileSync(filePath, file.replace(/(~app\/)/g, folderLevel), 'utf8');
+}
+
+function writePackage() {	
+    let packageFile = require('./package.json');	
+
+    packageFile.main = 'main.js';	
+    let build = require('./electron.build.json');	
+    packageFile.build = build;	
+    fs.writeFileSync('./app/package.json', JSON.stringify(packageFile), 'utf8');	
 }
 
 function copyIcon() {
