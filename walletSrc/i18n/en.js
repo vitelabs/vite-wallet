@@ -13,5 +13,6 @@ module.exports = {
     'log': 'LogFile',
     'version': 'Version',
     'quit': 'Quit',
-    'autoLaunch': 'Auto launch'
+    'autoLaunch': 'Auto launch',
+    'walletList': 'Wallet List'
 };

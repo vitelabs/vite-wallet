@@ -58,7 +58,7 @@ module.exports = function() {
             ]
         }
     ];
-    if (process.env.NODE_ENV === 'dev') {
+    if (process.env.DEV_TOOLS !== 'false') {
         template[2].submenu.push(
             { 
                 label: 'Devtool', 

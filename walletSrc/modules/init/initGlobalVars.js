@@ -13,6 +13,8 @@ global.USER_DATA_PATH = app.getPath('userData');
 global.WALLET_WIN = null;
 global.netStatus = -1;
 
+const DEFAULT_WALLET = 'default';
+
 // Init app-quit func
 let isQuiting = false;
 global.APPQuit = function() {
@@ -38,15 +40,22 @@ global.dialog = require('../dialog.js');
 
 global.viteEventEmitter = require('~app/utils/eventEmitter.js');
 
-
-// Init electron store
-
 // Init Setting store
 global.settingsStore = new Store({
     name: 'settings'
 });
 
+let currentWallet = global.settingsStore.get('currentWallet');
+
+if (!currentWallet) {
+    global.settingsStore.set('currentWallet', DEFAULT_WALLET);
+    currentWallet = DEFAULT_WALLET;
+}
+
+global.currentWallet = currentWallet;
 // Init wallet store
 global.walletStore = new Store({
-    name: 'walletList'
+    name: `wallet/${currentWallet}`
 });
+
+global.walletStore.set('desktop-create-time', new Date().getTime());

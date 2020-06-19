@@ -8,10 +8,11 @@ module.exports = {
     'updateAPP': '当前版本需要更新，请下载最新版本Vite钱包',
     'dataLoading': '节点数据同步中，请稍候',
     'show': '显示',
-    'backup': '备份钱包',
+    'backup': '备份/导入钱包',
     'settings': '设置',
     'log': '日志文件',
     'version': '版本',
     'quit': '退出',
-    'autoLaunch': '开机自启动'
+    'autoLaunch': '开机自启动',
+    'walletList': '钱包列表'
 };

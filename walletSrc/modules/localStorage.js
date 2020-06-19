@@ -1,5 +1,3 @@
-const store = global.walletStore;
-
 function getFileName(name) {
     if (!name) {
         return null;
@@ -25,7 +23,7 @@ function setItem(name, str) {
     }
 
     try {
-        store.set(fileName, str);
+        global.walletStore.set(fileName, str);
     } catch (err) {
         console.error(`setWalletStoreFailed ${fileName}: ${JSON.stringify(err)}`);
     }
@@ -43,7 +41,7 @@ function getItem(name) {
 
     let file = '';
     try {
-        file = store.get(fileName);
+        file = global.walletStore.get(fileName);
         
         // VITE_WEB_WALLET_ACC_LIST contains the wallet info, for security, don't log into file.
         if (fileName !== 'VITE_WEB_WALLET_ACC_LIST') {
