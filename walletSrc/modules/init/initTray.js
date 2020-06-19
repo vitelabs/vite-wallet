@@ -64,6 +64,9 @@ function setMenuContext () {
             type: 'radio',
             checked: global.currentWallet === item,
             click: () => {
+                if (item === global.currentWallet) {
+                    return;
+                }
                 global.WALLET_WIN.show();
                 global.settingsStore.set('currentWallet', item);
                 global.walletStore = new Store({
