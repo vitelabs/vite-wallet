@@ -47,6 +47,7 @@
         "electron-store": "^5.2.0",
         "electron-updater": "^4.3.1",
         "menubar": "^9.0.1",
+        "moment": "^2.27.0",
         "semver": "^7.3.2"
     },
     "electronVersion": "9.0.3",

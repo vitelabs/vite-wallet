@@ -9,6 +9,8 @@ module.exports = {
     'dataLoading': 'Node synchronizing, wait a minute please.',
     'show': 'Show',
     'backup': 'Backup Wallet',
+    'import': 'Import Wallet',
+    'showBackupFile': '打开钱包文件目录',
     'settings': 'Settings',
     'log': 'LogFile',
     'version': 'Version',

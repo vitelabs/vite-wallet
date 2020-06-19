@@ -50,6 +50,13 @@ let currentWallet = global.settingsStore.get('currentWallet');
 if (!currentWallet) {
     global.settingsStore.set('currentWallet', DEFAULT_WALLET);
     currentWallet = DEFAULT_WALLET;
+} else {
+    try {
+        fs.accessSync(path.join(global.APP_PATH, `wallet/${currentWallet}.json`));
+    } catch (err) {
+        currentWallet = DEFAULT_WALLET;
+        global.settingsStore.set('currentWallet', DEFAULT_WALLET);
+    }
 }
 
 global.currentWallet = currentWallet;
