@@ -5,7 +5,8 @@ module.exports = {
     'quitWallet': '是否确定退出?',
     'reload': '重新加载',
     'updateTitle': '发现新版本',
-    'updateAPP': '当前版本需要更新，请下载最新版本Vite钱包',
+    'updateAPP': '发现新版本钱包，请下载最新版本Vite钱包',
+    'updateAPPForce': '您当前的钱包版本较低，必须要升级到最新版本之后才可使用。',
     'dataLoading': '节点数据同步中，请稍候',
     'show': '显示',
     'backup': '备份钱包',
@@ -16,5 +17,6 @@ module.exports = {
     'version': '版本',
     'quit': '退出',
     'autoLaunch': '开机自启动',
-    'walletList': '钱包列表'
+    'walletList': '钱包列表',
+    'allowPrerelease': '允许获取预览版钱包更新'
 };

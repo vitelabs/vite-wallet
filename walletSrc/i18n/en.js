@@ -6,6 +6,7 @@ module.exports = {
     'reload': 'reload',
     'updateTitle': 'Found a new version App',
     'updateAPP': 'The current version needs to be updated, please download the latest version of Vite wallet',
+    'updateAPPForce': '您当前的钱包版本较低，必须要升级到最新版本之后才可使用。',
     'dataLoading': 'Node synchronizing, wait a minute please.',
     'show': 'Show',
     'backup': 'Backup Wallet',
@@ -16,5 +17,6 @@ module.exports = {
     'version': 'Version',
     'quit': 'Quit',
     'autoLaunch': 'Auto launch',
-    'walletList': 'Wallet List'
+    'walletList': 'Wallet List',
+    'allowPrerelease': '允许获取预览版信息'
 };

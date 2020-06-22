@@ -1,10 +1,7 @@
 const path = require('path');
 
 const { app, shell, dialog } = require('electron');
-const { autoUpdater } = require("electron-updater");
 const log = require("electron-log");
-const semver = require('semver');
-
 
 // Init log and catch all error.
 Object.assign(console, log.functions);
@@ -75,26 +72,4 @@ function init() {
     });
 
     initAPP();
-
-    // Init auto update
-    autoUpdater.logger = log;
-    autoUpdater.autoDownload = false;
-    autoUpdater.checkForUpdates().then(({ updateInfo }) => {
-        if (!updateInfo) return;
-        const currentVersion = require('./package.json').version;
-        console.log(updateInfo);
-        if (semver.gt(updateInfo.version, currentVersion)) {
-            dialog.showMessageBox(global.WALLET_WIN, {
-                type: 'question',
-                buttons: [global.$t('cancel'), global.$t('yes')],
-                title: global.$t('updateTitle'),
-                message: global.$t('updateAPP'),
-                defaultId: 1
-            }).then(({ response }) => {
-                if (response === 1) {
-                    shell.openExternal('https://github.com/vitelabs/vite-wallet/releases');
-                }
-            })
-        }
-    }).catch(err => log.log(err));
 }

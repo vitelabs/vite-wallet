@@ -2,6 +2,7 @@ const path = require('path');
 
 const { app } = require('electron');
 const Splashscreen = require('@trodi/electron-splashscreen');
+const { initUpdater } = require('../utils');
 
 // Wallet Window Config
 const windowConfig = {
@@ -53,6 +54,7 @@ function createWindow () {
     });
 
     global.WALLET_WIN.on('ready-to-show', () => {
+        initUpdater();
         if (process.platform === 'darwin') {
             global.WALLET_WIN.maximize();
         }

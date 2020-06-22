@@ -8,7 +8,7 @@ const Store = require('electron-store');
 const moment = require('moment');
 
 const version = require('../../../package.json');
-const { getWalletList } = require('../utils');
+const { getWalletList, initUpdater } = require('../utils');
 
 const minecraftAutoLauncher = new AutoLaunch({
     name: 'Vite Wallet'
@@ -30,8 +30,9 @@ module.exports = function() {
         }
     });
 
-    setMenuContext();
     global.trayApp = trayApp;
+
+    setMenuContext();
 
     ipcMain.on('balanceInfo', (event, _balanceInfo) => {
         const balanceInfo = JSON.parse(_balanceInfo);
@@ -57,9 +58,18 @@ module.exports = function() {
     });
 }
 
+function changeWallet(walletName) {
+    global.settingsStore.set('currentWallet', walletName);
+    global.walletStore = new Store({
+        name: `wallet/${walletName}`
+    });
+    global.WALLET_WIN.reload();
+    global.currentWallet = walletName;
+}
+
 function setMenuContext () {
     const walletListMenus = getWalletList().map(item => {
-        return new MenuItem({
+        return {
             label: item,
             type: 'radio',
             checked: global.currentWallet === item,
@@ -68,15 +78,9 @@ function setMenuContext () {
                     return;
                 }
                 global.WALLET_WIN.show();
-                global.settingsStore.set('currentWallet', item);
-                global.walletStore = new Store({
-                    name: `wallet/${item}`
-                });
-                global.WALLET_WIN.reload();
-                global.currentWallet = item;
-                setMenuContext();
+                changeWallet(item);
             }
-        })
+        };
     });
     contextMenu = Menu.buildFromTemplate([
         { 
@@ -101,7 +105,7 @@ function setMenuContext () {
                 global.WALLET_WIN.show();
                 dialog.showSaveDialog({
                     filters: [
-                        { name: 'Json', extensions: ['json'] }
+                        { name: 'JSON', extensions: ['json'] }
                     ],
                     defaultPath: `${global.currentWallet}.json`
                 }).then(({canceled, filePath}) => {
@@ -119,7 +123,7 @@ function setMenuContext () {
                 global.WALLET_WIN.show();
                 dialog.showOpenDialog({
                     filters: [
-                        { name: 'Json', extensions: ['json'] }
+                        { name: 'JSON', extensions: ['json'] }
                     ],
                     properties: ['openFile']
                 }).then(({canceled, filePaths}) => {
@@ -129,9 +133,11 @@ function setMenuContext () {
                         let saveFilePath = path.join(global.USER_DATA_PATH, `wallet/${importFilename}.json`);
                         fs.access(saveFilePath, (err) => {
                             if (!err) {
-                                saveFilePath = path.join(global.USER_DATA_PATH, `wallet/${importFilename}-${moment().format('MMMM-Do-YYYY_hh_mm_ss')}.json`);
+                                saveFilePath = path.join(global.USER_DATA_PATH, `wallet/${importFilename}__${moment().format('MM-DD-YYYY__hh_mm_ss')}.json`);
                             }
                             fs.writeFileSync(saveFilePath, importFile);
+                            changeWallet(path.basename(saveFilePath, '.json'));
+                            setMenuContext();
                         });
                     }
                 });
@@ -157,6 +163,15 @@ function setMenuContext () {
                         checked ? minecraftAutoLauncher.enable() : minecraftAutoLauncher.disable();
                         global.settingsStore.set('autoLaunch', checked);
                     }
+                },
+                {
+                    label: global.$t('allowPrerelease'), 
+                    type: 'checkbox',
+                    checked: !!global.settingsStore.get('allowPrerelease'),
+                    click: ({checked}) => {
+                        global.settingsStore.set('allowPrerelease', checked);
+                        checked && initUpdater();
+                    }
                 }
             ]
         },
@@ -172,8 +187,5 @@ function setMenuContext () {
         { label: `${global.$t('version')}: ${version.version}`, type: 'normal' },
         { label: global.$t('quit'), type: 'normal', click: () => global.APPQuit() }
     ]);
-    contextMenu.on('menu-will-close', () => {
-        setMenuContext();
-    });
     trayApp.setContextMenu(contextMenu);
 }
