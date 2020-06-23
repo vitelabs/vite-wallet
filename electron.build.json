@@ -15,5 +15,7 @@
     },
     "dmg": {
         "sign": false
-    }
+    },
+    "afterAllArtifactBuild": "build/afterAllArtifactBuild.js",
+    "afterSign": "build/notarize.js"
 }

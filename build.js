@@ -85,53 +85,10 @@ function startBuild() {
         ], null, 'all'),
         projectDir: path.join(__dirname, './app'),
         publish: process.env.RELEASE === 'true' ? 'always' : 'never'
-    }).then((files)=>{
-        writeSha256(files);
     }).catch(err => {
         throw new Error(err);
     });
 }
-
-function writeSha256(files) {
-    let suffix = build_win ? '.exe' : '.dmg';
-    if (!files || !files.length) {
-        return;
-    }
-
-    let i;
-    for (i=0; i<files.length; i++) {
-        let file = files[i];
-        if (file.endsWith(suffix)) {
-            break;
-        }
-    }
-
-    if (i >= files.length) {
-        return;
-    }
-
-    exec(`shasum -a 256 "${files[i]}"`, (err, stdout)=>{
-        if (err) {
-            console.log(err);
-            return;
-        }
-
-        let sha256 = stdout.split(' ')[0];
-        try {
-            let folder = `./build${build_win ? 'WIN' : 'MAC'}`;
-            let arr = files[i].split('/');
-            let fname = arr[arr.length - 1];
-            !fs.existsSync(folder) && fs.mkdirSync(folder);
-            fs.writeFileSync(`${folder}/sha256`, `${fname} : ${sha256}`, 'utf-8');
-            fs.renameSync(files[i], `${folder}/${fname}`);
-            
-            console.log(`Build finished ${folder}: ${fname} - ${sha256}`);
-        } catch(err) {
-            console.log(err);
-        }
-    });
-}
-
 
 // Base function
 function traversing (startPath, cb, folderLevel) {
