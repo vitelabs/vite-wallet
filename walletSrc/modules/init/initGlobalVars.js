@@ -65,4 +65,8 @@ global.walletStore = new Store({
     name: `wallet/${currentWallet}`
 });
 
+if (global.walletStore.get('VITE_WEB_WALLET_theme') === undefined) {
+    global.walletStore.set('VITE_WEB_WALLET_theme', '1');
+}
+
 global.walletStore.set('desktop-create-time', new Date().getTime());
