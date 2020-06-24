@@ -17,5 +17,6 @@
         "sign": false
     },
     "afterAllArtifactBuild": "build/afterAllArtifactBuild.js",
-    "afterSign": "build/notarize.js"
+    "afterSign": "build/notarize.js",
+    "artifactName": "${productName}-${version}-${os}.${ext}"
 }
