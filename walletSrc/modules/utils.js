@@ -6,6 +6,9 @@ const { autoUpdater } = require("electron-updater");
 const semver = require('semver');
 const log = require("electron-log");
 
+let autoUpdateTimer = null;
+let dialogPending = false;
+
 exports.getWalletList = () => {
     try {
         let dirs = fs.readdirSync(path.join(global.USER_DATA_PATH, 'wallet'));
@@ -22,14 +25,21 @@ exports.initUpdater = () => {
     // Init auto update
     autoUpdater.logger = log;
     autoUpdater.autoDownload = false;
-    autoUpdater.allowPrerelease = !!global.settingsStore.get('allowPrerelease');
-    checkUpdate().then(({ forceUpdate, newVersion }) => {
-        newVersion && showUpdaterDialog(forceUpdate);
-    }).catch(err => console.error(err));
+    checkUpdate();
+
+    // Checking updates every 1h
+    if (!autoUpdateTimer) {
+        autoUpdateTimer = setInterval(() => {
+            checkUpdate();
+        }, 1000 * 60 * 60 * 1);
+    }
 }
 
-function showUpdaterDialog (forceUpdate) {
-    const downloadUrl = 'https://github.com/vitelabs/vite-wallet/releases';
+function showUpdaterDialog (forceUpdate, updateInfo) {
+    const downloadUrl = `https://github.com/vitelabs/vite-wallet/releases/tag/v${updateInfo.version}`;
+    if (dialogPending) return;
+
+    dialogPending = true;
     if (forceUpdate) {
         dialog.showMessageBox(global.WALLET_WIN, {
             type: 'question',
@@ -38,6 +48,7 @@ function showUpdaterDialog (forceUpdate) {
             message: global.$t('updateAPPForce'),
             defaultId: 0
         }).then(({ response }) => {
+            dialogPending = false;
             if (response === 0) {
                 shell.openExternal(downloadUrl);
                 global.APPQuit();
@@ -51,6 +62,7 @@ function showUpdaterDialog (forceUpdate) {
             message: global.$t('updateAPP'),
             defaultId: 1
         }).then(({ response }) => {
+            dialogPending = false;
             if (response === 1) {
                 shell.openExternal(downloadUrl);
             }
@@ -59,6 +71,7 @@ function showUpdaterDialog (forceUpdate) {
 }
 
 function checkUpdate() {
+    autoUpdater.allowPrerelease = !!global.settingsStore.get('allowPrerelease');
     return autoUpdater.checkForUpdates().then(({ updateInfo }) => {
         if (!updateInfo) throw 'updateInfo is null';
         const currentVersion = require('../../package.json').version;
@@ -66,13 +79,7 @@ function checkUpdate() {
         if (semver.gt(updateInfo.version, currentVersion)) {
             let diff = semver.diff(updateInfo.version, currentVersion);
             console.info(`Version semver diff: ${diff}`);
-            return {
-                newVersion: true,
-                forceUpdate: diff === 'major'
-            };
-        } 
-        return {
-            newVersion: false
-        };
-    });
+            showUpdaterDialog(diff === 'major', updateInfo);
+        }
+    }).catch(err => console.error(err));
 }
