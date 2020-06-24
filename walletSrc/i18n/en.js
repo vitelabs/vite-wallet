@@ -18,5 +18,7 @@ module.exports = {
     'quit': 'Quit',
     'autoLaunch': 'Auto Startup',
     'walletList': 'Wallet List',
-    'allowPrerelease': 'Check for Preview Versions'
+    'autoUpdate': 'Auto Update',
+    'autoUpdatePreRelease': 'Release and Pre-Release',
+    'autoUpdateRelease': 'Only Release'
 };

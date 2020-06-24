@@ -18,5 +18,7 @@ module.exports = {
     'quit': '退出',
     'autoLaunch': '开机自启动',
     'walletList': '钱包列表',
-    'allowPrerelease': '允许获取预览版钱包更新'
+    'autoUpdate': '自动更新',
+    'autoUpdatePreRelease': '更新正式版和预览版',
+    'autoUpdateRelease': '仅更新正式版'
 };

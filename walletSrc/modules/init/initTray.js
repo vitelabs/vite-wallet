@@ -165,13 +165,27 @@ function setMenuContext () {
                     }
                 },
                 {
-                    label: global.$t('allowPrerelease'), 
-                    type: 'checkbox',
-                    checked: !!global.settingsStore.get('allowPrerelease'),
-                    click: ({checked}) => {
-                        global.settingsStore.set('allowPrerelease', checked);
-                        checked && initUpdater();
-                    }
+                    label: global.$t('autoUpdate'), 
+                    submenu: [
+                        {
+                            label: global.$t('autoUpdateRelease'), 
+                            type: 'radio',
+                            checked: !global.settingsStore.get('allowPrerelease'),
+                            click: () => {
+                                global.settingsStore.set('allowPrerelease', false);
+                                initUpdater();
+                            }
+                        },
+                        {
+                            label: global.$t('autoUpdatePreRelease'), 
+                            type: 'radio',
+                            checked: !!global.settingsStore.get('allowPrerelease'),
+                            click: () => {
+                                global.settingsStore.set('allowPrerelease', true);
+                                initUpdater();
+                            }
+                        }
+                    ]
                 }
             ]
         },
