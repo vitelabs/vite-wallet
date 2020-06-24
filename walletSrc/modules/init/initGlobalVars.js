@@ -52,8 +52,9 @@ if (!currentWallet) {
     currentWallet = DEFAULT_WALLET;
 } else {
     try {
-        fs.accessSync(path.join(global.APP_PATH, `wallet/${currentWallet}.json`));
+        fs.accessSync(path.join(global.USER_DATA_PATH, `wallet/${currentWallet}.json`));
     } catch (err) {
+        console.warn(`Current wallet path: ${currentWallet} don't exist. Will use the default wallet path.`);
         currentWallet = DEFAULT_WALLET;
         global.settingsStore.set('currentWallet', DEFAULT_WALLET);
     }
