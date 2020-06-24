@@ -29,6 +29,7 @@ exports.initUpdater = () => {
 }
 
 function showUpdaterDialog (forceUpdate) {
+    const downloadUrl = 'https://github.com/vitelabs/vite-wallet/releases';
     if (forceUpdate) {
         dialog.showMessageBox(global.WALLET_WIN, {
             type: 'question',
@@ -38,7 +39,7 @@ function showUpdaterDialog (forceUpdate) {
             defaultId: 0
         }).then(({ response }) => {
             if (response === 0) {
-                shell.openExternal('https://github.com/vitelabs/vite-wallet/releases');
+                shell.openExternal(downloadUrl);
                 global.APPQuit();
             }
         });
@@ -51,7 +52,7 @@ function showUpdaterDialog (forceUpdate) {
             defaultId: 1
         }).then(({ response }) => {
             if (response === 1) {
-                shell.openExternal('https://github.com/vitelabs/vite-wallet/releases');
+                shell.openExternal(downloadUrl);
             }
         });
     }

@@ -8,11 +8,15 @@ exports.default = async function notarizing(context) {
   }
 
   const appName = context.packager.appInfo.productFilename;
+  const appleId = process.env.APPLEID;
+  if (!appleId) {
+    return;
+  }
 
   return await notarize({
     appBundleId: 'com.electron.vite.wallet',
     appPath: `${appOutDir}/${appName}.app`,
-    appleId: process.env.APPLEID,
+    appleId,
     appleIdPassword: `@keychain:AC_PASSWORD`,
   });
 };

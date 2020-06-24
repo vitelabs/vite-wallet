@@ -1,6 +1,6 @@
 {
     "name": "vite-wallet",
-    "version": "1.3.19-0",
+    "version": "1.3.20-2",
     "main": "app/main.js",
     "description": "The Desktop app for vite.",
     "author": "Vitelabs",
@@ -18,9 +18,9 @@
         "test": "mocha",
         "lint": "eslint ./ --cache",
         "devd": "gulp",
-        "release:mac": "RELEASE=true npm run build",
-        "release:win": "RELEASE=true npm run build:win",
-        "release": "npm run release:mac && npm run release:win"
+        "release:mac": "npm run build",
+        "release:win": "npm run build:win",
+        "release": "RELEASE=true npm run release:mac && RELEASE=true npm run release:win"
     },
     "devDependencies": {
         "babel-core": "^6.26.3",
@@ -48,10 +48,8 @@
         "electron-updater": "^4.3.1",
         "menubar": "^9.0.1",
         "moment": "^2.27.0",
-        "semver": "^7.3.2"
+        "semver": "^7.3.2",
+        "shelljs": "^0.8.4"
     },
-    "electronVersion": "9.0.3",
-    "build": {
-        "afterSign": "build/notarize.js"
-    }
+    "electronVersion": "9.0.3"
 }
