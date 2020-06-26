@@ -1,4 +1,22 @@
-function getFileName(name) {
+/*
+Some key is for settings. For multi-wallet to using signle settings. So save this to desktop settings store.
+*/
+const settingsKeys = [
+    'VITE_WEB_WALLET_lang',
+    'VITE_WEB_WALLET_beginnerGuide',
+    'VITE_WEB_WALLET_favoriteTickers',
+    'VITE_WEB_WALLET_theme',
+    'VITE_WEB_WALLET_hideZeroAssets'
+];
+
+/* 
+Some key contains security value, so don't log to file. 
+*/
+const ignoreLogKeys = [
+    'VITE_WEB_WALLET_ACC_LIST'
+];
+
+function getKeyPath(name) {
     if (!name) {
         return null;
     }
@@ -7,44 +25,44 @@ function getFileName(name) {
 }
 
 function setItem(name, str) {
-    let fileName = getFileName(name);
+    let keyPath = getKeyPath(name);
 
     // VITE_WEB_WALLET_ACC_LIST contains the wallet info, for security, don't log into file.
-    if (fileName !== 'VITE_WEB_WALLET_ACC_LIST') {
+    if (keyPath !== 'VITE_WEB_WALLET_ACC_LIST') {
         console.info('setWalletStore', JSON.stringify({
             name, str
         }));
     }
     
-    console.info('setWalletStore: Key', fileName);
+    console.info('setWalletStore: Key', keyPath);
 
-    if (!fileName) {
+    if (!keyPath) {
         return;
     }
 
     try {
-        global.walletStore.set(fileName, str);
+        setValue(keyPath, str);
     } catch (err) {
-        console.error(`setWalletStoreFailed ${fileName}: ${JSON.stringify(err)}`);
+        console.error(`setWalletStoreFailed ${keyPath}: ${JSON.stringify(err)}`);
     }
 }
 
 function getItem(name) {
     console.info('getWalletStore', name);
 
-    let fileName = getFileName(name);
-    console.info('getWalletStore: Key', fileName);
+    let keyPath = getKeyPath(name);
+    console.info('getWalletStore: Key', keyPath);
 
-    if (!fileName) {
+    if (!keyPath) {
         return null;
     }
 
     let file = '';
     try {
-        file = global.walletStore.get(fileName);
+        file = getValue(keyPath);
         
         // VITE_WEB_WALLET_ACC_LIST contains the wallet info, for security, don't log into file.
-        if (fileName !== 'VITE_WEB_WALLET_ACC_LIST') {
+        if (ignoreLogKeys.indexOf(keyPath) === -1) {
             console.info('getWalletStore: Value', file);
         }
     } catch(err) {
@@ -52,6 +70,20 @@ function getItem(name) {
     }
 
     return file;
+}
+
+function getValue(key) {
+    if (settingsKeys.indexOf(key) > -1) {
+        return global.settingsStore.get(`webWallet.${key}`);
+    }
+    return global.walletStore.get(key);
+}
+
+function setValue(key, value) {
+    if (settingsKeys.indexOf(key) > -1) {
+        return global.settingsStore.set(`webWallet.${key}`, value);
+    }
+    return global.walletStore.set(key, value);
 }
 
 module.exports = {
