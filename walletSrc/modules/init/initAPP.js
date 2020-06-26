@@ -54,7 +54,7 @@ function createWindow () {
     });
 
     global.WALLET_WIN.on('ready-to-show', () => {
-        initUpdater();
+        setTimeout(() => initUpdater(), 2000);
         if (process.platform === 'darwin') {
             global.WALLET_WIN.maximize();
         }
