@@ -20,5 +20,7 @@ module.exports = {
     'walletList': 'Wallet List',
     'autoUpdate': 'Auto Update',
     'autoUpdatePreRelease': 'Release and Pre-Release',
-    'autoUpdateRelease': 'Only Release'
+    'autoUpdateRelease': 'Only Release',
+    'enableTouchID': 'Enable TouchID',
+    'enableTouchIDMessage': '启用指纹解锁不会增加多少安全性，无论是否【启用指纹解锁】，Vite Wallet 都不会把密码存储到 KeyStore，只会存储到内存。启用该功能，是为了防止在钱包解锁情况下，非钱包持有人误操作导致资产损失。'
 };

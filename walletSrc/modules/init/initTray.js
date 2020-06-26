@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-const { app, Menu, Tray, shell, ipcMain, nativeImage, MenuItem, dialog } = require('electron');
+const { app, Menu, Tray, shell, ipcMain, nativeImage, MenuItem, dialog, systemPreferences } = require('electron');
 const log = require("electron-log");
 const AutoLaunch = require('auto-launch');
 const Store = require('electron-store');
@@ -82,6 +82,70 @@ function setMenuContext () {
             }
         };
     });
+
+    const settingsSubmenu = [
+        { 
+            label: global.$t('autoLaunch'), 
+            type: 'checkbox',
+            checked: !!global.settingsStore.get('autoLaunch'),
+            click: ({checked}) => {
+                checked ? minecraftAutoLauncher.enable() : minecraftAutoLauncher.disable();
+                global.settingsStore.set('autoLaunch', checked);
+            }
+        },
+        {
+            label: global.$t('autoUpdate'), 
+            submenu: [
+                {
+                    label: global.$t('autoUpdateRelease'), 
+                    type: 'radio',
+                    checked: !global.settingsStore.get('allowPrerelease'),
+                    click: () => {
+                        global.settingsStore.set('allowPrerelease', false);
+                        initUpdater();
+                    }
+                },
+                {
+                    label: global.$t('autoUpdatePreRelease'), 
+                    type: 'radio',
+                    checked: !!global.settingsStore.get('allowPrerelease'),
+                    click: () => {
+                        global.settingsStore.set('allowPrerelease', true);
+                        initUpdater();
+                    }
+                }
+            ]
+        }
+    ];
+
+    if (systemPreferences.canPromptTouchID()) {
+        settingsSubmenu.push({
+            label: global.$t('enableTouchID'), 
+            type: 'checkbox',
+            checked: !!global.settingsStore.get('enableTouchID'),
+            click: ({checked}) => {
+                if (checked) {
+                    global.WALLET_WIN.show();
+                    dialog.showMessageBox(global.WALLET_WIN, {
+                        type: 'question',
+                        buttons: [global.$t('cancel'), global.$t('yes')],
+                        title: global.$t('enableTouchID'),
+                        message: global.$t('enableTouchIDMessage'),
+                        defaultId: 1
+                    }).then(({ response }) => {
+                        if (response === 1) {
+                            global.settingsStore.set('enableTouchID', true);
+                        } else {
+                            setMenuContext();
+                        }
+                    });
+                } else {
+                    global.settingsStore.set('enableTouchID', false);
+                }
+            }
+        });
+    }
+
     contextMenu = Menu.buildFromTemplate([
         { 
             id: 'show',
@@ -154,40 +218,7 @@ function setMenuContext () {
         { 
             id: 'settings',
             label: global.$t('settings'), 
-            submenu: [
-                { 
-                    label: global.$t('autoLaunch'), 
-                    type: 'checkbox',
-                    checked: !!global.settingsStore.get('autoLaunch'),
-                    click: ({checked}) => {
-                        checked ? minecraftAutoLauncher.enable() : minecraftAutoLauncher.disable();
-                        global.settingsStore.set('autoLaunch', checked);
-                    }
-                },
-                {
-                    label: global.$t('autoUpdate'), 
-                    submenu: [
-                        {
-                            label: global.$t('autoUpdateRelease'), 
-                            type: 'radio',
-                            checked: !global.settingsStore.get('allowPrerelease'),
-                            click: () => {
-                                global.settingsStore.set('allowPrerelease', false);
-                                initUpdater();
-                            }
-                        },
-                        {
-                            label: global.$t('autoUpdatePreRelease'), 
-                            type: 'radio',
-                            checked: !!global.settingsStore.get('allowPrerelease'),
-                            click: () => {
-                                global.settingsStore.set('allowPrerelease', true);
-                                initUpdater();
-                            }
-                        }
-                    ]
-                }
-            ]
+            submenu: settingsSubmenu
         },
         { type: 'separator' },
         { 
