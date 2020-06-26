@@ -2,7 +2,7 @@ const { systemPreferences } = require('electron');
 
 
 exports.promptTouchID = (msg) => {
-    if (systemPreferences.canPromptTouchID()) {
+    if (process.platform === 'darwin' && systemPreferences.canPromptTouchID()) {
         return systemPreferences.promptTouchID(msg);
     }
     return Promise.resolve();

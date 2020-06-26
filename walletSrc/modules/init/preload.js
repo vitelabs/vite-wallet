@@ -9,7 +9,10 @@ window.viteWalletRequest = appHttp;
 window.viteWalletI18n = appI18n;
 window.DESKTOP = true;
 window.ipcRenderer = ipcRenderer;
-window.touchID = touchID;
+
+if (process.platform === 'darwin') {
+    window.touchID = touchID;
+}
 
 if (Notification.permission === "granted") {
     console.info('Notification is granted.');

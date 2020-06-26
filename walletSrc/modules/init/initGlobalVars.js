@@ -66,8 +66,8 @@ global.walletStore = new Store({
     name: `wallet/${currentWallet}`
 });
 
-if (global.walletStore.get('VITE_WEB_WALLET_theme') === undefined) {
-    global.walletStore.set('VITE_WEB_WALLET_theme', '1');
+if (global.settingsStore.get('webWallet.VITE_WEB_WALLET_theme') === undefined) {
+    global.settingsStore.set('webWallet.VITE_WEB_WALLET_theme', '1');
 }
 
 global.walletStore.set('create_time', new Date().getTime());

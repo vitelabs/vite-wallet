@@ -118,7 +118,7 @@ function setMenuContext () {
         }
     ];
 
-    if (systemPreferences.canPromptTouchID()) {
+    if (process.platform === 'darwin' && systemPreferences.canPromptTouchID()) {
         settingsSubmenu.push({
             label: global.$t('enableTouchID'), 
             type: 'checkbox',
