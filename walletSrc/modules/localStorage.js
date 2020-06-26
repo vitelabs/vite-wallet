@@ -6,7 +6,10 @@ const settingsKeys = [
     'VITE_WEB_WALLET_beginnerGuide',
     'VITE_WEB_WALLET_favoriteTickers',
     'VITE_WEB_WALLET_theme',
-    'VITE_WEB_WALLET_hideZeroAssets'
+    'VITE_WEB_WALLET_hideZeroAssets',
+    'VITE_WEB_WALLET_autoLogoutTime',
+    'VITE_WEB_WALLET_currency',
+    'VITE_WEB_WALLET_gate'
 ];
 
 /* 

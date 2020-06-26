@@ -1,6 +1,6 @@
 const { remote, ipcRenderer } = require('electron');
 const {
-    appLocalStorage, appHttp, appI18n
+    appLocalStorage, appHttp, appI18n, promptTouchID
 } = remote.require('./walletSrc/modules/toWeb.js');
 
 
@@ -9,6 +9,7 @@ window.viteWalletRequest = appHttp;
 window.viteWalletI18n = appI18n;
 window.DESKTOP = true;
 window.ipcRenderer = ipcRenderer;
+window.promptTouchID = promptTouchID;
 
 if (Notification.permission === "granted") {
     console.info('Notification is granted.');
