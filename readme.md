@@ -65,3 +65,7 @@ yarn build
 # Building windows
 yarn build:win
 ```
+
+### GPG Public Key
+
+https://keys.openpgp.org/vks/v1/by-fingerprint/BCB054E548A093056A8BAE91F8809A14954ACB1D
