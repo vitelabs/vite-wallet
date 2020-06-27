@@ -10,17 +10,17 @@
     },
     "scripts": {
         "clean": "rm -rf ./app",
-        "build": "gulp && NODE_ENV=prod node build.js",
+        "build": "FORCE_COLOR=1 gulp && FORCE_COLOR=1 NODE_ENV=prod node build.js",
         "builddev": "gulp && NODE_ENV=dev node build.js",
-        "build:win": "p=WIN npm run build",
+        "build:win": "FORCE_COLOR=1 p=WIN npm run build",
         "dev": "NO_BUILD=true npm run builddev && NODE_ENV=dev HOT_RELOAD=true electron .",
         "dev:nohot": "NO_BUILD=true npm run builddev && NODE_ENV=dev electron .",
         "test": "mocha",
         "lint": "eslint ./ --cache",
         "devd": "gulp",
-        "release:mac": "npm run build",
-        "release:win": "npm run build:win",
-        "release": "RELEASE=true npm run release:mac && RELEASE=true npm run release:win"
+        "release:mac": "FORCE_COLOR=1 npm run build",
+        "release:win": "FORCE_COLOR=1 npm run build:win",
+        "release": "FORCE_COLOR=1 node release.js"
     },
     "devDependencies": {
         "babel-core": "^6.26.3",
@@ -33,23 +33,23 @@
         "eslint": "~4.19.1",
         "eslint-plugin-vue": "~4.7.0",
         "event-pubsub": "^4.3.0",
+        "execa": "^4.0.2",
         "gulp": "^4.0.2",
         "gulp-babel": "~7.0.1",
+        "inquirer": "^7.2.0",
         "js-queue": "^2.0.0",
-        "mocha": "^5.2.0"
+        "mocha": "^5.2.0",
+        "shelljs": "^0.8.4"
     },
     "dependencies": {
         "@trodi/electron-splashscreen": "^1.0.0",
         "auto-launch": "^5.0.5",
-        "cross-spawn": "^6.0.5",
         "electron-log": "^4.2.1",
         "electron-serve": "^1.0.0",
         "electron-store": "^5.2.0",
         "electron-updater": "^4.3.1",
-        "menubar": "^9.0.1",
         "moment": "^2.27.0",
-        "semver": "^7.3.2",
-        "shelljs": "^0.8.4"
+        "semver": "^7.3.2"
     },
     "electronVersion": "9.0.3"
 }

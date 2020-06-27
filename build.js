@@ -2,33 +2,49 @@ require('dotenv').config();
 
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
 const electronBuilder = require('electron-builder');
 
 const appPath = path.join(__dirname, 'app/');
 const nodeModulesPath = path.join(__dirname, 'node_modules');
 const toModulePath = path.join(appPath, 'modules');
 const except = ['walletPages'];
-
 const no_build = process.env.NO_BUILD === 'true';
-const build_win = process.env.p === 'WIN';
 
-traversing(appPath, (fPath, folderLevel, next) => { 
-    let stats = fs.statSync(fPath);
 
-    if (stats.isDirectory()) {
-        next(fPath, folderLevel + '../');
-        return;
+const startBuild = async () => {
+    traversing(appPath, (fPath, folderLevel, next) => { 
+        let stats = fs.statSync(fPath);
+    
+        if (stats.isDirectory()) {
+            next(fPath, folderLevel + '../');
+            return;
+        }
+    
+        if (stats.isFile()) {
+            formatFile(fPath, folderLevel);
+        }
+    }, './');
+    copyFolder('./vite-web-wallet/dist', path.join(appPath, 'walletPages'));
+    copyIcon();
+    writePackage();
+    if (!no_build) {
+        let target = process.env.p === 'WIN' ? electronBuilder.Platform.WINDOWS : electronBuilder.Platform.MAC;
+        electronBuilder.build({
+            targets: electronBuilder.createTargets([
+                target
+            ], null, 'all'),
+            projectDir: path.join(__dirname, './app'),
+            publish: process.env.RELEASE === 'true' ? 'always' : 'never'
+        }).catch(err => {
+            throw new Error(err);
+        });
     }
+}
 
-    if (stats.isFile()) {
-        formatFile(fPath, folderLevel);
-    }
-}, './');
-copyFolder('./vite-web-wallet/dist', path.join(appPath, 'walletPages'));
-copyIcon();
-writePackage();
-!no_build && startBuild();
+startBuild().catch(err => {
+    console.error(err);
+    process.exit(1);
+});
 
 function formatFile(filePath, folderLevel) {
     let result = fs.existsSync(filePath);
@@ -75,19 +91,6 @@ function copyIcon() {
         path.join(__dirname, '/walletSrc/icon'),
         path.join(appPath, '/icon')
     );
-}
-
-function startBuild() {
-    let target = process.env.p === 'WIN' ? electronBuilder.Platform.WINDOWS : electronBuilder.Platform.MAC;
-    electronBuilder.build({
-        targets: electronBuilder.createTargets([
-            target
-        ], null, 'all'),
-        projectDir: path.join(__dirname, './app'),
-        publish: process.env.RELEASE === 'true' ? 'always' : 'never'
-    }).catch(err => {
-        throw new Error(err);
-    });
 }
 
 // Base function
