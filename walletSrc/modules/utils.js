@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { app, shell, dialog } = require('electron');
+const { app, shell, dialog, powerMonitor } = require('electron');
 const { autoUpdater } = require("electron-updater");
 const semver = require('semver');
 const log = require("electron-log");
@@ -34,6 +34,31 @@ exports.initUpdater = () => {
         }, 1000 * 60 * 60 * 1);
     }
 }
+
+exports.powerMonitor = () => {
+    app.on('ready', () => {
+        powerMonitor.on('suspend', () => {
+            console.info('The system is going to sleep');
+        });
+        powerMonitor.on('resume', () => {
+            console.info('The system resumed')
+            sendMsg('resume');
+        });
+        powerMonitor.on('lock-screen', () => {
+            console.info('The system is going to lock');
+        });
+        powerMonitor.on('unlock-screen', () => {
+            console.info('The system screen unlocked');
+            sendMsg('resume');
+        });
+    });
+}
+
+
+function sendMsg(channel) {
+    global.WALLET_WIN && global.WALLET_WIN.webContents && global.WALLET_WIN.webContents.send(channel);
+}
+
 
 function showUpdaterDialog (forceUpdate, updateInfo) {
     const downloadUrl = `https://github.com/vitelabs/vite-wallet/releases/tag/v${updateInfo.version}`;

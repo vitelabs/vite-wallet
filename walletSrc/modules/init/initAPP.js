@@ -2,7 +2,7 @@ const path = require('path');
 
 const { app } = require('electron');
 const Splashscreen = require('@trodi/electron-splashscreen');
-const { initUpdater } = require('../utils');
+const { initUpdater, powerMonitor } = require('../utils');
 
 // Wallet Window Config
 const windowConfig = {
@@ -19,6 +19,10 @@ const windowConfig = {
 };
 
 module.exports = function () {
+    // Init power monitor. Will send resume and lock event to window
+    powerMonitor();
+
+    
     app.on('gpu-process-crashed', () => {
         global.dialog.crash('gpu-process-crashed');
         console.info('gpu-process-crashed', false);
