@@ -63,7 +63,7 @@ const release = async () => {
 
     await execWrapper(`npm`, ['version', bumps.indexOf(bump) > -1 ? bump : version]);
     await execWrapper('git', ['push']);
-    await execWrapper('git', ['push', '--tags']);
+    await execWrapper('git', ['push', '--tags', '-f']);
     await execWrapper('npm', ['run', 'release:mac']);
     await execWrapper('npm', ['run', 'release:win']);
 };
