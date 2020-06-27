@@ -61,7 +61,9 @@ const release = async () => {
         cwd: path.join(process.cwd(), 'vite-web-wallet')
     })
 
-    await execa(`npm version ${bumps.indexOf(bump) > -1 ? bump : version }`);
+    await execWrapper(`npm`, ['version', bumps.indexOf(bump) > -1 ? bump : version]);
+    await execWrapper('git', ['push']);
+    await execWrapper('git', ['push', '--tags']);
     await execWrapper('npm', ['run', 'release:mac']);
     await execWrapper('npm', ['run', 'release:win']);
 };
