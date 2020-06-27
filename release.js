@@ -23,7 +23,7 @@ const release = async () => {
         return { name: `${ b } (${ versions[b] })`, value: b };
     });
 
-    const { bump, customVersion } = await inquirer.prompt([
+    const { bump, customVersion, isPublish } = await inquirer.prompt([
         {
             name: 'bump',
             message: 'Select release type:',
@@ -38,6 +38,12 @@ const release = async () => {
             message: 'Input version:',
             type: 'input',
             when: answers => answers.bump === 'custom'
+        },
+        {
+            name: 'isPublish',
+            message: 'Do you want to publish to github?',
+            type: 'list',
+            choices: [ { name: 'N', value: false }, { name: 'Y', value: true } ]
         }
     ]);
 
@@ -59,13 +65,20 @@ const release = async () => {
 
     await execWrapper(`npm`, ['run', 'build'], {
         cwd: path.join(process.cwd(), 'vite-web-wallet')
-    })
+    });
+
+    const releaseConfig = {
+        env: {
+            ...process.env,
+            RELEASE: isPublish
+        }
+    }
 
     await execWrapper(`npm`, ['version', bumps.indexOf(bump) > -1 ? bump : version]);
     await execWrapper('git', ['push']);
     await execWrapper('git', ['push', '--tags', '-f']);
-    await execWrapper('npm', ['run', 'release:mac']);
-    await execWrapper('npm', ['run', 'release:win']);
+    await execWrapper('npm', ['run', 'release:mac'], releaseConfig);
+    await execWrapper('npm', ['run', 'release:win'], releaseConfig);
 };
 
 release().catch(err => {
