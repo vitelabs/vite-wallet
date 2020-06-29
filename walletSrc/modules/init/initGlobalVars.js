@@ -3,6 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const Store = require('electron-store');
 
+const defaultSettings = {
+    'webWallet.VITE_WEB_WALLET_theme': '1',
+    'net': 'mainnet'
+};
+
 global.APP_PATH = process.env.NODE_ENV === 'dev' ? path.join(app.getAppPath(), 'app') : app.getAppPath();   // app-root
 
 global.USER_DATA_PATH = app.getPath('userData');
@@ -45,8 +50,9 @@ global.settingsStore = new Store({
     name: 'settings'
 });
 
-let currentWallet = global.settingsStore.get('currentWallet');
 
+// Init wallet store
+let currentWallet = global.settingsStore.get('currentWallet');
 if (!currentWallet) {
     global.settingsStore.set('currentWallet', DEFAULT_WALLET);
     currentWallet = DEFAULT_WALLET;
@@ -61,13 +67,15 @@ if (!currentWallet) {
 }
 
 global.currentWallet = currentWallet;
-// Init wallet store
 global.walletStore = new Store({
     name: `wallet/${currentWallet}`
 });
 
-if (global.settingsStore.get('webWallet.VITE_WEB_WALLET_theme') === undefined) {
-    global.settingsStore.set('webWallet.VITE_WEB_WALLET_theme', '1');
+// Set default settings
+for (let key in defaultSettings) {
+    if (global.settingsStore.get(key) === undefined) {
+        global.settingsStore.set(key, defaultSettings[key]);
+    }
 }
 
 global.walletStore.set('create_time', new Date().getTime());

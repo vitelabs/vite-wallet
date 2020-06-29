@@ -4,6 +4,7 @@ const semver = require('semver');
 const inquirer = require('inquirer');
 
 const curVersion = require('./package.json').version;
+const appPath = path.join(__dirname, 'app/');
 
 const execWrapper = async (...args) => {
     let _promise = execa(...args);
@@ -63,9 +64,17 @@ const release = async () => {
 
     console.log(`npm version ${bumps.indexOf(bump) > -1 ? bump : version }`);
 
+    // Build Mainnet files
     await execWrapper(`npm`, ['run', 'build'], {
         cwd: path.join(process.cwd(), 'vite-web-wallet')
     });
+    await execWrapper('cp', ['-rf', 'vite-web-wallet/dist/', 'app/walletPages']);
+
+    // Build Testnet files
+    await execWrapper(`npm`, ['run', 'build:testPC'], {
+        cwd: path.join(process.cwd(), 'vite-web-wallet')
+    });
+    await execWrapper('cp', ['-rf', 'vite-web-wallet/dist/', 'app/walletPages-test']);
 
     const releaseConfig = {
         env: {

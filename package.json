@@ -9,7 +9,7 @@
         "url": "git+https://github.com/vitelabs/vite-wallet.git"
     },
     "scripts": {
-        "clean": "rm -rf ./app",
+        "clean": "rm -rf ./app/walletPages*",
         "build": "FORCE_COLOR=1 gulp && FORCE_COLOR=1 NODE_ENV=prod node build.js",
         "builddev": "gulp && NODE_ENV=dev node build.js",
         "build:win": "FORCE_COLOR=1 p=WIN npm run build",

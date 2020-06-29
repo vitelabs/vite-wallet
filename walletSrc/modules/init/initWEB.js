@@ -3,8 +3,16 @@ const path = require('path');
 const { shell } = require('electron');
 const serve = require('electron-serve');
 
-serve({directory: path.join(global.APP_PATH, 'walletPages')});
+const netTypes = ['mainnet', 'testnet'];
 
+function serveFile(netType) {
+    return serve({
+        directory: path.join(global.APP_PATH, netType === 'mainnet' ? 'walletPages' : 'walletPages-test')
+    });
+}
+
+serveFile('mainnet');
+serveFile('testnet');
 
 function loadWebDom() {
     const walletWindow = global.WALLET_WIN;
@@ -13,14 +21,21 @@ function loadWebDom() {
         walletWindow.webContents.openDevTools();
     }
 
+    let netType = global.settingsStore.get('net');
+    netType = netTypes.indexOf(netType) === -1 ? 'mainnet' : netType;
+
     if (process.env.HOT_RELOAD === 'true') {
         walletWindow.loadURL('http://localhost:8081');
     } else {
-        walletWindow.loadURL('app://x.vite.net');
+        global.WALLET_WIN.loadURL(`app://${netType}.vite.net`);
     }
 
     walletWindow.webContents.once('dom-ready', () => {
         console.info('Web dom ready');
+    });
+
+    global.viteEventEmitter.on('change-net', (_netType) => {
+        global.WALLET_WIN.loadURL(`app://${_netType}.vite.net`);
     });
 }
 
@@ -32,15 +47,15 @@ module.exports = function loadWeb() {
     console.info('Start to load web.');
     loadWebDom();
 
-    global.WALLET_WIN.webContents.on('will-navigate', (event, url) => {
-        if (url.indexOf('file') !== 0) {
-            return;
-        }
+    // global.WALLET_WIN.webContents.on('will-navigate', (event, url) => {
+    //     if (url.indexOf('file') !== 0) {
+    //         return;
+    //     }
 
-        event.preventDefault();
-        console.info(`Location change: ${url}`);
-        loadWebDom();
-    });
+    //     event.preventDefault();
+    //     console.info(`Location change: ${url}`);
+    //     loadWebDom();
+    // });
 
     // Redefine file
     global.WALLET_WIN.webContents.on('new-window', (event, url) => {

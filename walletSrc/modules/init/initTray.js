@@ -115,6 +115,29 @@ function setMenuContext () {
                     }
                 }
             ]
+        },
+        {
+            label: global.$t('net'), 
+            submenu: [
+                {
+                    label: 'Main Net', 
+                    type: 'radio',
+                    checked: global.settingsStore.get('net') === 'mainnet',
+                    click: () => {
+                        global.settingsStore.set('net', 'mainnet');
+                        global.viteEventEmitter.emit('change-net', 'mainnet');
+                    }
+                },
+                {
+                    label: 'Test Net', 
+                    type: 'radio',
+                    checked: global.settingsStore.get('net') === 'testnet',
+                    click: () => {
+                        global.settingsStore.set('net', 'testnet');
+                        global.viteEventEmitter.emit('change-net', 'testnet');
+                    }
+                }
+            ]
         }
     ];
 

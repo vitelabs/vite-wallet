@@ -7,7 +7,7 @@ const electronBuilder = require('electron-builder');
 const appPath = path.join(__dirname, 'app/');
 const nodeModulesPath = path.join(__dirname, 'node_modules');
 const toModulePath = path.join(appPath, 'modules');
-const except = ['walletPages'];
+const except = ['walletPages', 'walletPages-test'];
 const no_build = process.env.NO_BUILD === 'true';
 
 
@@ -24,7 +24,7 @@ const startBuild = async () => {
             formatFile(fPath, folderLevel);
         }
     }, './');
-    copyFolder('./vite-web-wallet/dist', path.join(appPath, 'walletPages'));
+    no_build && copyFolder('./vite-web-wallet/dist', path.join(appPath, 'walletPages'));
     copyIcon();
     writePackage();
     if (!no_build) {
