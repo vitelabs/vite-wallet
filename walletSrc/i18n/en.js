@@ -22,6 +22,6 @@ module.exports = {
     'autoUpdatePreRelease': 'Get Both Stable and Pre-release',
     'autoUpdateRelease': 'Get Stable Version Only',
     'enableTouchID': 'Enable TouchID',
-    'enableTouchIDMessage': 'Enabling TouchID does not improve security. No matter whether it is enabled or not, Vite Wallet will not store the password in KeyStore. The password is only stored in memory. This feature is to prevent potential asset loss by mistake in case the wallet is unlocked.',
+    'enableTouchIDMessage': 'Enabling TouchID does not improve security. No matter whether it is enabled or not, the Vite Wallet will not store the password in KeyStore. The password is only stored in memory. This feature is to prevent potential asset loss by mistake in case the wallet is unlocked.',
     'net': 'Net Type'
 };
