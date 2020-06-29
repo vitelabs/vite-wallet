@@ -1,6 +1,6 @@
 module.exports = {
     'cancel': 'Cancel',
-    'close': 'close',
+    'close': 'Close',
     'yes': 'Yes',
     'quitWallet': 'Quit Vite wallet?',
     'reload': 'Reopen wallet',
