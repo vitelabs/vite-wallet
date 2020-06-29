@@ -24,7 +24,7 @@ const startBuild = async () => {
             formatFile(fPath, folderLevel);
         }
     }, './');
-    no_build && copyFolder('./vite-web-wallet/dist', path.join(appPath, 'walletPages'));
+    // no_build && copyFolder('./vite-web-wallet/dist', path.join(appPath, 'walletPages'));
     copyIcon();
     writePackage();
     if (!no_build) {

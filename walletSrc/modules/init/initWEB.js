@@ -1,18 +1,35 @@
 const path = require('path');
 
-const { shell } = require('electron');
+const { shell, protocol } = require('electron');
 const serve = require('electron-serve');
 
 const netTypes = ['mainnet', 'testnet'];
+const privileges = {
+    standard: true,
+    secure: true,
+    allowServiceWorkers: true,
+    supportFetchAPI: true,
+    corsEnabled: true
+};
+
 
 function serveFile(netType) {
     return serve({
-        directory: path.join(global.APP_PATH, netType === 'mainnet' ? 'walletPages' : 'walletPages-test')
+        directory: path.join(global.APP_PATH, netType === 'mainnet' ? 'walletPages' : 'walletPages-test'),
+        scheme: netType
     });
 }
 
-serveFile('mainnet');
 serveFile('testnet');
+serveFile('mainnet');
+
+// This is for fix a bugs of muti-scheme of electron-serve, details: https://www.electronjs.org/docs/api/protocol#protocolregisterschemesasprivilegedcustomschemes
+protocol.registerSchemesAsPrivileged(netTypes.map(item => {
+    return {
+        scheme: item,
+        privileges
+    }
+}));
 
 function loadWebDom() {
     const walletWindow = global.WALLET_WIN;
@@ -27,7 +44,7 @@ function loadWebDom() {
     if (process.env.HOT_RELOAD === 'true') {
         walletWindow.loadURL('http://localhost:8081');
     } else {
-        global.WALLET_WIN.loadURL(`app://${netType}.vite.net`);
+        global.WALLET_WIN.loadURL(`${netType}://x.vite.net`);
     }
 
     walletWindow.webContents.once('dom-ready', () => {
@@ -35,7 +52,7 @@ function loadWebDom() {
     });
 
     global.viteEventEmitter.on('change-net', (_netType) => {
-        global.WALLET_WIN.loadURL(`app://${_netType}.vite.net`);
+        global.WALLET_WIN.loadURL(`${_netType}://x-test.vite.net`);
     });
 }
 
@@ -46,16 +63,6 @@ module.exports = function loadWeb() {
 
     console.info('Start to load web.');
     loadWebDom();
-
-    // global.WALLET_WIN.webContents.on('will-navigate', (event, url) => {
-    //     if (url.indexOf('file') !== 0) {
-    //         return;
-    //     }
-
-    //     event.preventDefault();
-    //     console.info(`Location change: ${url}`);
-    //     loadWebDom();
-    // });
 
     // Redefine file
     global.WALLET_WIN.webContents.on('new-window', (event, url) => {

@@ -64,17 +64,10 @@ const release = async () => {
 
     console.log(`npm version ${bumps.indexOf(bump) > -1 ? bump : version }`);
 
-    // Build Mainnet files
-    await execWrapper(`npm`, ['run', 'build'], {
-        cwd: path.join(process.cwd(), 'vite-web-wallet')
-    });
-    await execWrapper('cp', ['-rf', 'vite-web-wallet/dist/', 'app/walletPages']);
+    // Delete files
+    await execWrapper('npm', ['run', 'clean']);
 
-    // Build Testnet files
-    await execWrapper(`npm`, ['run', 'build:testPC'], {
-        cwd: path.join(process.cwd(), 'vite-web-wallet')
-    });
-    await execWrapper('cp', ['-rf', 'vite-web-wallet/dist/', 'app/walletPages-test']);
+    await execWrapper('npm', ['run', 'build:web']);
 
     const releaseConfig = {
         env: {
