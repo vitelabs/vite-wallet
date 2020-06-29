@@ -1,6 +1,6 @@
 module.exports = {
     'cancel': 'Cancel',
-    'close': 'close',
+    'close': 'Close',
     'yes': 'Yes',
     'quitWallet': 'Quit Vite wallet?',
     'reload': 'Reopen wallet',
@@ -19,9 +19,9 @@ module.exports = {
     'autoLaunch': 'Auto Startup',
     'walletList': 'Wallet List',
     'autoUpdate': 'Auto Update',
-    'autoUpdatePreRelease': 'Release and Pre-Release',
-    'autoUpdateRelease': 'Only Release',
+    'autoUpdatePreRelease': 'Get Both Stable and Pre-release',
+    'autoUpdateRelease': 'Get Stable Version Only',
     'enableTouchID': 'Enable TouchID',
-    'enableTouchIDMessage': '启用指纹解锁不会增加多少安全性，无论是否【启用指纹解锁】，Vite Wallet 都不会把密码存储到 KeyStore，只会存储到内存。启用该功能，是为了防止在钱包解锁情况下，非钱包持有人误操作导致资产损失。',
+    'enableTouchIDMessage': 'Enabling TouchID does not improve security. No matter whether it is enabled or not, the Vite Wallet will not store the password in KeyStore. The password is only stored in memory. This feature is to prevent potential asset loss by mistake in case the wallet is unlocked.',
     'net': 'Net Type'
 };
