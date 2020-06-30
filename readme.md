@@ -66,6 +66,20 @@ yarn build
 yarn build:win
 ```
 
-### GPG Public Key
+### Verify
 
-https://keys.openpgp.org/vks/v1/by-fingerprint/BCB054E548A093056A8BAE91F8809A14954ACB1D
+**For Security, Please Verify Downloads Before Using!!!**
+
+First, you need import Public Key: [BCB054E548A093056A8BAE91F8809A14954ACB1D](https://keys.openpgp.org/vks/v1/by-fingerprint/BCB054E548A093056A8BAE91F8809A14954ACB1D)
+
+```bash
+gpg --keyserver keys.openpgp.org --recv-keys BCB054E548A093056A8BAE91F8809A14954ACB1D
+```
+
+Second, please download both App File (In windows: .exe, In mac: .dmg) and gpg sign files (.asc);
+
+And then verify: 
+
+```
+gpg --verify <App Sign File> <App File> 
+```

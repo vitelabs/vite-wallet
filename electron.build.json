@@ -18,5 +18,5 @@
     },
     "afterAllArtifactBuild": "build/afterAllArtifactBuild.js",
     "afterSign": "build/notarize.js",
-    "artifactName": "${productName}-${version}-${os}.${ext}"
+    "artifactName": "Vite-Desktop-Wallet-${version}-${os}.${ext}"
 }
