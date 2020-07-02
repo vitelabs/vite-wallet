@@ -1,16 +1,14 @@
-const path = require('path');
 const execa = require('execa');
 const semver = require('semver');
 const inquirer = require('inquirer');
 
 const curVersion = require('./package.json').version;
-const appPath = path.join(__dirname, 'app/');
 
 const execWrapper = async (...args) => {
     let _promise = execa(...args);
     _promise.stdout.pipe(process.stdout);
     return await _promise;
-}
+};
 
 const release = async () => {
     console.log(`Current version: ${ curVersion }`);
@@ -24,7 +22,7 @@ const release = async () => {
         return { name: `${ b } (${ versions[b] })`, value: b };
     });
 
-    const { bump, customVersion, isPublish } = await inquirer.prompt([
+    const { bump, customVersion, isPublish, buildTarget } = await inquirer.prompt([
         {
             name: 'bump',
             message: 'Select release type:',
@@ -45,6 +43,12 @@ const release = async () => {
             message: 'Do you want to publish to github?',
             type: 'list',
             choices: [ { name: 'N', value: false }, { name: 'Y', value: true } ]
+        },
+        {
+            name: 'buildTarget',
+            message: 'Which target do you want to build?',
+            type: 'list',
+            choices: ['all', 'mac', 'win']
         }
     ]);
 
@@ -74,13 +78,20 @@ const release = async () => {
             ...process.env,
             RELEASE: isPublish
         }
+    };
+
+    if (isPublish) {
+        await execWrapper('npm', ['version', bumps.indexOf(bump) > -1 ? bump : version]);
+        await execWrapper('git', ['push']);
+        await execWrapper('git', ['push', '--tags', '-f']);
     }
 
-    await execWrapper(`npm`, ['version', bumps.indexOf(bump) > -1 ? bump : version]);
-    await execWrapper('git', ['push']);
-    await execWrapper('git', ['push', '--tags', '-f']);
-    await execWrapper('npm', ['run', 'release:mac'], releaseConfig);
-    await execWrapper('npm', ['run', 'release:win'], releaseConfig);
+    if (['all', 'mac'].indexOf(buildTarget) > -1) {
+        await execWrapper('npm', ['run', 'release:mac'], releaseConfig);
+    }
+    if (['all', 'win'].indexOf(buildTarget) > -1) {
+        await execWrapper('npm', ['run', 'release:win'], releaseConfig);
+    }
 };
 
 release().catch(err => {
