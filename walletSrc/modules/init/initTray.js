@@ -1,8 +1,8 @@
 const path = require('path');
 const fs = require('fs');
 
-const { app, Menu, Tray, shell, ipcMain, nativeImage, MenuItem, dialog, systemPreferences } = require('electron');
-const log = require("electron-log");
+const { Menu, Tray, shell, ipcMain, dialog, systemPreferences } = require('electron');
+const log = require('electron-log');
 const AutoLaunch = require('auto-launch');
 const Store = require('electron-store');
 const moment = require('moment');
@@ -56,7 +56,7 @@ module.exports = function() {
     global.WALLET_WIN && global.WALLET_WIN.on('ready-to-show', () => {
         setMenuContext();
     });
-}
+};
 
 function changeWallet(walletName) {
     global.settingsStore.set('currentWallet', walletName);

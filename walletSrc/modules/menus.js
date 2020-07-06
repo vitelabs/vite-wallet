@@ -1,5 +1,5 @@
 const { app, Menu, shell } = require('electron');
-const log = require("electron-log");
+const log = require('electron-log');
 
 module.exports = function() {
     let template = [
@@ -67,7 +67,7 @@ module.exports = function() {
                     global.WALLET_WIN && global.WALLET_WIN.webContents.openDevTools();
                 } 
             }
-        )
+        );
     }
     Menu.setApplicationMenu( Menu.buildFromTemplate(template) );
 };

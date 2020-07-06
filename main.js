@@ -1,7 +1,7 @@
 const path = require('path');
 
-const { app, shell, dialog } = require('electron');
-const log = require("electron-log");
+const { app, dialog } = require('electron');
+const log = require('electron-log');
 
 // Init log and catch all error.
 Object.assign(console, log.functions);

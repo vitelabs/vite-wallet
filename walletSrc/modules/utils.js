@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 const { app, shell, dialog, powerMonitor } = require('electron');
-const { autoUpdater } = require("electron-updater");
+const { autoUpdater } = require('electron-updater');
 const semver = require('semver');
-const log = require("electron-log");
+const log = require('electron-log');
 
 let autoUpdateTimer = null;
 let dialogPending = false;
@@ -19,7 +19,7 @@ exports.getWalletList = () => {
         console.error(err);
         return [];
     }
-}
+};
 
 exports.initUpdater = () => {
     // Init auto update
@@ -33,7 +33,7 @@ exports.initUpdater = () => {
             checkUpdate();
         }, 1000 * 60 * 60 * 1);
     }
-}
+};
 
 exports.powerMonitor = () => {
     app.on('ready', () => {
@@ -41,7 +41,7 @@ exports.powerMonitor = () => {
             console.info('The system is going to sleep');
         });
         powerMonitor.on('resume', () => {
-            console.info('The system resumed')
+            console.info('The system resumed');
             sendMsg('resume');
         });
         powerMonitor.on('lock-screen', () => {
@@ -52,7 +52,7 @@ exports.powerMonitor = () => {
             sendMsg('resume');
         });
     });
-}
+};
 
 
 function sendMsg(channel) {

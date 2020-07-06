@@ -28,7 +28,7 @@ protocol.registerSchemesAsPrivileged(netTypes.map(item => {
     return {
         scheme: item,
         privileges
-    }
+    };
 }));
 
 function loadWebDom() {
