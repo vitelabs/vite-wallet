@@ -178,6 +178,15 @@ function setMenuContext () {
                 global.WALLET_WIN.show();
             }
         },
+        { 
+            id: 'reload',
+            label: global.$t('reload'), 
+            type: 'normal', 
+            click: () => {
+                global.WALLET_WIN.webContents.reload();
+                global.WALLET_WIN.show();
+            }
+        },
         { type: 'separator' },
         {
             id: 'walletList',
