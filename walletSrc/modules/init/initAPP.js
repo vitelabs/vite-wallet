@@ -3,7 +3,7 @@ const URL = require('url').URL;
 
 const { app } = require('electron');
 const Splashscreen = require('@trodi/electron-splashscreen');
-const { initUpdater, powerMonitor } = require('../utils');
+const { initUpdater, powerMonitor, sendMsg } = require('../utils');
 
 // Wallet Window Config
 const windowConfig = {
@@ -74,6 +74,11 @@ function createWindow() {
         if (process.platform === 'darwin') {
             global.WALLET_WIN.maximize();
         }
+    });
+
+    global.WALLET_WIN.on('focus', () => {
+        console.info('Window get focus');
+        sendMsg('window-focus');
     });
 
     global.willQuit = false;

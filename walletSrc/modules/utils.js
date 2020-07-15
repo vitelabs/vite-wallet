@@ -49,10 +49,12 @@ exports.powerMonitor = () => {
         });
         powerMonitor.on('unlock-screen', () => {
             console.info('The system screen unlocked');
-            sendMsg('resume');
+            sendMsg('unlock-screen');
         });
     });
 };
+
+exports.sendMsg = sendMsg;
 
 
 function sendMsg(channel) {
