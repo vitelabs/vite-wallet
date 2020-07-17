@@ -1,9 +1,9 @@
 
 const appLocalStorage = require('./localStorage.js');
-const touchID = require('../utils/touchId');
+const webUtils = require('../utils/webUtils');
 
 module.exports = {
     appLocalStorage,
     appI18n: global.$i18n,
-    touchID
+    webUtils,
 };

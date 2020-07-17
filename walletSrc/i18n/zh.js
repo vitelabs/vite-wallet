@@ -23,5 +23,9 @@ module.exports = {
     'autoUpdateRelease': '仅更新正式版',
     'enableTouchID': '启用指纹解锁',
     'enableTouchIDMessage': '请注意：无论是否启用指纹解锁，Vite Wallet 都不会把密码存储到 KeyStore，只会存储到内存。启用该功能，是为了防止在钱包解锁情况下，非钱包持有人误操作导致资产损失。',
-    'net': '网络类型'
+    'net': '网络类型',
+    'copy': '复制',
+    'cut': '剪切',
+    'paste': '粘贴',
+    'selectAll': '全选'
 };
