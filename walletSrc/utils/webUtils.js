@@ -20,3 +20,5 @@ exports.isEnableTouchID = () => {
 exports.popupMenu = function() {
     menu.popup(global.WALLET_WIN);
 };
+
+exports.platform = process.platform;
