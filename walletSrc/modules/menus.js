@@ -35,7 +35,7 @@ module.exports = function() {
             label: 'Development',
             submenu: [
                 {
-                    label: 'Relaunch', 
+                    label: 'Refresh',
                     accelerator: 'CmdOrCtrl+R', 
                     click() {
                         global.WALLET_WIN && global.WALLET_WIN.webContents.reload();

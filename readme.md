@@ -1,15 +1,15 @@
 # vite-wallet
-> The Desktop wallet of [vite](https://vite.org).
+> The Desktop Wallet of [Vite](https://vite.org).
 
-## Install
+## Installation
 
-[Mac and Windows](https://github.com/vitelabs/vite-wallet/releases)
+The Vite Desktop Wallet supports Mac and Windows. [Download and install](https://github.com/vitelabs/vite-wallet/releases).
 
 ## Development
 
-### Init 
+### Init submodule
 
-This project contains the [vite-web-wallet](https://github.com/vitelabs/vite-web-wallet). You need init submodules first.
+This project requires the [vite-web-wallet](https://github.com/vitelabs/vite-web-wallet). You need init submodules first.
 
 ```
 git submodule init
@@ -18,30 +18,31 @@ git submodule update
 
 ### Install
 
-To install the dependencies of vite-wallet:
-
-```
-yarn
-```
-
-To install the dependencies of [vite-web-wallet](https://github.com/vitelabs/vite-web-wallet):
-
-```
-cd vite-web-wallet
-yarn
-```
-
-### Developing
-
-If want to use the local dev server of vite-web-wallet:
+Install dependencies
 
 ```bash
-# You need get in to vite-web-wallet
+yarn
+```
+
+Install the dependencies of vite-web-wallet
+
+```bash
+cd ../vite-web-wallet
+# Be sure you are in the folder of vite-web-wallet
+yarn
+```
+
+### Develop Mode
+
+Launch the local dev server of vite-web-wallet
+
+```bash
+# Be sure you are in the folder of vite-web-wallet
 yarn dev
 ```
-And then, open a new tab on terminal:
+Now open a new tab on terminal
 
-```
+```bash
 yarn dev
 ```
 
@@ -50,36 +51,37 @@ yarn dev
 First, you need build the vite-web-wallet dist:
 
 ```bash
-cd vite-web-wallet
+# Be sure you are in the folder of vite-web-wallet
 yarn build
 ```
 
 Second, you need to build vite-wallet:
 
 ```bash
-# In vite-wallet project root path
+cd ../vite-wallet
+# Be sure you are in the folder of vite-wallet
 
-# Building mac
+# Build Mac installation
 yarn build
 
-# Building windows
+# Build Windows installation
 yarn build:win
 ```
 
-### Verify
+### Verify Signature
 
-**For Security, Please Verify Downloads Before Using!!!**
+**For Security Purpose, Please Verify The Installation File Before Using!!!**
 
-First, you need import Public Key: [BCB054E548A093056A8BAE91F8809A14954ACB1D](https://keys.openpgp.org/vks/v1/by-fingerprint/BCB054E548A093056A8BAE91F8809A14954ACB1D)
+First, import PGP Public Key: [BCB054E548A093056A8BAE91F8809A14954ACB1D](https://keys.openpgp.org/vks/v1/by-fingerprint/BCB054E548A093056A8BAE91F8809A14954ACB1D)
 
 ```bash
 gpg --keyserver keys.openpgp.org --recv-keys BCB054E548A093056A8BAE91F8809A14954ACB1D
 ```
 
-Second, please download both App File (In windows: .exe, In mac: .dmg) and gpg sign files (.asc);
+Second, make sure you have downloaded the Installation File (Windows: .exe, Mac: .dmg) and PGP Signature File (.asc).
 
-And then verify: 
+Start verification: 
 
-```
-gpg --verify <App Sign File> <App File> 
+```bash
+gpg --verify <Signature File> <Installation File> 
 ```
