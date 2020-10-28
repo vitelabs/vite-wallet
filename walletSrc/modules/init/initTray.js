@@ -21,14 +21,15 @@ const logoPath = path.join(global.APP_PATH, 'icon', 'tray-logo.png');
 module.exports = function() {
     trayApp = new Tray(logoPath);
 
-
-    trayApp.on('click', () => {
-        if (global.WALLET_WIN.isVisible()) {
-            global.WALLET_WIN.hide();
-        } else {
-            global.WALLET_WIN.show();
-        }
-    });
+    if (process.platform !== 'darwin') {
+        trayApp.on('click', () => {
+            if (global.WALLET_WIN.isVisible()) {
+                global.WALLET_WIN.hide();
+            } else {
+                global.WALLET_WIN.show();
+            }
+        });
+    }
 
     global.trayApp = trayApp;
 
