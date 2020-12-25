@@ -8,16 +8,16 @@ exports.default = async (context) => {
 
 
     if (!signKey) {
-        console.warn('GPG sign key is null, skiping gpg sign process.')
+        console.warn('GPG sign key is null, skiping gpg sign process.');
         return signFiles;
     }
 
     artifactPaths.forEach(item => {
         let cmd = `gpg --armor --detach-sign --local-user "${signKey}" --yes "${item}"`;
-        console.log(cmd)
+        console.log(cmd);
         if (shell.exec(cmd).code === 0) {
             signFiles.push(`${item}.asc`);
-        };
+        }
     });
     return signFiles;
-}
+};
