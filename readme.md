@@ -2,6 +2,8 @@
 > The Desktop Wallet of [Vite](https://vite.org).
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Version](https://img.shields.io/github/v/release/vitelabs/vite-wallet)](https://github.com/vitelabs/vite-wallet/releases/latest)
+[![Version](https://img.shields.io/github/v/release/vitelabs/vite-wallet?include_prereleases&label=pre-release)](https://github.com/vitelabs/vite-wallet/releases)
 
 ## Installation
 
