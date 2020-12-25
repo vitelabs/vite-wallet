@@ -1,14 +1,16 @@
 {
     "appId": "com.electron.vite.wallet",
     "productName": "Vite Wallet",
-    "buildDependenciesFromSource": true,
+    "buildDependenciesFromSource": false,
     "asar": true,
+    "electronVersion": "11.1.1",
     "mac": {
         "icon": "icon/vite_512x512@2x.png",
         "hardenedRuntime" : true,
         "gatekeeperAssess": false,
         "entitlements": "build/entitlements.mac.plist",
-        "entitlementsInherit": "build/entitlements.mac.plist"
+        "entitlementsInherit": "build/entitlements.mac.plist",
+        "target": "dmg"
     },
     "win": {
         "icon": "icon/vite_256x256@2x.png"

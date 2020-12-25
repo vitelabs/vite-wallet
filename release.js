@@ -1,4 +1,5 @@
 const execa = require('execa');
+const nvexeca = require('nvexeca');
 const semver = require('semver');
 const inquirer = require('inquirer');
 
@@ -6,6 +7,13 @@ const curVersion = require('./package.json').version;
 
 const execWrapper = async (...args) => {
     let _promise = execa(...args);
+    _promise.stdout.pipe(process.stdout);
+    return await _promise;
+};
+
+const execWithTargetNode = async (...args) => {
+    let _promise = await nvexeca(...args);
+    _promise = _promise.childProcess;
     _promise.stdout.pipe(process.stdout);
     return await _promise;
 };
@@ -71,7 +79,7 @@ const release = async () => {
     // Delete files
     await execWrapper('npm', ['run', 'clean']);
 
-    await execWrapper('npm', ['run', 'build:web']);
+    await execWithTargetNode('v10', 'npm', ['run', 'build:web']);
 
     const releaseConfig = {
         env: {
