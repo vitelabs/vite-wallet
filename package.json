@@ -23,13 +23,15 @@
         "devd": "gulp",
         "release:mac": "FORCE_COLOR=1 npm run build",
         "release:win": "FORCE_COLOR=1 npm run build:win",
-        "release": "FORCE_COLOR=1 node release.js"
+        "release": "FORCE_COLOR=1 node release.js",
+        "commit": "cz"
     },
     "devDependencies": {
         "@babel/core": "^7.12.3",
         "@babel/preset-env": "^7.12.1",
         "babel-eslint": "^10.1.0",
         "babel-preset-es2016-node5": "^1.1.2",
+        "commitizen": "^4.2.2",
         "dotenv": "^8.2.0",
         "electron": "^11.1.1",
         "electron-builder": "^22.9.1",
