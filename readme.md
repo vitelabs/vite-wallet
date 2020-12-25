@@ -1,6 +1,8 @@
 # vite-wallet
 > The Desktop Wallet of [Vite](https://vite.org).
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 ## Installation
 
 The Vite Desktop Wallet supports Mac and Windows. [Download and install](https://github.com/vitelabs/vite-wallet/releases).
