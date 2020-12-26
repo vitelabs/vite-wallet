@@ -1,9 +1,11 @@
 # vite-wallet
 > The Desktop Wallet of [Vite](https://vite.org).
 
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Version](https://img.shields.io/github/v/release/vitelabs/vite-wallet)](https://github.com/vitelabs/vite-wallet/releases/latest)
 [![Version](https://img.shields.io/github/v/release/vitelabs/vite-wallet?include_prereleases&label=pre-release)](https://github.com/vitelabs/vite-wallet/releases)
+[![Twitter Follow](https://img.shields.io/twitter/follow/vitelabs?style=social)](https://twitter.com/vitelabs)
+[![GitHub all releases](https://img.shields.io/github/downloads/vitelabs/vite-wallet/total)](https://github.com/vitelabs/vite-wallet/releases/latest)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 [Changelog](./changelog.md)
 
