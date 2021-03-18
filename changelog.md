@@ -1,3 +1,16 @@
+# [1.5.0](https://github.com/vitelabs/vite-wallet/compare/v1.4.4-6...v1.5.0) (2021-03-18)
+
+
+### chore
+
+* add changelog script ([b53badb](https://github.com/vitelabs/vite-wallet/commit/b53badb11651eb708980df4979cbbcbb7da2a560))
+
+### docs
+
+* update changelog ([886afd5](https://github.com/vitelabs/vite-wallet/commit/886afd5fcb0fae3d0002ea988a28628dfc5e0305))
+
+
+
 ## [1.4.4-6](https://github.com/vitelabs/vite-wallet/compare/v1.4.4-5...v1.4.4-6) (2021-03-18)
 
 
