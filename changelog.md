@@ -1,4 +1,16 @@
-# Changelog
+## [1.4.4-6](https://github.com/vitelabs/vite-wallet/compare/v1.4.4-5...v1.4.4-6) (2021-03-18)
+
+
+### docs
+
+* add changelog.md ([a1b4212](https://github.com/vitelabs/vite-wallet/commit/a1b42129ed827ca16850f544602ee565cc0bbe38))
+* update readme: add more shields badges ([7625e17](https://github.com/vitelabs/vite-wallet/commit/7625e1715bfcd32fdf6f16cbec359344262916f9))
+
+### feat
+
+* update to latest vite-web-wallet ([92f63b9](https://github.com/vitelabs/vite-wallet/commit/92f63b9ab8734eaebc9756833c3d3155ed0a5dca))
+
+
 
 ## [1.4.4-5](https://github.com/vitelabs/vite-wallet/compare/v1.4.4-4...v1.4.4-5) (2020-12-25)
 
