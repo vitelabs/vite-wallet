@@ -89,6 +89,7 @@ const release = async () => {
     };
 
     if (isPublish) {
+        await execWrapper('npm', ['run', 'changelog']);
         await execWrapper('npm', ['version', bumps.indexOf(bump) > -1 ? bump : version]);
         await execWrapper('git', ['push']);
         await execWrapper('git', ['push', '--tags', '-f']);
