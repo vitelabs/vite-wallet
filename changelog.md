@@ -1,3 +1,20 @@
+# [1.6.0](https://github.com/vitelabs/vite-wallet/compare/v1.5.1...v1.6.0) (2021-04-04)
+
+
+### chore
+
+* change release.js: remove changelog cmd ([e35905b](https://github.com/vitelabs/vite-wallet/commit/e35905b9f934477771756cb6a1cf13dc3e2ce326))
+* update release script: will update changelog before run 'npm version' ([a8417cb](https://github.com/vitelabs/vite-wallet/commit/a8417cb817e256af2c992e95b17da9d92d97addf))
+
+### docs
+
+* release v1.5.1 changelog ([77e16ab](https://github.com/vitelabs/vite-wallet/commit/77e16ab2fdad27df0982fc227a838b059805e094))
+
+### feat
+
+* new node program ([59392b5](https://github.com/vitelabs/vite-wallet/commit/59392b59962139993d7a46a3c3a6d61f6f5f8989))
+
+
 ## [1.5.1](https://github.com/vitelabs/vite-wallet/compare/v1.5.0...v1.5.1) (2021-04-02)
 
 
