@@ -1,3 +1,16 @@
+## [1.6.1](https://github.com/vitelabs/vite-wallet/compare/v1.6.0...v1.6.1) (2021-04-12)
+
+
+### docs
+
+* v1.6.0 changelog ([f2c2871](https://github.com/vitelabs/vite-wallet/commit/f2c28716efbd2a80c0e8bc1a74307bf818862352))
+
+### feat
+
+* support change rpc node url ([8168cee](https://github.com/vitelabs/vite-wallet/commit/8168cee8605376600f1696bcfecc6f0a32739abb))
+
+
+
 # [1.6.0](https://github.com/vitelabs/vite-wallet/compare/v1.5.1...v1.6.0) (2021-04-04)
 
 
