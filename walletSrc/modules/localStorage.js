@@ -9,7 +9,9 @@ const settingsKeys = [
     'VITE_WEB_WALLET_hideZeroAssets',
     'VITE_WEB_WALLET_autoLogoutTime',
     'VITE_WEB_WALLET_currency',
-    'VITE_WEB_WALLET_gate'
+    'VITE_WEB_WALLET_gate',
+    'VITE_WEB_WALLET_customNodes',
+    'VITE_WEB_WALLET_currentNode'
 ];
 
 /* 
@@ -31,7 +33,7 @@ function setItem(name, str) {
     let keyPath = getKeyPath(name);
 
     // VITE_WEB_WALLET_ACC_LIST contains the wallet info, for security, don't log into file.
-    if (keyPath !== 'VITE_WEB_WALLET_ACC_LIST') {
+    if (ignoreLogKeys.indexOf(keyPath) === -1) {
         console.info('setWalletStore', JSON.stringify({
             name, str
         }));
