@@ -79,14 +79,14 @@ function getItem(name) {
 
 function getValue(key) {
     if (settingsKeys.indexOf(key) > -1) {
-        return global.settingsStore.get(`webWallet.${key}`);
+        return global.settingsStore.get(`webWallet.${global.settingsStore.get('net')}.${key}`);
     }
     return global.walletStore.get(key);
 }
 
 function setValue(key, value) {
     if (settingsKeys.indexOf(key) > -1) {
-        return global.settingsStore.set(`webWallet.${key}`, value);
+        return global.settingsStore.set(`webWallet.${global.settingsStore.get('net')}.${key}`, value);
     }
     return global.walletStore.set(key, value);
 }
