@@ -54,6 +54,12 @@ Now open a new tab on terminal
 yarn dev
 ```
 
+Commit code:
+
+```bash
+yarn commit
+```
+
 ### Build
 
 First, you need build the vite-web-wallet dist:
@@ -78,7 +84,24 @@ yarn build:win
 
 ### Resease
 
-Here is the release script of vite-wallet. It will auto upload release to github release and bump version.
+#### Set .env
+
+Before running release script, you need create a `.env` file. About `.env` config, you can look [.env.example](./.env.example);
+
+```
+GH_TOKEN=<Github Personal Token: required>
+GPG_SIGN_KEY=<GPG Sign Key: optional>
+```
+
+#### Release
+
+Here is the release script of vite-wallet. It do something like:
+
+1. Bump version
+2. Choose which platform to build
+3. Release package to github
+4. Sigin with GPG key
+
 
 ```bash
 yarn release
