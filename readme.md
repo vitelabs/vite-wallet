@@ -78,6 +78,8 @@ yarn build:win
 
 ### Resease
 
+Here is the release script of vite-wallet. It will auto upload release to github release and bump version.
+
 ```bash
 yarn release
 ```
