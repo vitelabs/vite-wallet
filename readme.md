@@ -82,7 +82,7 @@ yarn build
 yarn build:win
 ```
 
-### Resease
+### Release
 
 #### Set .env
 
