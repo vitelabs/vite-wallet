@@ -76,6 +76,12 @@ yarn build
 yarn build:win
 ```
 
+### Resease
+
+```bash
+yarn release
+```
+
 ### Verify Signature
 
 **For Security Purpose, Please Verify The Installation File Before Using!!!**
