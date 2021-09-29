@@ -106,21 +106,3 @@ Here is the release script of vite-wallet. It do something like:
 ```bash
 yarn release
 ```
-
-### Verify Signature
-
-**For Security Purpose, Please Verify The Installation File Before Using!!!**
-
-First, import PGP Public Key: [BCB054E548A093056A8BAE91F8809A14954ACB1D](https://keys.openpgp.org/vks/v1/by-fingerprint/BCB054E548A093056A8BAE91F8809A14954ACB1D)
-
-```bash
-gpg --keyserver keys.openpgp.org --recv-keys BCB054E548A093056A8BAE91F8809A14954ACB1D
-```
-
-Second, make sure you have downloaded the Installation File (Windows: .exe, Mac: .dmg) and PGP Signature File (.asc).
-
-Start verification: 
-
-```bash
-gpg --verify <Signature File> <Installation File> 
-```
