@@ -1,3 +1,16 @@
+## [1.6.5-0](https://github.com/vitelabs/vite-wallet/compare/v1.6.4-0...v1.6.5-0) (2021-11-30)
+
+
+### docs
+
+* v1.6.4 changelog ([9bab1fc](https://github.com/vitelabs/vite-wallet/commit/9bab1fce5dea47871221ca9ca813c9f2f02573ee))
+
+### feat
+
+* update to latest ([e34ee68](https://github.com/vitelabs/vite-wallet/commit/e34ee688a107395856f332f25fd19c864acdc973))
+
+
+
 ## [1.6.4-0](https://github.com/vitelabs/vite-wallet/compare/v1.6.2...v1.6.4-0) (2021-09-29)
 
 
