@@ -1,3 +1,12 @@
+# [1.7.0](https://github.com/vitelabs/vite-wallet/compare/v1.6.9...v1.7.0) (2023-10-17)
+
+
+### build
+
+* update submodule ([7b56e75](https://github.com/vitelabs/vite-wallet/commit/7b56e7548315038ad64910e4dd20460646efbab4))
+
+
+
 ## [1.6.9](https://github.com/vitelabs/vite-wallet/compare/v1.6.8...v1.6.9) (2022-09-26)
 
 
